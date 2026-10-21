@@ -1,0 +1,2338 @@
+{
+  "Royce Gracie": {
+    "arquivo": "fotos/royce_gracie.jpg",
+    "autor": "Sgt. Malcolm Cohens-Ashley",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Royce_Gracie_Photo_Pose_4975753_(cropped).jpg",
+    "pagina": "Royce Gracie"
+  },
+  "Ken Shamrock": {
+    "arquivo": "fotos/ken_shamrock.jpg",
+    "autor": "Mike Kalasnik",
+    "licenca": "CC BY-SA 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Ken_Shamrock_2016_(cropped).jpg",
+    "pagina": "Ken Shamrock"
+  },
+  "Dan Severn": {
+    "arquivo": "fotos/dan_severn.jpg",
+    "autor": "grenwail",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Frank_Mir_vs_Dan_Severn_(cropped).jpg",
+    "pagina": "Dan Severn"
+  },
+  "Frank Shamrock": {
+    "arquivo": "fotos/frank_shamrock.jpg",
+    "autor": "Bruno Massami",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Frank_Shamrock.jpg",
+    "pagina": "Frank Shamrock"
+  },
+  "Maurice Smith": {
+    "arquivo": "fotos/maurice_smith.jpg",
+    "autor": "Cys127",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Maurice_Smith_1999.jpg",
+    "pagina": "Maurice Smith (fighter)"
+  },
+  "Randy Couture": {
+    "arquivo": "fotos/randy_couture.jpg",
+    "autor": "Gage Skidmore",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Randy_Couture_by_Gage_Skidmore_2.jpg",
+    "pagina": "Randy Couture"
+  },
+  "Pedro Rizzo": {
+    "arquivo": "fotos/pedro_rizzo.jpg",
+    "autor": "Presidential Press and Information Office, derivative work: t-piston",
+    "licenca": "CC BY 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Pedro_Rizzo_2012.jpg",
+    "pagina": "Pedro Rizzo"
+  },
+  "Bas Rutten": {
+    "arquivo": "fotos/bas_rutten.jpg",
+    "autor": "Michael Dunn from Silicon Valley, USA",
+    "licenca": "CC BY 2.5",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.5",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Bas_Rutten.jpg",
+    "pagina": "Bas Rutten"
+  },
+  "Kevin Randleman": {
+    "arquivo": "fotos/kevin_randleman.jpg",
+    "autor": "Larry Burton on Picasa Web Albums",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Kevin_Randleman.jpg",
+    "pagina": "Kevin Randleman"
+  },
+  "Ricco Rodriguez": {
+    "arquivo": "fotos/ricco_rodriguez.jpg",
+    "autor": "Ivana Kaurloto",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:FFC_10_in_Skopje.jpg",
+    "pagina": "Ricco Rodriguez"
+  },
+  "Dominick Cruz": {
+    "arquivo": "fotos/dominick_cruz.png",
+    "autor": "James K. McCann",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Dom_Cruz_2.png",
+    "pagina": "Dominick Cruz"
+  },
+  "Urijah Faber": {
+    "arquivo": "fotos/urijah_faber.jpg",
+    "autor": "Kelly Bailey",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Urijah_Faber_24_July_2009.jpg",
+    "pagina": "Urijah Faber"
+  },
+  "Khabib Nurmagomedov": {
+    "arquivo": "fotos/khabib_nurmagomedov.jpg",
+    "autor": "Airotcivss",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Khabib_nurmagomedov.jpg",
+    "pagina": "Khabib Nurmagomedov"
+  },
+  "Anthony Pettis": {
+    "arquivo": "fotos/anthony_pettis.jpg",
+    "autor": "Airman 1st Class Christopher R. Morales of Joint Base Elmendorf-Richardson",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:USO_Spring_2016_Entertainment_Tour_(cropped).jpg",
+    "pagina": "Anthony Pettis"
+  },
+  "Eddie Alvarez": {
+    "arquivo": "fotos/eddie_alvarez.jpg",
+    "autor": "Kyle Holdsworth",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Eddie_Alvarez.jpg",
+    "pagina": "Eddie Alvarez"
+  },
+  "Donald Cerrone": {
+    "arquivo": "fotos/donald_cerrone.jpg",
+    "autor": "Staff Sgt. Sean Harp",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:VCJCS_hosts_USO_Spring_Tour_160312-D-HU462-263.jpg",
+    "pagina": "Donald Cerrone"
+  },
+  "Frankie Edgar": {
+    "arquivo": "fotos/frankie_edgar.jpg",
+    "autor": "Jemaleddin Cole",
+    "licenca": "CC BY-SA 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Frankie_Edgar.jpg",
+    "pagina": "Frankie Edgar"
+  },
+  "Yoel Romero": {
+    "arquivo": "fotos/yoel_romero.jpg",
+    "autor": "Эркек",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Yoel_Romero.jpg",
+    "pagina": "Yoel Romero"
+  },
+  "Michael Bisping": {
+    "arquivo": "fotos/michael_bisping.png",
+    "autor": "Michael Bisping",
+    "licenca": "CC BY 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:MichaelBispingProfile.png",
+    "pagina": "Michael Bisping"
+  },
+  "Robert Whittaker": {
+    "arquivo": "fotos/robert_whittaker.png",
+    "autor": "Sexto Round",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Robert_Whittaker_2024.png",
+    "pagina": "Robert Whittaker (fighter)"
+  },
+  "Chael Sonnen": {
+    "arquivo": "fotos/chael_sonnen.jpg",
+    "autor": "Sgt. Alex Kouns",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Meet_and_Greet_with_Special_MMA_Clinic_(2).jpg",
+    "pagina": "Chael Sonnen"
+  },
+  "Jorge Masvidal": {
+    "arquivo": "fotos/jorge_masvidal.jpg",
+    "autor": "Chamatkar Sandhu",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Jorge_Masvidal_2023.jpg",
+    "pagina": "Jorge Masvidal"
+  },
+  "Robbie Lawler": {
+    "arquivo": "fotos/robbie_lawler.png",
+    "autor": "Atlanta Falcons",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Robbie_Lawler.png",
+    "pagina": "Robbie Lawler"
+  },
+  "Tyron Woodley": {
+    "arquivo": "fotos/tyron_woodley.png",
+    "autor": "Atlanta Falcons",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Tyron_Woodley.png",
+    "pagina": "Tyron Woodley"
+  },
+  "Carlos Condit": {
+    "arquivo": "fotos/carlos_condit.jpg",
+    "autor": "Rushmoore",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Carloscondit.jpg",
+    "pagina": "Carlos Condit"
+  },
+  "Rory MacDonald": {
+    "arquivo": "fotos/rory_macdonald.jpg",
+    "autor": "Canadagift",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Redkingrorymacdonald.jpg",
+    "pagina": "Rory MacDonald (fighter)"
+  },
+  "Diego Sanchez": {
+    "arquivo": "fotos/diego_sanchez.png",
+    "autor": "Josh Vandegriff",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:DiegoSanchez.png",
+    "pagina": "Diego Sanchez"
+  },
+  "Jake Ellenberger": {
+    "arquivo": "fotos/jake_ellenberger.jpg",
+    "autor": "AL ASAD AIR BASE, IRAQ 12.18.2018 Photo by 1st Lt. Leland White 201st Regional Support Group",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Jake_Ellenberger_at_MMA_Holiday_Tour_at_Al_Asad_Air_Base_(cropped).jpg",
+    "pagina": "Jake Ellenberger"
+  },
+  "Daniel Cormier": {
+    "arquivo": "fotos/daniel_cormier.jpg",
+    "autor": "U.S. Army National Guard photo by Spc. Shretha Broderick",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:JTF-DC_Freedom_UFC_250_Press_Conference_(9747806)(cropped).jpg",
+    "pagina": "Daniel Cormier"
+  },
+  "Rampage Jackson": {
+    "arquivo": "fotos/rampage_jackson.jpg",
+    "autor": "Chief National Guard Bureau from USA",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:02-09JUL2019_CNGB_USO_Tour_2019_190705-F-WH816-1016_(48531457487)_(cropped).jpg",
+    "pagina": "Rampage Jackson"
+  },
+  "Stephan Bonnar": {
+    "arquivo": "fotos/stephan_bonnar.jpeg",
+    "autor": "fightlaunch",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Stephan-bonnar-flickr-fight-launch.jpeg",
+    "pagina": "Stephan Bonnar"
+  },
+  "Forrest Griffin": {
+    "arquivo": "fotos/forrest_griffin.jpg",
+    "autor": "",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:USMC-100809-M-6457M-001_CROPPED.jpg",
+    "pagina": "Forrest Griffin"
+  },
+  "Rashad Evans": {
+    "arquivo": "fotos/rashad_evans.jpg",
+    "autor": "Mass Communication Specialist 2nd Class Erik Melgar",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Rashad_Evans_joins_Fleet_Week_Miami_2024_(2)_(cropped).jpg",
+    "pagina": "Rashad Evans"
+  },
+  "Ryan Bader": {
+    "arquivo": "fotos/ryan_bader.jpg",
+    "autor": "Kris Krüg",
+    "licenca": "CC BY-SA 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Ryan_Bader_2011.jpg",
+    "pagina": "Ryan Bader"
+  },
+  "José Aldo": {
+    "arquivo": "fotos/jose_aldo.jpg",
+    "autor": "Andrius Petrucenia on Flickr (Original version) UCinternational (Crop)",
+    "licenca": "CC BY-SA 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Jos%C3%A9_Aldo,_UFC_189_World_Tour_London_(2)_(cropped).jpg",
+    "pagina": "José Aldo"
+  },
+  "Conor McGregor": {
+    "arquivo": "fotos/conor_mcgregor.jpeg",
+    "autor": "U.S. Secretary of Defense",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Conor_McGregor_2025.jpeg",
+    "pagina": "Conor McGregor"
+  },
+  "Chad Mendes": {
+    "arquivo": "fotos/chad_mendes.jpeg",
+    "autor": "yuggy15",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Chad_Mendes.jpeg",
+    "pagina": "Chad Mendes"
+  },
+  "Brock Lesnar": {
+    "arquivo": "fotos/brock_lesnar.jpg",
+    "autor": "Diego Serrano",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Brock_Lesnar_At_SummerSlam_2023_(cropped).jpg",
+    "pagina": "Brock Lesnar"
+  },
+  "Frank Mir": {
+    "arquivo": "fotos/frank_mir.jpg",
+    "autor": "grenwail",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Frank_Mir_GCW_Bloodsport_(cropped).jpg",
+    "pagina": "Frank Mir"
+  },
+  "Mark Hunt": {
+    "arquivo": "fotos/mark_hunt.jpg",
+    "autor": "The Wifechaser",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Mark_Hunt_on_22_November_2007.jpg",
+    "pagina": "Mark Hunt"
+  },
+  "Josh Barnett": {
+    "arquivo": "fotos/josh_barnett.jpg",
+    "autor": "J O Y F U L 🐻 V I O L E N C E",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Josh_Barnett_in_April_2024.jpg",
+    "pagina": "Josh Barnett"
+  },
+  "Shane Carwin": {
+    "arquivo": "fotos/shane_carwin.jpg",
+    "autor": "The Doppelganger on en.wikipedia",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Shane_Carwin.JPG",
+    "pagina": "Shane Carwin"
+  },
+  "Cory Sandhagen": {
+    "arquivo": "fotos/cory_sandhagen.jpg",
+    "autor": "Senior Airman Ty Pilgrim",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC%27s_Corey_Sandhagen_brings_his_fighting_spirit_to_the_1st_SOW_(1)_(cropped).jpg",
+    "pagina": "Cory Sandhagen"
+  },
+  "Marlon Vera": {
+    "arquivo": "fotos/marlon_vera.jpg",
+    "autor": "Mass Communication Specialist 1st Class Russell R. Rhodes Jr.",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Marlon_Vera_LA_Fleet_Week_USS_Essex_Tour_9702269_(cropped).jpg",
+    "pagina": "Marlon Vera"
+  },
+  "Umar Nurmagomedov": {
+    "arquivo": "fotos/umar_nurmagomedov.png",
+    "autor": "Новости ННТ",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UmarNurmagomedov.png",
+    "pagina": "Umar Nurmagomedov"
+  },
+  "Islam Makhachev": {
+    "arquivo": "fotos/islam_makhachev.jpg",
+    "autor": "Unknown authorUnknown author",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Islam_Makhachev_and_Sergey_Melikov_2025_(cropped).jpg",
+    "pagina": "Islam Makhachev"
+  },
+  "Charles Oliveira": {
+    "arquivo": "fotos/charles_oliveira.jpg",
+    "autor": "Renan Silva",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Charles_Oliveira_do_Bronxs.jpg",
+    "pagina": "Charles Oliveira"
+  },
+  "Beneil Dariush": {
+    "arquivo": "fotos/beneil_dariush.jpg",
+    "autor": "AL ASAD AIR BASE, IRAQ 12.18.2018 Photo by 1st Lt. Leland White 201st Regional Support Group",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:MMA_Holiday_Tour_at_Al_Asad_Air_Base_11_(cropped).jpg",
+    "pagina": "Beneil Dariush"
+  },
+  "Rafael Fiziev": {
+    "arquivo": "fotos/rafael_fiziev.png",
+    "autor": "SPORTS UZ",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Fiziev_2023.png",
+    "pagina": "Rafael Fiziev"
+  },
+  "Paddy Pimblett": {
+    "arquivo": "fotos/paddy_pimblett.jpg",
+    "autor": "James English",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC_Star_Paddy_The_Baddy_Pimblett_tells_his_story_(cropped).jpg",
+    "pagina": "Paddy Pimblett"
+  },
+  "Israel Adesanya": {
+    "arquivo": "fotos/israel_adesanya.jpg",
+    "autor": "MMMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Israel_Adesanya_at_UFC_230.jpg",
+    "pagina": "Israel Adesanya"
+  },
+  "Dricus du Plessis": {
+    "arquivo": "fotos/dricus_du_plessis.jpg",
+    "autor": "User:Philippe3017",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:IMG-Dricus-Duplessis(cropped).jpg",
+    "pagina": "Dricus du Plessis"
+  },
+  "Sean Strickland": {
+    "arquivo": "fotos/sean_strickland.png",
+    "autor": "MMAnytt",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Sean_Strickland_at_UFN_200.png",
+    "pagina": "Sean Strickland"
+  },
+  "Leon Edwards": {
+    "arquivo": "fotos/leon_edwards.png",
+    "autor": "James English",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Leon_Edwards_2021.png",
+    "pagina": "Leon Edwards"
+  },
+  "Belal Muhammad": {
+    "arquivo": "fotos/belal_muhammad.jpg",
+    "autor": "Inaquout",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Belal_Muhammad_UFC_(cropped).jpg",
+    "pagina": "Belal Muhammad"
+  },
+  "Shavkat Rakhmonov": {
+    "arquivo": "fotos/shavkat_rakhmonov.jpg",
+    "autor": "Ruslankyrykbayev",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Shavkat_Rakhmonov_(cropped).jpg",
+    "pagina": "Shavkat Rakhmonov"
+  },
+  "Colby Covington": {
+    "arquivo": "fotos/colby_covington.jpg",
+    "autor": "Alexandra Shea",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:ColbyCovingtonFortJackson2022(cropped).jpg",
+    "pagina": "Colby Covington"
+  },
+  "Jan Błachowicz": {
+    "arquivo": "fotos/jan_b_achowicz.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Jan_Blachowicz_at_UFC_Fight_Night_136.jpg",
+    "pagina": "Jan Błachowicz"
+  },
+  "Khalil Rountree": {
+    "arquivo": "fotos/khalil_rountree.jpg",
+    "autor": "Slsinc",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Khalil_Rountree,_Jr.._(cropped).jpg",
+    "pagina": "Khalil Rountree Jr."
+  },
+  "Carlos Ulberg": {
+    "arquivo": "fotos/carlos_ulberg.jpg",
+    "autor": "The White House",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Motorcycle_stunts_on_the_South_Lawn_of_the_White_House_ahead_of_UFC_Freedom_250,_Saturday,_June_13,_2026_-_11(cropped).jpg",
+    "pagina": "Carlos Ulberg"
+  },
+  "Max Holloway": {
+    "arquivo": "fotos/max_holloway.jpg",
+    "autor": "Cpl. Samantha Sanchez",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Blue_Angels%27_VIP_Rider_Max_Holloway_(1)_(cropped).jpg",
+    "pagina": "Max Holloway"
+  },
+  "Ilia Topuria": {
+    "arquivo": "fotos/ilia_topuria.jpg",
+    "autor": "U.S. Army photo by Sgt. 1st Class Brittany Primavera",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250_Ceremonial_Weigh_In_(9748627)(cropped).jpg",
+    "pagina": "Ilia Topuria"
+  },
+  "Yair Rodríguez": {
+    "arquivo": "fotos/yair_rodriguez.jpg",
+    "autor": "File:Carrera con Yair \"Pantera\" Rodríguez -i---i- (30657689682).jpg: PLEASE COMPLETE AUTHOR INFORMATION derivative work: Alexander Gustafsson",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Carrera_con_Yair_%22Pantera%22_Rodr%C3%ADguez_-i---i-_(30657689682)_cropped.jpg",
+    "pagina": "Yair Rodríguez"
+  },
+  "Movsar Evloev": {
+    "arquivo": "fotos/movsar_evloev.jpg",
+    "autor": "Press Service of the Head and Government of the Republic of Ingushetia",
+    "licenca": "CC BY 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Movsar_Evloev_M-1_Challenge_2018.jpg",
+    "pagina": "Movsar Evloev"
+  },
+  "Brian Ortega": {
+    "arquivo": "fotos/brian_ortega.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Brian_Ortega_on_MMAnytt.jpg",
+    "pagina": "Brian Ortega"
+  },
+  "Francis Ngannou": {
+    "arquivo": "fotos/francis_ngannou.png",
+    "autor": "Mike Tyson",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Francis_Ngannou_2023_(cropped).png",
+    "pagina": "Francis Ngannou"
+  },
+  "Jailton Almeida": {
+    "arquivo": "fotos/jailton_almeida.png",
+    "autor": "Sexto Round",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Almeida_2023.png",
+    "pagina": "Jailton Almeida"
+  },
+  "Derrick Lewis": {
+    "arquivo": "fotos/derrick_lewis.jpg",
+    "autor": "U.S. Army photo by Sgt. 1st Class Brittany Primavera",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250_Press_Conference_(9747952)_(cropped).jpg",
+    "pagina": "Derrick Lewis"
+  },
+  "Gerard Gordeau": {
+    "arquivo": "fotos/gerard_gordeau.jpg",
+    "autor": "北大柔道部",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Yukinakai-gordeau.jpg",
+    "pagina": "Gerard Gordeau"
+  },
+  "Marco Ruas": {
+    "arquivo": "fotos/marco_ruas.jpg",
+    "autor": "Kevin Treman, cropped by J Milburn",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Marco_Ruas_publicity_shot_crop.jpg",
+    "pagina": "Marco Ruas"
+  },
+  "Mark Coleman": {
+    "arquivo": "fotos/mark_coleman.jpg",
+    "autor": "Gabriel Hutchinson",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Mark_Coleman_At_TIFF_2025_02.jpg",
+    "pagina": "Mark Coleman"
+  },
+  "TJ Dillashaw": {
+    "arquivo": "fotos/tj_dillashaw.png",
+    "autor": "K.O. Artist Sports",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:TJ_Dillashaw.png",
+    "pagina": "T.J. Dillashaw"
+  },
+  "Cody Garbrandt": {
+    "arquivo": "fotos/cody_garbrandt.png",
+    "autor": "MiggyTube TV",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Cody_Garbrandt.png",
+    "pagina": "Cody Garbrandt"
+  },
+  "Marlon Moraes": {
+    "arquivo": "fotos/marlon_moraes.jpg",
+    "autor": "Sambo1096",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Marlon_Moraes.jpg",
+    "pagina": "Marlon Moraes"
+  },
+  "BJ Penn": {
+    "arquivo": "fotos/bj_penn.jpg",
+    "autor": "Chairman of the Joint Chiefs of Staff from Washington D.C, United States",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:B.J._Penn,_2019.jpg",
+    "pagina": "B.J. Penn"
+  },
+  "Anderson Silva": {
+    "arquivo": "fotos/anderson_silva.png",
+    "autor": "Conselho Nacional do Ministério Público CNMP",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Anderson_Silva.png",
+    "pagina": "Anderson Silva"
+  },
+  "Wanderlei Silva": {
+    "arquivo": "fotos/wanderlei_silva.jpg",
+    "autor": "Mhazevedo",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Wanderlei_Silva_-_Franz_no_MMA_(cropped).jpg",
+    "pagina": "Wanderlei Silva"
+  },
+  "Dan Henderson": {
+    "arquivo": "fotos/dan_henderson.jpg",
+    "autor": "Lance Cpl. Seferino Gamez",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Dan_Henderson_2025_(cropped).jpg",
+    "pagina": "Dan Henderson"
+  },
+  "Vitor Belfort": {
+    "arquivo": "fotos/vitor_belfort.jpg",
+    "autor": "https://www.flickr.com/photos/tiagoluiz/",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Vitor_belfort_cropped.jpg",
+    "pagina": "Vitor Belfort"
+  },
+  "Chris Weidman": {
+    "arquivo": "fotos/chris_weidman.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Chris_Weidman_at_UFC_230.jpg",
+    "pagina": "Chris Weidman"
+  },
+  "Matt Hughes": {
+    "arquivo": "fotos/matt_hughes.png",
+    "autor": "Tom Nguyen (\"enviziondotnet\") on Flickr.",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Matt_Hughes_(cropped).png",
+    "pagina": "Matt Hughes (fighter)"
+  },
+  "Nick Diaz": {
+    "arquivo": "fotos/nick_diaz.png",
+    "autor": "MMAMytt",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Nick_Diaz.png",
+    "pagina": "Nick Diaz"
+  },
+  "Matt Serra": {
+    "arquivo": "fotos/matt_serra.png",
+    "autor": "Rfinaldi",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Matt_Serra_2024.png",
+    "pagina": "Matt Serra"
+  },
+  "Johny Hendricks": {
+    "arquivo": "fotos/johny_hendricks.jpg",
+    "autor": "Nicknotify",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Johny_Hendricks_MMA.jpg",
+    "pagina": "Johny Hendricks"
+  },
+  "Jon Jones": {
+    "arquivo": "fotos/jon_jones.jpg",
+    "autor": "Senate Democrats",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Jon_Jones_-_Supporting_Brain_Health_Study.jpg",
+    "pagina": "Jon Jones"
+  },
+  "Tito Ortiz": {
+    "arquivo": "fotos/tito_ortiz.jpg",
+    "autor": "",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Tito_Ortiz.jpg",
+    "pagina": "Tito Ortiz"
+  },
+  "Lyoto Machida": {
+    "arquivo": "fotos/lyoto_machida.jpg",
+    "autor": "Marcos Joel Reis",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Lyoto_Machida_by_Marcos_Joel_Reis.jpg",
+    "pagina": "Lyoto Machida"
+  },
+  "Mauricio Rua": {
+    "arquivo": "fotos/mauricio_rua.png",
+    "autor": "[1]",
+    "licenca": "CC BY-SA 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:MauricioRua.png",
+    "pagina": "Maurício Rua"
+  },
+  "Demetrious Johnson": {
+    "arquivo": "fotos/demetrious_johnson.png",
+    "autor": "Onlyfans",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Demetrious_Johnson_2024.png",
+    "pagina": "Demetrious Johnson"
+  },
+  "Henry Cejudo": {
+    "arquivo": "fotos/henry_cejudo.jpg",
+    "autor": "Gage Skidmore from Surprise, AZ, United States of America",
+    "licenca": "CC BY-SA 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Henry_Cejudo_(54235464255)_(cropped).jpg",
+    "pagina": "Henry Cejudo"
+  },
+  "Joseph Benavidez": {
+    "arquivo": "fotos/joseph_benavidez.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Joseph_Benavidez_at_UFC_Fight_Night_143.jpg",
+    "pagina": "Joseph Benavidez"
+  },
+  "Junior dos Santos": {
+    "arquivo": "fotos/junior_dos_santos.jpg",
+    "autor": "Peter Gordon",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Junior_dos_Santos.jpg",
+    "pagina": "Junior dos Santos"
+  },
+  "Fabrício Werdum": {
+    "arquivo": "fotos/fabricio_werdum.jpg",
+    "autor": "Web Summit Rio from Rio de Janeiro, Brazil",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Fabr%C3%ADcio_Werdum_Web_Summit_Rio_2023.jpg",
+    "pagina": "Fabrício Werdum"
+  },
+  "Alistair Overeem": {
+    "arquivo": "fotos/alistair_overeem.png",
+    "autor": "THE REEM",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Alistair_Overeem.png",
+    "pagina": "Alistair Overeem"
+  },
+  "Andrei Arlovski": {
+    "arquivo": "fotos/andrei_arlovski.jpg",
+    "autor": "MMAnytt.se",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Andrei_Arlovski_2018.jpg",
+    "pagina": "Andrei Arlovski"
+  },
+  "Ben Rothwell": {
+    "arquivo": "fotos/ben_rothwell.jpg",
+    "autor": "Mike07754",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Ben_Rothwell_BKFC.jpg",
+    "pagina": "Ben Rothwell"
+  },
+  "Merab Dvalishvili": {
+    "arquivo": "fotos/merab_dvalishvili.jpg",
+    "autor": "Margo Martin",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Merab_Dvalishvili_at_UFC_316_(cropped).jpg",
+    "pagina": "Merab Dvalishvili"
+  },
+  "Sean O'Malley": {
+    "arquivo": "fotos/sean_o_malley.png",
+    "autor": "U.S. Department of the Interior",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250_on_the_South_Lawn_of_the_White_House_in_Washington,_D.C._on_June_14,_2026_-_29(cropped).png",
+    "pagina": "Sean O'Malley (fighter)"
+  },
+  "Aljamain Sterling": {
+    "arquivo": "fotos/aljamain_sterling.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Alijamain_Sterling_at_UFC_228.jpg",
+    "pagina": "Aljamain Sterling"
+  },
+  "Petr Yan": {
+    "arquivo": "fotos/petr_yan.jpg",
+    "autor": "kremlin.ru",
+    "licenca": "CC BY 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Petr_Yan_at_Kremlin_award_ceremonies_with_president_Putin.jpg",
+    "pagina": "Petr Yan"
+  },
+  "Dustin Poirier": {
+    "arquivo": "fotos/dustin_poirier.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Dustin_Poirier_UFC_269.jpg",
+    "pagina": "Dustin Poirier"
+  },
+  "Arman Tsarukyan": {
+    "arquivo": "fotos/arman_tsarukyan.jpg",
+    "autor": "inFocus media",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Arman_Tsarukyan_2019.jpg",
+    "pagina": "Arman Tsarukyan"
+  },
+  "Renato Moicano": {
+    "arquivo": "fotos/renato_moicano.jpg",
+    "autor": "Sexto Round",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Renato_Moicano_2025.jpg",
+    "pagina": "Renato Moicano"
+  },
+  "Mateusz Gamrot": {
+    "arquivo": "fotos/mateusz_gamrot.jpg",
+    "autor": "Roger Gor",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Mateusz_Gamrot.jpg",
+    "pagina": "Mateusz Gamrot"
+  },
+  "Khamzat Chimaev": {
+    "arquivo": "fotos/khamzat_chimaev.png",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Khamzat_Chimaev_2022_(cropped).png",
+    "pagina": "Khamzat Chimaev"
+  },
+  "Paulo Costa": {
+    "arquivo": "fotos/paulo_costa.png",
+    "autor": "IYaReM",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:302-costa.png",
+    "pagina": "Paulo Costa"
+  },
+  "Nassourdine Imavov": {
+    "arquivo": "fotos/nassourdine_imavov.jpg",
+    "autor": "JoeKhanMMA",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Nassourdine_Imavov.jpg",
+    "pagina": "Nassourdine Imavov"
+  },
+  "Nate Diaz": {
+    "arquivo": "fotos/nate_diaz.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Nate_Diaz_Oct_2019.jpg",
+    "pagina": "Nate Diaz"
+  },
+  "Kamaru Usman": {
+    "arquivo": "fotos/kamaru_usman.png",
+    "autor": "MMAnytt",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:KamaruUsmanPress2018.png",
+    "pagina": "Kamaru Usman"
+  },
+  "Gilbert Burns": {
+    "arquivo": "fotos/gilbert_burns.png",
+    "autor": "Sexto Round",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Gilbert_Burns_2024.png",
+    "pagina": "Gilbert Burns"
+  },
+  "Alex Pereira": {
+    "arquivo": "fotos/alex_pereira.jpg",
+    "autor": "U.S. Department of the Interior",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Freedom_250_press_conference_at_the_Lincoln_Memorial_on_June_12,_2026_-_26(cropped).jpg",
+    "pagina": "Alex Pereira"
+  },
+  "Jiří Procházka": {
+    "arquivo": "fotos/jiri_prochazka.png",
+    "autor": "Show Jana Krause",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:JiriProchazka2022.png",
+    "pagina": "Jiří Procházka"
+  },
+  "Alexandre Pantoja": {
+    "arquivo": "fotos/alexandre_pantoja.jpg",
+    "autor": "Sexto Round",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Pantoja_2025.jpg",
+    "pagina": "Alexandre Pantoja"
+  },
+  "Brandon Moreno": {
+    "arquivo": "fotos/brandon_moreno.jpg",
+    "autor": "DiarioMMA",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Brandon_Moreno_February_2021_(cropped).jpg",
+    "pagina": "Brandon Moreno"
+  },
+  "Kai Kara-France": {
+    "arquivo": "fotos/kai_kara_france.png",
+    "autor": "ZalesDB",
+    "licenca": "CC0",
+    "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Kaikarafrance.png",
+    "pagina": "Kai Kara-France"
+  },
+  "Deiveson Figueiredo": {
+    "arquivo": "fotos/deiveson_figueiredo.jpg",
+    "autor": "Show Me The Money",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Deiveson_Figueiredo_2024.jpg",
+    "pagina": "Deiveson Figueiredo"
+  },
+  "Alexander Volkanovski": {
+    "arquivo": "fotos/alexander_volkanovski.jpeg",
+    "autor": "NAPARAZZI",
+    "licenca": "CC-BY-SA-2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "fonte": "https://en.wikipedia.org/wiki/File:Volkanovski_2021_red_shirt.jpeg",
+    "pagina": "Alexander Volkanovski"
+  },
+  "Sergei Pavlovich": {
+    "arquivo": "fotos/sergei_pavlovich.png",
+    "autor": "Страна FM",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:SergeiPavlovich2018.png",
+    "pagina": "Sergei Pavlovich"
+  },
+  "Curtis Blaydes": {
+    "arquivo": "fotos/curtis_blaydes.jpg",
+    "autor": "MMA Zone",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Curtis_Blaydes.jpg",
+    "pagina": "Curtis Blaydes"
+  },
+  "Tai Tuivasa": {
+    "arquivo": "fotos/tai_tuivasa.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Tai_Tuivasa_at_UFC_234.jpg",
+    "pagina": "Tai Tuivasa"
+  },
+  "Renan Barão": {
+    "arquivo": "fotos/renan_barao.jpg",
+    "autor": "MMA Fight",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC_173_Renan_Barao_Media_Day_Interview_-_YouTube_-_0-0-10_(cropped).jpg",
+    "pagina": "Renan Barão"
+  },
+  "Rafael dos Anjos": {
+    "arquivo": "fotos/rafael_dos_anjos.jpg",
+    "autor": "DiarioMMA",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Tony_Ferguson_Mexico_City.jpg",
+    "pagina": "File:Tony Ferguson Mexico City.jpg"
+  },
+  "Georges St-Pierre": {
+    "arquivo": "fotos/georges_st_pierre.jpg",
+    "autor": "Web Summit",
+    "licenca": "CC BY 2.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/2.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:2021_-_Centre_Stage_DG4_5765_(51654942080)_(cropped).jpg",
+    "pagina": "Georges St-Pierre"
+  },
+  "Chuck Liddell": {
+    "arquivo": "fotos/chuck_liddell.jpg",
+    "autor": "IthakaDarinPappas",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Chuck_Liddell_in_Santa_Monica-California_2005_photo_by_Ithaka_Darin_Pappas.jpg",
+    "pagina": "Chuck Liddell"
+  },
+  "John Dodson": {
+    "arquivo": "fotos/john_dodson.jpg",
+    "autor": "Royal Society (Great Britain) Hutton, Charles, 1737-1823 Shaw, George, 1751-1813 Pearson, Richard, 1765-1836",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:The_Philosophical_transactions_of_the_Royal_society_of_London,_from_their_commencement_in_1665,_in_the_year_1800_(IA_philosophicaltra11royarich).pdf",
+    "pagina": "File:The Philosophical transactions of the Royal society of London, from their commencement in 1665, in the year 1800 (IA philosophicaltra11royarich).pdf"
+  },
+  "Ian McCall": {
+    "arquivo": "fotos/ian_mccall.jpg",
+    "autor": "Davidmc5585",
+    "licenca": "CC BY-SA 4.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Ian_McCall_(cropped).jpg",
+    "pagina": "Ian McCall (fighter)"
+  },
+  "Cain Velásquez": {
+    "arquivo": "fotos/cain_velasquez.jpg",
+    "autor": "The Doppelganger (talk) (Adam Etheridge)",
+    "licenca": "CC BY-SA 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Cain_Velasquez.jpg",
+    "pagina": "File:Cain Velasquez.jpg"
+  },
+  "Justin Gaethje": {
+    "arquivo": "fotos/justin_gaethje.jpg",
+    "autor": "The White House",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250,_the_mixed_martial_arts_event_produced_by_the_Ultimate_Fighting_Championship,_Sunday,_June_14,_2026,_in_the_Grand_Foyer_of_the_White_House_-_67(cropped).jpg",
+    "pagina": "Justin Gaethje"
+  },
+  "Magomed Ankalaev": {
+    "arquivo": "fotos/magomed_ankalaev.jpg",
+    "autor": "MMAnytt",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Magomed_Ankalaev_at_UFC_Fight_Night_136_in_Moscow,_Russia.jpg",
+    "pagina": "Magomed Ankalaev"
+  },
+  "Alexander Volkov": {
+    "arquivo": "fotos/alexander_volkov.png",
+    "autor": "Sexto Round",
+    "licenca": "CC BY 3.0",
+    "licencaUrl": "https://creativecommons.org/licenses/by/3.0",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Sergei_Pavlovich_vs_Alexander_Volkov_face_off_(cropped).png",
+    "pagina": "Alexander Volkov (fighter)"
+  },
+  "Roy Nelson": {
+    "arquivo": "fotos/roy_nelson.jpg",
+    "autor": "Holcombe, Frederick",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:Portrait_of_Roy_Nelson_and_his_wife,_Stillwater,_Minnesota_-_DPLA_-_e7acf2c0f1abc9d1c17e33f9dbe6f324.jpg",
+    "pagina": "File:Portrait of Roy Nelson and his wife, Stillwater, Minnesota - DPLA - e7acf2c0f1abc9d1c17e33f9dbe6f324.jpg"
+  },
+  "Ciryl Gane": {
+    "arquivo": "fotos/ciryl_gane.jpg",
+    "autor": "The White House",
+    "licenca": "Public domain",
+    "licencaUrl": "",
+    "fonte": "https://commons.wikimedia.org/wiki/File:UFC_Freedom_250,_the_mixed_martial_arts_event_produced_by_the_Ultimate_Fighting_Championship,_Sunday,_June_14,_2026,_in_the_Grand_Foyer_of_the_White_House_-_64(cropped).jpg",
+    "pagina": "Ciryl Gane"
+  },
+  "Rob Font": {
+    "arquivo": "fotos/rob_font.png",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://mma.social/fighters/rob-font",
+    "pagina": "Rob Font (12-9) - Bantamweight | UFC Fighter Profile & Stats | MMA.SOCIAL",
+    "bytes": 241732,
+    "miniatura": false
+  },
+  "Luke Rockhold": {
+    "arquivo": "fotos/luke_rockhold.jpg",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://combatreg.com/fighters/Luke-Rockhold:A9F308A76ECA6AF6",
+    "pagina": "Luke Rockhold : Official MMA Fight Record (16-6-0)",
+    "bytes": 88846,
+    "miniatura": false
+  },
+  "Michael Chandler": {
+    "arquivo": "fotos/michael_chandler.jpg",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://www.mmamania.com/2021/11/16/22786107/michael-chandler-plays-the-respect-card-in-bid-to-fight-conor-mcgregor",
+    "pagina": "Michael Chandler plays the respect card in bid to fight Conor McGregor ...",
+    "bytes": 164643,
+    "miniatura": false
+  },
+  "Tank Abbott": {
+    "arquivo": "fotos/tank_abbott.jpg",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://www.tapology.com/fightcenter/fighters/david-abbott-tank",
+    "pagina": "David Abbott (\"Tank\") | MMA Fighter Page | Tapology",
+    "bytes": 65443,
+    "miniatura": false
+  },
+  "Kimo Leopoldo": {
+    "arquivo": "fotos/kimo_leopoldo.jpg",
+    "autor": "images.tapology.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://images.tapology.com/headshot_images/530/large/Leopoldo-Kimo-CR18-3.JPG?1280182806",
+    "pagina": "Kimo Leopoldo",
+    "bytes": 39098
+  },
+  "Rodrigo Minotauro": {
+    "arquivo": "fotos/rodrigo_minotauro.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Antonio_Rodrigo_Nogueira_%22Minotauro%22_Paris_-_2004.JPG",
+    "pagina": "Rodrigo Minotauro",
+    "bytes": 54855
+  },
+  "Eddie Wineland": {
+    "arquivo": "fotos/eddie_wineland.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Eddie_Wineland_WEC_53.jpg",
+    "pagina": "Eddie Wineland",
+    "bytes": 67839
+  },
+  "Pedro Munhoz": {
+    "arquivo": "fotos/pedro_munhoz.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Dominick_Cruz_vs._Pedro_Munhoz_-_UFC_269_weigh-in_%26_staredown_-_YouTube_-_0-49_(cropped).jpg",
+    "pagina": "Pedro Munhoz",
+    "bytes": 24858
+  },
+  "Jimmie Rivera": {
+    "arquivo": "fotos/jimmie_rivera.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jimmie_Rivera_at_UFC_Fight_Night_143.jpg",
+    "pagina": "Jimmie Rivera",
+    "bytes": 39347
+  },
+  "John Lineker": {
+    "arquivo": "fotos/john_lineker.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:John_Lineker_Interview_2019.png",
+    "pagina": "John Lineker",
+    "bytes": 177048
+  },
+  "Benson Henderson": {
+    "arquivo": "fotos/benson_henderson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Benhendersonfighter.jpg",
+    "pagina": "Benson Henderson",
+    "bytes": 95499
+  },
+  "Gilbert Melendez": {
+    "arquivo": "fotos/gilbert_melendez.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Gilbert_Melendez.jpg",
+    "pagina": "Gilbert Melendez",
+    "bytes": 224289
+  },
+  "Gray Maynard": {
+    "arquivo": "fotos/gray_maynard.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Graymaynard.jpg",
+    "pagina": "Gray Maynard",
+    "bytes": 10994
+  },
+  "Tony Ferguson": {
+    "arquivo": "fotos/tony_ferguson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Tony_Ferguson_2025.jpg",
+    "pagina": "Tony Ferguson",
+    "bytes": 79316
+  },
+  "Edson Barboza": {
+    "arquivo": "fotos/edson_barboza.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Edson.jpg",
+    "pagina": "Edson Barboza",
+    "bytes": 63102
+  },
+  "Jim Miller": {
+    "arquivo": "fotos/jim_miller.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jim.miller.2.jpg",
+    "pagina": "Jim Miller",
+    "bytes": 56788
+  },
+  "Clay Guida": {
+    "arquivo": "fotos/clay_guida.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Clay_Guida.png",
+    "pagina": "Clay Guida",
+    "bytes": 416155
+  },
+  "Kevin Lee": {
+    "arquivo": "fotos/kevin_lee.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Kevin_Lee.jpg",
+    "pagina": "Kevin Lee",
+    "bytes": 35512
+  },
+  "Joe Lauzon": {
+    "arquivo": "fotos/joe_lauzon.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:JLauzon.jpg",
+    "pagina": "Joe Lauzon",
+    "bytes": 53827
+  },
+  "Al Iaquinta": {
+    "arquivo": "fotos/al_iaquinta.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Al_Iaquinta_at_UFC_230.jpg",
+    "pagina": "Al Iaquinta",
+    "bytes": 39217
+  },
+  "Rich Franklin": {
+    "arquivo": "fotos/rich_franklin.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:RichFranklinphoto.png",
+    "pagina": "Rich Franklin",
+    "bytes": 113837
+  },
+  "Ronaldo Souza": {
+    "arquivo": "fotos/ronaldo_souza.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Ronaldo_Jacar%C3%A9_Souza.jpg",
+    "pagina": "Ronaldo Souza",
+    "bytes": 30566
+  },
+  "Gegard Mousasi": {
+    "arquivo": "fotos/gegard_mousasi.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Gegard_Mousasi.jpg",
+    "pagina": "Gegard Mousasi",
+    "bytes": 193600
+  },
+  "Kelvin Gastelum": {
+    "arquivo": "fotos/kelvin_gastelum.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Kelvin_Gastelum.jpg",
+    "pagina": "Kelvin Gastelum",
+    "bytes": 47238
+  },
+  "Jared Cannonier": {
+    "arquivo": "fotos/jared_cannonier.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jared_Cannonier_at_UFC_Fight_Night_160_in_Copenhagen.jpg",
+    "pagina": "Jared Cannonier",
+    "bytes": 41486
+  },
+  "Uriah Hall": {
+    "arquivo": "fotos/uriah_hall.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Uriah_Hall_at_UFC_232.jpg",
+    "pagina": "Uriah Hall",
+    "bytes": 44635
+  },
+  "Brad Tavares": {
+    "arquivo": "fotos/brad_tavares.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Brad_Tavares_at_UFC_244.jpg",
+    "pagina": "Brad Tavares",
+    "bytes": 33259
+  },
+  "Nate Marquardt": {
+    "arquivo": "fotos/nate_marquardt.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Nate-Marquardt.jpg",
+    "pagina": "Nate Marquardt",
+    "bytes": 48285
+  },
+  "Josh Koscheck": {
+    "arquivo": "fotos/josh_koscheck.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:JoshKoscheck.png",
+    "pagina": "Josh Koscheck",
+    "bytes": 407310
+  },
+  "Jon Fitch": {
+    "arquivo": "fotos/jon_fitch.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jon_Fitch.JPG",
+    "pagina": "Jon Fitch",
+    "bytes": 54471
+  },
+  "Thiago Alves": {
+    "arquivo": "fotos/thiago_alves.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Thiago_Alves.JPG",
+    "pagina": "Thiago Alves",
+    "bytes": 24221
+  },
+  "Martin Kampmann": {
+    "arquivo": "fotos/martin_kampmann.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Martin_Kampmann_after_fight.png",
+    "pagina": "Martin Kampmann",
+    "bytes": 142568
+  },
+  "Dan Hardy": {
+    "arquivo": "fotos/dan_hardy.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Dan_Hardy.jpg",
+    "pagina": "Dan Hardy",
+    "bytes": 150825
+  },
+  "Stephen Thompson": {
+    "arquivo": "fotos/stephen_thompson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:From_cancer_to_company_commander_130802-M-AR522-306_(cropped).jpg",
+    "pagina": "Stephen Thompson",
+    "bytes": 97503
+  },
+  "Demian Maia": {
+    "arquivo": "fotos/demian_maia.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Demian_Maia.jpg",
+    "pagina": "Demian Maia",
+    "bytes": 85899
+  },
+  "Jake Shields": {
+    "arquivo": "fotos/jake_shields.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jake_Shields.jpg",
+    "pagina": "Jake Shields",
+    "bytes": 33355
+  },
+  "Neil Magny": {
+    "arquivo": "fotos/neil_magny.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Neil_Magny.jpg",
+    "pagina": "Neil Magny",
+    "bytes": 103372
+  },
+  "Gunnar Nelson": {
+    "arquivo": "fotos/gunnar_nelson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Gunnar_Nelson_(fighter).jpg",
+    "pagina": "Gunnar Nelson",
+    "bytes": 120843
+  },
+  "Glover Teixeira": {
+    "arquivo": "fotos/glover_teixeira.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Teixeira_at_his_training_facility_(cropped).jpg",
+    "pagina": "Glover Teixeira",
+    "bytes": 171508
+  },
+  "Alexander Gustafsson": {
+    "arquivo": "fotos/alexander_gustafsson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Alexander_%22The_Mauler%22_Gustafsson_2014.jpg",
+    "pagina": "Alexander Gustafsson",
+    "bytes": 75493
+  },
+  "Anthony Johnson": {
+    "arquivo": "fotos/anthony_johnson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Anthony_johnson_MMA.jpg",
+    "pagina": "Anthony Johnson",
+    "bytes": 72621
+  },
+  "Phil Davis": {
+    "arquivo": "fotos/phil_davis.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:UFC_fighter_visits_Freedom_Crossing_121116-A-UK859-003_(cropped).jpg",
+    "pagina": "Phil Davis",
+    "bytes": 73240
+  },
+  "Dominick Reyes": {
+    "arquivo": "fotos/dominick_reyes.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Dominick_Reyes_(54451224096).jpg",
+    "pagina": "Dominick Reyes",
+    "bytes": 94980
+  },
+  "Corey Anderson": {
+    "arquivo": "fotos/corey_anderson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:CoreyAnderson.jpg",
+    "pagina": "Corey Anderson",
+    "bytes": 30417
+  },
+  "Ovince Saint Preux": {
+    "arquivo": "fotos/ovince_saint_preux.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Ovince_Saint_Preux.jpg",
+    "pagina": "Ovince Saint Preux",
+    "bytes": 36219
+  },
+  "Kyoji Horiguchi": {
+    "arquivo": "fotos/kyoji_horiguchi.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Kyoji_Horiguchi_2017.jpg",
+    "pagina": "Kyoji Horiguchi",
+    "bytes": 22483
+  },
+  "Jussier Formiga": {
+    "arquivo": "fotos/jussier_formiga.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jussier_Formiga.jpg",
+    "pagina": "Jussier Formiga",
+    "bytes": 13237
+  },
+  "Wilson Reis": {
+    "arquivo": "fotos/wilson_reis.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:WilsonGloveWeb01.jpg",
+    "pagina": "Wilson Reis",
+    "bytes": 89890
+  },
+  "Ali Bagautinov": {
+    "arquivo": "fotos/ali_bagautinov.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Ali_Bagautinov%2C_October_2019.jpg",
+    "pagina": "Ali Bagautinov",
+    "bytes": 40608
+  },
+  "Cub Swanson": {
+    "arquivo": "fotos/cub_swanson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:CubSwanson04202017.jpg",
+    "pagina": "Cub Swanson",
+    "bytes": 74137
+  },
+  "Chan Sung Jung": {
+    "arquivo": "fotos/chan_sung_jung.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jung_Chan-Sung_from_acrofan_(2).jpg",
+    "pagina": "Chan Sung Jung",
+    "bytes": 131553
+  },
+  "Jeremy Stephens": {
+    "arquivo": "fotos/jeremy_stephens.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jeremy_Stephens_(cropped).jpg",
+    "pagina": "Jeremy Stephens",
+    "bytes": 73486
+  },
+  "Dennis Bermudez": {
+    "arquivo": "fotos/dennis_bermudez.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Bermund.jpg",
+    "pagina": "Dennis Bermudez",
+    "bytes": 118918
+  },
+  "Darren Elkins": {
+    "arquivo": "fotos/darren_elkins.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Darren-Elkins.jpg",
+    "pagina": "Darren Elkins",
+    "bytes": 55492
+  },
+  "Stipe Miocic": {
+    "arquivo": "fotos/stipe_miocic.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Stipe_Miocic_(48086643396)_(cropped).jpg",
+    "pagina": "Stipe Miocic",
+    "bytes": 141822
+  },
+  "Antônio Silva": {
+    "arquivo": "fotos/antonio_silva.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:AntonioBigFootSilva.png",
+    "pagina": "Antônio Silva",
+    "bytes": 230493
+  },
+  "Gabriel Gonzaga": {
+    "arquivo": "fotos/gabriel_gonzaga.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:GabrielGonzaga2.png",
+    "pagina": "Gabriel Gonzaga",
+    "bytes": 412784
+  },
+  "Matt Mitrione": {
+    "arquivo": "fotos/matt_mitrione.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Matt_Mitrione_2011_crop.jpg",
+    "pagina": "Matt Mitrione",
+    "bytes": 40782
+  },
+  "Stefan Struve": {
+    "arquivo": "fotos/stefan_struve.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Stefan_Struve_with_a_fan_(5096781392)_(cropped).jpg",
+    "pagina": "Stefan Struve",
+    "bytes": 59480
+  },
+  "Said Nurmagomedov": {
+    "arquivo": "fotos/said_nurmagomedov.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Said_2022.png",
+    "pagina": "Said Nurmagomedov",
+    "bytes": 195400
+  },
+  "Jalin Turner": {
+    "arquivo": "fotos/jalin_turner.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jalin_Turner_at_UFC_234.jpg",
+    "pagina": "Jalin Turner",
+    "bytes": 50693
+  },
+  "Mauricio Ruffy": {
+    "arquivo": "fotos/mauricio_ruffy.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:UFC_Freedom_250_press_conference_at_the_Lincoln_Memorial_in_Washington%2C_D.C.%2C_Friday%2C_June_12%2C_2026_-_22(cropped).jpg",
+    "pagina": "Mauricio Ruffy",
+    "bytes": 49168
+  },
+  "Chase Hooper": {
+    "arquivo": "fotos/chase_hooper.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Chase_Hooper_2022.png",
+    "pagina": "Chase Hooper",
+    "bytes": 231663
+  },
+  "Caio Borralho": {
+    "arquivo": "fotos/caio_borralho.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Caio_Borralho_2025.jpg",
+    "pagina": "Caio Borralho",
+    "bytes": 43290
+  },
+  "Jack Hermansson": {
+    "arquivo": "fotos/jack_hermansson.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jack_Hermansson_on_MMAnytt.jpg",
+    "pagina": "Jack Hermansson",
+    "bytes": 44767
+  },
+  "Reinier de Ridder": {
+    "arquivo": "fotos/reinier_de_ridder.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Reinier_post_training_2.jpg",
+    "pagina": "Reinier de Ridder",
+    "bytes": 69142
+  },
+  "Roman Dolidze": {
+    "arquivo": "fotos/roman_dolidze.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Dolidze_2019.jpg",
+    "pagina": "Roman Dolidze",
+    "bytes": 37006
+  },
+  "Bo Nickal": {
+    "arquivo": "fotos/bo_nickal.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Bo_Nickal_(52791819473).jpg",
+    "pagina": "Bo Nickal",
+    "bytes": 69111
+  },
+  "Ian Machado Garry": {
+    "arquivo": "fotos/ian_machado_garry.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:IanGarry.jpg",
+    "pagina": "Ian Machado Garry",
+    "bytes": 63065
+  },
+  "Michael Morales": {
+    "arquivo": "fotos/michael_morales.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Michael_Morales._QUITO%2C_27_DE_MAYO_DEL_2025_(cropped).jpg",
+    "pagina": "Michael Morales",
+    "bytes": 61214
+  },
+  "Carlos Prates": {
+    "arquivo": "fotos/carlos_prates.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Carlos_Prates_2026.jpg",
+    "pagina": "Carlos Prates",
+    "bytes": 58509
+  },
+  "Geoff Neal": {
+    "arquivo": "fotos/geoff_neal.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Geoff_Neal_at_UFC_228.jpg",
+    "pagina": "Geoff Neal",
+    "bytes": 55507
+  },
+  "Michael Page": {
+    "arquivo": "fotos/michael_page.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Michael_Venom_Page.png",
+    "pagina": "Michael Page",
+    "bytes": 232654
+  },
+  "Kevin Holland": {
+    "arquivo": "fotos/kevin_holland.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Kevin_Holland_at_UFC_316_(54576727207).jpg",
+    "pagina": "Kevin Holland",
+    "bytes": 95003
+  },
+  "Volkan Oezdemir": {
+    "arquivo": "fotos/volkan_oezdemir.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Volkan_Oezdemir_at_UFC_Fight_Night_153_in_Stockholm%2C_Sweden.jpg",
+    "pagina": "Volkan Oezdemir",
+    "bytes": 90921
+  },
+  "Johnny Walker": {
+    "arquivo": "fotos/johnny_walker.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:AFSOC_celebrates_Outstanding_Airmen_of_the_Year_(5).jpg",
+    "pagina": "Johnny Walker",
+    "bytes": 99871
+  },
+  "Tatsuro Taira": {
+    "arquivo": "fotos/tatsuro_taira.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Tatsuro_taira_2025.png",
+    "pagina": "Tatsuro Taira",
+    "bytes": 209895
+  },
+  "Manel Kape": {
+    "arquivo": "fotos/manel_kape.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:ManelKape2017.png",
+    "pagina": "Manel Kape",
+    "bytes": 435200
+  },
+  "Muhammad Mokaev": {
+    "arquivo": "fotos/muhammad_mokaev.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:%D0%92%D0%BE%D0%B7%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5_%D0%BD%D0%B0_%D1%80%D0%BE%D0%B4%D0%B8%D0%BD%D1%83_%D0%9C%D1%83%D1%85%D0%B0%D0%BC%D0%BC%D0%B0%D0%B4_%D0%9C%D0%BE%D0%BA%D0%B0%D0%B5%D0%B2_%D0%9B%D0%AE%D0%94%D0%98_%D0%A1%D0%9F%D0%9E%D0%A0%D0%A2%D0%90_1-20.png",
+    "pagina": "Muhammad Mokaev",
+    "bytes": 306789
+  },
+  "Joshua Van": {
+    "arquivo": "fotos/joshua_van.png",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Joshua_Van_1.png",
+    "pagina": "Joshua Van",
+    "bytes": 390407
+  },
+  "Diego Lopes": {
+    "arquivo": "fotos/diego_lopes.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:UFC_Freedom_250%2C_the_mixed_martial_arts_event_produced_by_the_Ultimate_Fighting_Championship%2C_Sunday%2C_June_14%2C_2026%2C_in_the_Grand_Foyer_of_the_White_House_-_31(cropped).jpg",
+    "pagina": "Diego Lopes",
+    "bytes": 84108
+  },
+  "Jean Silva": {
+    "arquivo": "fotos/jean_silva.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jean_Silva_(54451587575).jpg",
+    "pagina": "Jean Silva",
+    "bytes": 61645
+  },
+  "Josh Emmett": {
+    "arquivo": "fotos/josh_emmett.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:In_Their_Corner_UFC_Visits_Walter_Reed_Warriors_(7)_(cropped).jpg",
+    "pagina": "Josh Emmett",
+    "bytes": 89200
+  },
+  "Arnold Allen": {
+    "arquivo": "fotos/arnold_allen.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Arnold_Allen_at_UFC_Fight_Night_147_in_London.jpg",
+    "pagina": "Arnold Allen",
+    "bytes": 45382
+  },
+  "Dan Ige": {
+    "arquivo": "fotos/dan_ige.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:UFC_Fighter_Dan_Ige_tours_Spangdahlem_AB%2C_meets_Airmen%2C_families_(9662555)_(cropped).jpg",
+    "pagina": "Dan Ige",
+    "bytes": 63082
+  },
+  "Jairzinho Rozenstruik": {
+    "arquivo": "fotos/jairzinho_rozenstruik.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Jairzinho_Rozenstruik_at_UFC_244.jpg",
+    "pagina": "Jairzinho Rozenstruik",
+    "bytes": 48193
+  },
+  "Marcos Rogério de Lima": {
+    "arquivo": "fotos/marcos_rogerio_de_lima.jpg",
+    "autor": "Wikipedia",
+    "licenca": "Uso pessoal (imagem da Wikipedia)",
+    "licencaUrl": "",
+    "fonte": "https://en.wikipedia.org/wiki/File:Marcos_Rogerio_De_Lima_at_UFC_230.jpg",
+    "pagina": "Marcos Rogério de Lima",
+    "bytes": 36205
+  },
+  "Dan Hooker": {
+    "arquivo": "fotos/dan_hooker.jpg",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://www.marca.com/en/ufc/2025/02/25/67bdcc8322601d04538b45e8.html",
+    "pagina": "Dan Hooker injured! Changes to UFC 293 two weeks before the event | Marca",
+    "bytes": 127673,
+    "miniatura": false
+  },
+  "Raphael Assunção": {
+    "arquivo": "fotos/raphael_assuncao.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2023-03/ASSUNCAO_RAPHAEL_L_03-11.png?itok=S9Xx_-3y",
+    "pagina": "Raphael Assunção",
+    "bytes": 423715
+  },
+  "Michael McDonald": {
+    "arquivo": "fotos/michael_mcdonald.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2020-03/Michael-McDonald_106902_LeftFullBodyImage.png?VersionId=A3788V9dtu7FceUxeG7zrhanR9JdY_XS&itok=AtLOXLz5",
+    "pagina": "Michael McDonald",
+    "bytes": 171588
+  },
+  "Bryan Caraway": {
+    "arquivo": "fotos/bryan_caraway.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/image/fighter_images/Bryan_Caraway/CARAWAY_BRYAN_L.png?itok=Kagyvg30",
+    "pagina": "Bryan Caraway",
+    "bytes": 267107
+  },
+  "Thomas Almeida": {
+    "arquivo": "fotos/thomas_almeida.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2020-10/69367%252Fprofile-galery%252Ffullbodyleft-picture%252FALMEIDA_THOMAS_L_10-17.png?itok=2eFbS_BY",
+    "pagina": "Thomas Almeida",
+    "bytes": 376299
+  },
+  "Marvin Vettori": {
+    "arquivo": "fotos/marvin_vettori.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-10/VETTORI_MARVIN_L_10-03.png?itok=xBi6Ehwu",
+    "pagina": "Marvin Vettori",
+    "bytes": 406015
+  },
+  "Brendan Allen": {
+    "arquivo": "fotos/brendan_allen.jpg",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://superfight.net/news/333385/video-watch-highlights-victory-brendan-allen-over-reinier-de-ridder-ufc-vancouver/",
+    "pagina": "VIDEO: Watch the best moments of Brendan Allen's victory over Reinier ...",
+    "bytes": 747100,
+    "miniatura": false
+  },
+  "Anthony Hernandez": {
+    "arquivo": "fotos/anthony_hernandez.png",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://www.ufc.com/athlete/anthony-hernandez?language_content_entity=pt-br",
+    "pagina": "Anthony Hernandez | UFC",
+    "bytes": 447772,
+    "miniatura": false
+  },
+  "Joe Pyfer": {
+    "arquivo": "fotos/joe_pyfer.jpg",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://bloodyelbow.com/2023/10/06/ufc-joe-pyfer-sean-omalley-blueprint/",
+    "pagina": "UFC co-main eventer talks up the Sean O'Malley blueprint",
+    "bytes": 263539,
+    "miniatura": false
+  },
+  "Michel Pereira": {
+    "arquivo": "fotos/michel_pereira.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-08/PEREIRA_MICHEL_L_08-23.png?itok=NBF0z1BU",
+    "pagina": "Michel Pereira",
+    "bytes": 355690
+  },
+  "Jack Della Maddalena": {
+    "arquivo": "fotos/jack_della_maddalena.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-04/DELLA_MADDALENA_JACK_L_05-02.png?itok=csEbKpt6",
+    "pagina": "Jack Della Maddalena",
+    "bytes": 373414
+  },
+  "Waldo Cortes-Acosta": {
+    "arquivo": "fotos/waldo_cortes_acosta.png",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://sportowytemat.pl/zawodnik/waldo-cortes-acosta/",
+    "pagina": "Waldo Cortes-Acosta - MMA, Rekord, Freak Fighty, Walki, Historia, Wiek ...",
+    "bytes": 410518,
+    "miniatura": false
+  },
+  "Alexandr Romanov": {
+    "arquivo": "fotos/alexandr_romanov.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2024-10/ROMANOV_ALEXANDR_L_11-02.png?itok=E0g1SDb3",
+    "pagina": "Alexandr Romanov",
+    "bytes": 390369
+  },
+  "Mick Parkin": {
+    "arquivo": "fotos/mick_parkin.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-01/5/PARKIN_MICK_L_07-27.png?itok=OX9b6Fw2",
+    "pagina": "Mick Parkin",
+    "bytes": 362549
+  },
+  "Tom Aspinall": {
+    "arquivo": "fotos/tom_aspinall.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2023-07/ASPINALL_TOM_L_07-22.png?itok=XWQCc5cc",
+    "pagina": "Tom Aspinall",
+    "bytes": 397037
+  },
+  "Gleison Tibau": {
+    "arquivo": "fotos/gleison_tibau.png",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://mma.social/fighters/gleison-tibau",
+    "pagina": "Gleison Tibau (16-12) - Lightweight | UFC Fighter Profile & Stats | MMA ...",
+    "bytes": 97216,
+    "miniatura": false
+  },
+  "Derek Brunson": {
+    "arquivo": "fotos/derek_brunson.png",
+    "autor": "Bing",
+    "licenca": "Uso pessoal (pesquisa de imagens)",
+    "licencaUrl": "",
+    "fonte": "https://mma.social/fighters/derek-brunson",
+    "pagina": "Derek Brunson (14-7) - Middleweight | UFC Fighter Profile & Stats | MMA ...",
+    "bytes": 266512,
+    "miniatura": false
+  },
+  "Yushin Okami": {
+    "arquivo": "fotos/yushin_okami.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/image/ufc-fighter-container/69611/profile-galery/fullbodyleft-picture/OKAMI_YUSHIN_L.png?VersionId=husoBhWJZG1oVRzlecdEhkL3KKJblqYh&itok=TAtWYmuq",
+    "pagina": "Yushin Okami",
+    "bytes": 339316
+  },
+  "Thiago Santos": {
+    "arquivo": "fotos/thiago_santos.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2022-08/SANTOS_THIAGO_L_08-06.png?itok=LZvxY1fZ",
+    "pagina": "Thiago Santos",
+    "bytes": 429831
+  },
+  "Sergio Pettis": {
+    "arquivo": "fotos/sergio_pettis.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2018-10/PETTIS_SERGIO_L.png?itok=a8zmzdlb",
+    "pagina": "Sergio Pettis",
+    "bytes": 362852
+  },
+  "Antônio Rogério Nogueira": {
+    "arquivo": "fotos/antonio_rogerio_nogueira.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/image/fighter_images/Antonio_Nogueira/NOGUEIRA_ROGERIO_L.png?VersionId=.wKSIpSNa6AbyOzgWnj_xK7aZnjP24vl&itok=Jjmx83m8",
+    "pagina": "Antônio Rogério Nogueira",
+    "bytes": 316678
+  },
+  "Tim Elliott": {
+    "arquivo": "fotos/tim_elliott.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-09/ELLIOTT_TIM_L_09-12.png?itok=ig5zg9at",
+    "pagina": "Tim Elliott",
+    "bytes": 395939
+  },
+  "Ray Borg": {
+    "arquivo": "fotos/ray_borg.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2019-07/BORG_RAY_L.png?VersionId=Onn5C9puOykEEec8uItKFBUHfHxzPzUF&itok=dAg1beE3",
+    "pagina": "Ray Borg",
+    "bytes": 395145
+  },
+  "Travis Browne": {
+    "arquivo": "fotos/travis_browne.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2022-03/c1cca132-7c8d-4465-b290-75de311cf7d6%252FTravis-Browne_1165_LeftFullBodyImage.png?itok=f_vUN6Q_",
+    "pagina": "Travis Browne",
+    "bytes": 205489
+  },
+  "Zabit Magomedsharipov": {
+    "arquivo": "fotos/zabit_magomedsharipov.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2019-11/MAGOMEDSHARIPOV_ZABIT_L.png?VersionId=tEigkpdp6J86xmaA_bp1Doc970FKmSwe&itok=An2XvQXZ",
+    "pagina": "Zabit Magomedsharipov",
+    "bytes": 395753
+  },
+  "Ricardo Lamas": {
+    "arquivo": "fotos/ricardo_lamas.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2020-08/LAMAS_RICARDO_L_08-29.png?VersionId=I.9zQ6HYSGTUEoBXp6fnuy1dbvnXxyCB&itok=nD0ij4E5",
+    "pagina": "Ricardo Lamas",
+    "bytes": 398072
+  },
+  "Louis Smolka": {
+    "arquivo": "fotos/louis_smolka.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2022-03/3e3e8bf3-f981-4091-80c0-6f47d51190ba%252FSMOLKA_LOUIS_L_12-04.png?itok=5ID3Kl3y",
+    "pagina": "Louis Smolka",
+    "bytes": 356894
+  },
+  "Song Yadong": {
+    "arquivo": "fotos/song_yadong.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-05/YADONG_SONG_L_05-30.png?itok=yMtLdKZS",
+    "pagina": "Song Yadong",
+    "bytes": 318785
+  },
+  "Payton Talbott": {
+    "arquivo": "fotos/payton_talbott.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-06/TALBOTT_PAYTON_L_06-28.png?itok=SCY_KVRR",
+    "pagina": "Payton Talbott",
+    "bytes": 372300
+  },
+  "Raoni Barcelos": {
+    "arquivo": "fotos/raoni_barcelos.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-01/BARCELOS_RAONI_L_01-18.png?itok=wbdKRVUn",
+    "pagina": "Raoni Barcelos",
+    "bytes": 378329
+  },
+  "Mario Bautista": {
+    "arquivo": "fotos/mario_bautista.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-02/BAUTISTA_MARIO_L_02-07.png?itok=Wpsbk8fU",
+    "pagina": "Mario Bautista",
+    "bytes": 368543
+  },
+  "Sean Brady": {
+    "arquivo": "fotos/sean_brady.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-05/BRADY_SEAN_L_05-09.png?itok=lfpHN5PX",
+    "pagina": "Sean Brady",
+    "bytes": 485809
+  },
+  "Bobby Green": {
+    "arquivo": "fotos/bobby_green.png",
+    "autor": "dmxg5wxfqgb4u.cloudfront.net",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-07/GREEN_KING_L_07-27.png?itok=3Z1MX2Zl",
+    "pagina": "Bobby Green",
+    "bytes": 359841
+  },
+  "Ignacio Bahamondes": {
+    "arquivo": "fotos/ignacio_bahamondes.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-09/BAHAMONDES_IGNACIO_L_09-12.png?itok=tEVrIOI6",
+    "pagina": "Ignacio Bahamondes",
+    "bytes": 366912
+  },
+  "Grant Dawson": {
+    "arquivo": "fotos/grant_dawson.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-05/DAWSON_GRANT_L_05-09.png?itok=JuVEhRo_",
+    "pagina": "Grant Dawson",
+    "bytes": 358744
+  },
+  "Joaquin Buckley": {
+    "arquivo": "fotos/joaquin_buckley.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-10/BUCKLEY_JOAQUIN_L_10-17.png?itok=KSnbB441",
+    "pagina": "Joaquin Buckley",
+    "bytes": 374028
+  },
+  "Vicente Luque": {
+    "arquivo": "fotos/vicente_luque.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-08/LUQUE_VICENTE_L_08-15.png?itok=UplLKsVD",
+    "pagina": "Vicente Luque",
+    "bytes": 369406
+  },
+  "Aleksandar Rakić": {
+    "arquivo": "fotos/aleksandar_rakic.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-07/RAKIC_ALEKSANDAR_L_08-01.png?itok=BC0F8HQV",
+    "pagina": "Aleksandar Rakić",
+    "bytes": 393349
+  },
+  "Jamahal Hill": {
+    "arquivo": "fotos/jamahal_hill.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-06/HILL_JAMAHAL_L_06-21.png?itok=sv2vQEyZ",
+    "pagina": "Jamahal Hill",
+    "bytes": 349970
+  },
+  "Bogdan Guskov": {
+    "arquivo": "fotos/bogdan_guskov.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-01/7/GUSKOV_BOGDAN_L_01-18.png?itok=IAOAajQf",
+    "pagina": "Bogdan Guskov",
+    "bytes": 336910
+  },
+  "Nikita Krylov": {
+    "arquivo": "fotos/nikita_krylov.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-07/KRYLOV_NIKITA_L_07-11.png?itok=G-SKEXs5",
+    "pagina": "Nikita Krylov",
+    "bytes": 397913
+  },
+  "Anthony Smith": {
+    "arquivo": "fotos/anthony_smith.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-04/SMITH_ANTHONY_L_04-26.png?itok=q1kFSJ8p",
+    "pagina": "Anthony Smith",
+    "bytes": 439387
+  },
+  "Azamat Murzakanov": {
+    "arquivo": "fotos/azamat_murzakanov.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-04/MURZAKANOV_AZAMAT_L_04-11.png?itok=mqQa9nra",
+    "pagina": "Azamat Murzakanov",
+    "bytes": 445060
+  },
+  "Ryan Spann": {
+    "arquivo": "fotos/ryan_spann.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-07/SPANN_RYAN_L_07-19.png?itok=uktQXcGD",
+    "pagina": "Ryan Spann",
+    "bytes": 403378
+  },
+  "Steve Erceg": {
+    "arquivo": "fotos/steve_erceg.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-07/ERCEG_STEVE_L_07-25.png?itok=L0455cpA",
+    "pagina": "Steve Erceg",
+    "bytes": 332249
+  },
+  "Amir Albazi": {
+    "arquivo": "fotos/amir_albazi.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-02/ALBAZI_AMIR_L_02-07.png?itok=eWJL3Orf",
+    "pagina": "Amir Albazi",
+    "bytes": 385602
+  },
+  "Brandon Royval": {
+    "arquivo": "fotos/brandon_royval.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-07/ROYVAL_BRANDON_L_07-11.png?itok=3E0xqRoW",
+    "pagina": "Brandon Royval",
+    "bytes": 359265
+  },
+  "Lerone Murphy": {
+    "arquivo": "fotos/lerone_murphy.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-08/MURPHY_LERONE_L_08-16.png?itok=gmWbl1-Y",
+    "pagina": "Lerone Murphy",
+    "bytes": 359210
+  },
+  "Alex Perez": {
+    "arquivo": "fotos/alex_perez.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-08/PEREZ_ALEX_L_08-29.png?itok=hDi458D_",
+    "pagina": "Alex Perez",
+    "bytes": 380476
+  },
+  "Asu Almabayev": {
+    "arquivo": "fotos/asu_almabayev.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-06/ALMABAYEV_ASU_L_06-27.png?itok=Y0SjNrdV",
+    "pagina": "Asu Almabayev",
+    "bytes": 352898
+  },
+  "Calvin Kattar": {
+    "arquivo": "fotos/calvin_kattar.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2025-07/KATTAR_CALVIN_L_07-12.png?itok=poQjUSo-",
+    "pagina": "Calvin Kattar",
+    "bytes": 394898
+  },
+  "Serghei Spivac": {
+    "arquivo": "fotos/serghei_spivac.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-08/SPIVAC_SERGHEI_L_08-22.png?itok=4Bn2kGKb",
+    "pagina": "Serghei Spivac",
+    "bytes": 395787
+  },
+  "Marcin Tybura": {
+    "arquivo": "fotos/marcin_tybura.png",
+    "autor": "ufc.com",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://ufc.com/images/styles/athlete_bio_full_body/s3/2026-03/TYBURA_MARCIN_L_03-28.png?itok=TNTDlOaO",
+    "pagina": "Marcin Tybura",
+    "bytes": 411771
+  },
+  "Brandon Allen": {
+    "arquivo": "fotos/brandon_allen.png",
+    "autor": "dmxg5wxfqgb4u.cloudfront.net",
+    "licenca": "Uso pessoal (Google Imagens)",
+    "licencaUrl": "",
+    "fonte": "https://dmxg5wxfqgb4u.cloudfront.net/styles/athlete_bio_full_body/s3/2024-04/ALLEN_BRENDAN_L_04-06.png?itok=TUsWoqqv",
+    "pagina": "Brandon Allen",
+    "bytes": 442116
+  }
+}

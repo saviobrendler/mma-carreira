@@ -1,0 +1,152 @@
+/* Progressao: meta de carreira, "so mais uma", recompensas variaveis e arvore de habilidades. */
+
+.tag-raio { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; font-family: var(--font-display); font-weight: 800; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(96, 165, 250, 0.55); }
+.oferta-cartaz.bonus { box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.6), 0 0 26px -10px rgba(59, 130, 246, 0.7); background: linear-gradient(90deg, rgba(59, 130, 246, 0.12), rgba(0, 0, 0, 0.32)); }
+.chip-n { flex: none; min-width: 24px; padding: 0 7px; font-style: normal; font-family: var(--font-display); font-weight: 800; font-size: 15px; line-height: 24px; text-align: center; color: #000; background: var(--gold); border-radius: 12px; animation: chipPulsa 1.8s ease-in-out infinite; }
+@keyframes chipPulsa { 0%, 100% { transform: none; } 50% { transform: scale(1.14); } }
+.res-destaque.azul { border-left-color: var(--blue); background: rgba(59, 130, 246, 0.12); }
+.fp-link { margin-left: 10px; padding: 2px 10px; font-family: var(--font-display); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: transparent; border: 1px solid rgba(232, 184, 74, 0.55); border-radius: var(--radius); }
+.fp-link:hover { background: rgba(232, 184, 74, 0.14); }
+
+/* ---- faixa do hub ---- */
+.faixa-prog { display: grid; grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.6fr); gap: 10px 22px; margin: 0 0 14px; padding: 12px 16px; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--line); border-radius: var(--radius); }
+.fp-rot { display: block; margin-bottom: 4px; font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mut); }
+.fp-meta b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0.03em; color: var(--gold); }
+.fp-meta .bar { height: 9px; margin: 7px 0 4px; }
+.fp-meta small { display: block; color: var(--mut); font-size: 13px; line-height: 1.3; }
+.fp-meta.vazia b { color: var(--mut); }
+.fp-meta.vazia .fp-link { margin: 8px 0 0; }
+.fp-perto ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.fp-perto li > button, .fp-perto li > div, .smu-lista li > button, .smu-lista li > div { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px; text-align: left; font-size: 14px; line-height: 1.25; color: var(--txt); background: rgba(255, 255, 255, 0.04); border: 1px solid transparent; border-left: 3px solid var(--mut); border-radius: 2px; }
+.fp-perto li > button:hover, .smu-lista li > button:hover { background: rgba(255, 255, 255, 0.09); border-color: var(--line); }
+.fp-perto li span, .smu-lista li span { flex: 1; min-width: 0; }
+.fp-perto li .ico:last-child, .smu-lista li .ico:last-child { color: var(--mut); }
+li.t-ranking > *, li.t-nivel > * { border-left-color: var(--green) !important; }
+li.t-titulo > *, li.t-habilidade > *, li.t-fama > * { border-left-color: var(--gold) !important; }
+li.t-rival > * { border-left-color: var(--red) !important; }
+li.t-bonus > * { border-left-color: var(--blue) !important; }
+li.t-pontos > *, li.t-traco > * { border-left-color: #fb923c !important; }
+
+/* ---- recompensas da noite ---- */
+.rec-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.rec-card { position: relative; overflow: hidden; display: flex; gap: 14px; padding: 14px 16px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--line); border-left: 4px solid var(--mut); border-radius: var(--radius); animation: recRevela 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) both; animation-delay: calc(0.5s + var(--i, 0) * 0.35s); }
+.rec-ico { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 50%; background: rgba(255, 255, 255, 0.07); color: var(--mut); }
+.rec-corpo { min-width: 0; }
+.rec-rar { display: inline-block; font-family: var(--font-display); font-weight: 800; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mut); }
+.rec-card h4 { margin: 2px 0 4px; font-size: 22px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0.03em; }
+.rec-card p { margin: 0; color: var(--mut); font-size: 14px; line-height: 1.35; }
+.rec-ganhos { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 8px; }
+.rec-ganhos b { font-family: var(--font-display); font-weight: 800; font-size: 20px; }
+.rec-valor { color: var(--gold); }
+.rec-fama { color: #93c5fd; }
+.rar-raro { border-left-color: var(--blue); }
+.rar-raro .rec-ico, .rar-raro .rec-rar { color: #93c5fd; }
+.rar-raro .rec-ico { background: rgba(59, 130, 246, 0.16); }
+.rar-epico { border-left-color: #a855f7; background: linear-gradient(90deg, rgba(168, 85, 247, 0.12), rgba(0, 0, 0, 0.4)); }
+.rar-epico .rec-ico, .rar-epico .rec-rar { color: #d8b4fe; }
+.rar-epico .rec-ico { background: rgba(168, 85, 247, 0.18); }
+.rar-lendario { border-left-color: var(--gold); border-color: rgba(232, 184, 74, 0.55); background: linear-gradient(90deg, rgba(232, 184, 74, 0.18), rgba(0, 0, 0, 0.4)); box-shadow: 0 0 28px -8px rgba(232, 184, 74, 0.7); }
+.rar-lendario .rec-ico, .rar-lendario .rec-rar { color: var(--gold); }
+.rar-lendario .rec-ico { background: rgba(232, 184, 74, 0.2); }
+.rar-epico::after, .rar-lendario::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.16) 50%, transparent 65%); transform: translateX(-120%); animation: recBrilho 2.8s ease-in-out infinite; animation-delay: calc(1.2s + var(--i, 0) * 0.35s); pointer-events: none; }
+@keyframes recRevela { 0% { opacity: 0; transform: translateY(18px) scale(0.9) rotateX(40deg); } 100% { opacity: 1; transform: none; } }
+@keyframes recBrilho { 0% { transform: translateX(-120%); } 45%, 100% { transform: translateX(120%); } }
+
+/* ---- so mais uma ---- */
+.so-mais-uma { display: grid; gap: 10px; margin-bottom: 14px; border-color: rgba(232, 184, 74, 0.5); background: linear-gradient(180deg, rgba(34, 28, 12, 0.93), rgba(16, 20, 25, 0.93)); }
+.smu-titulo { margin: 0; font-size: clamp(24px, 4vw, 34px); line-height: 1.05; letter-spacing: 0.02em; text-transform: uppercase; color: var(--gold); }
+.smu-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.prox-luta { display: grid; grid-template-columns: 78px minmax(0, 1fr) auto; gap: 12px 16px; align-items: center; margin-top: 4px; padding: 12px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--line); border-radius: var(--radius); }
+.prox-luta.titulo { border-color: rgba(232, 184, 74, 0.6); }
+.prox-luta.bonus { border-color: rgba(96, 165, 250, 0.6); }
+.prox-luta.recupera { grid-template-columns: 1fr; }
+.prox-foto { position: relative; width: 78px; height: 78px; }
+.prox-foto .duo { width: 100%; height: 100%; }
+.prox-foto .oc-rank { position: absolute; left: 4px; bottom: 4px; }
+.prox-corpo h4 { margin: 4px 0 2px; font-size: 24px; line-height: 1; text-transform: uppercase; }
+.prox-corpo small { color: var(--mut); font-size: 13px; line-height: 1.5; }
+.prox-corpo small b { color: var(--gold); }
+.prox-luta .btn.primary { min-width: 0; }
+
+/* ---- resultado de titulo ---- */
+.res-cartaz.campeao { border-top-color: var(--gold); box-shadow: 0 0 40px -14px rgba(232, 184, 74, 0.7); background: linear-gradient(180deg, rgba(42, 33, 12, 0.97), rgba(10, 12, 16, 0.97)); }
+.res-cartaz.campeao .res-meio h2 { color: var(--gold); }
+
+/* ---- arvore de habilidades ---- */
+.hab-topo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin-bottom: 14px; }
+.hab-pontos, .hibrido { padding: 14px 18px; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--line); border-radius: var(--radius); }
+.hab-pontos span, .hibrido span { display: block; font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mut); }
+.hab-pontos b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 54px; line-height: 1; color: var(--gold); }
+.hab-pontos small, .hibrido small { display: block; margin-top: 4px; color: var(--mut); font-size: 13px; line-height: 1.35; }
+.hibrido b { display: block; font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.05; text-transform: uppercase; color: var(--green); }
+.hibrido.vazio b { color: var(--mut); }
+.grade-ramos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 14px 0; }
+.ramo { padding: 14px; background: linear-gradient(180deg, rgba(22, 27, 34, 0.93), rgba(16, 20, 25, 0.93)); border: 1px solid var(--line); border-radius: var(--radius); }
+.ramo header { margin-bottom: 10px; }
+.ramo h3 { margin: 0; font-size: 24px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ramo header small { color: var(--mut); font-size: 13px; }
+.ramo-arvore { display: grid; gap: 0; }
+.nivel { display: grid; gap: 8px; }
+.nivel.t2, .nivel.t3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.liga { display: block; height: 16px; width: 2px; margin: 0 auto; background: var(--line); }
+.no-hab { position: relative; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: 10px 11px; min-height: 100%; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); transition: border-color 0.2s, background 0.2s, transform 0.12s; }
+.no-hab .no-tier { font-family: var(--font-display); font-weight: 700; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mut); }
+.no-hab b { font-family: var(--font-display); font-weight: 800; font-size: 18px; line-height: 1.05; text-transform: uppercase; letter-spacing: 0.03em; }
+.no-hab p { margin: 0; color: var(--mut); font-size: 13px; line-height: 1.3; }
+.no-hab .est { margin-top: auto; padding-top: 6px; font-style: normal; font-size: 12px; font-weight: 600; line-height: 1.25; color: var(--mut); }
+.tag-hab { text-decoration: none; display: inline-block; padding: 1px 7px; font-family: var(--font-display); font-weight: 800; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #fde68a; background: rgba(232, 184, 74, 0.14); border: 1px solid rgba(232, 184, 74, 0.5); }
+.no-hab.livre { border-color: rgba(34, 197, 94, 0.55); cursor: pointer; }
+.no-hab.livre .est { color: var(--green); }
+.no-hab.livre:hover { transform: translateY(-2px); background: rgba(34, 197, 94, 0.1); }
+.no-hab.armado { border-color: var(--gold); background: rgba(232, 184, 74, 0.14); box-shadow: 0 0 0 1px var(--gold) inset; animation: pulsaNo 1.2s ease-in-out infinite; }
+.no-hab.armado .est { color: var(--gold); }
+@keyframes pulsaNo { 0%, 100% { box-shadow: 0 0 0 1px var(--gold) inset; } 50% { box-shadow: 0 0 0 1px var(--gold) inset, 0 0 18px -2px rgba(232, 184, 74, 0.7); } }
+.no-hab.tem { border-color: var(--gold); background: linear-gradient(180deg, rgba(232, 184, 74, 0.2), rgba(232, 184, 74, 0.06)); }
+.no-hab.tem b { color: var(--gold); }
+.no-hab.tem .est { color: var(--gold); }
+.no-hab.bloqueada { opacity: 0.55; }
+.no-hab.fechada { opacity: 0.4; border-style: dashed; }
+.no-hab.fechada b { text-decoration: line-through; text-decoration-color: rgba(255, 255, 255, 0.35); }
+
+/* ---- meta ---- */
+.meta-atual { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px 22px; align-items: center; }
+.meta-nome { display: block; font-family: var(--font-display); font-weight: 800; font-size: 28px; line-height: 1.05; text-transform: uppercase; color: var(--gold); }
+.meta-atual small { color: var(--mut); font-size: 14px; }
+.meta-barra .bar { height: 10px; margin-bottom: 4px; }
+.meta-dupla { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.meta-bonus, .meta-preco { padding: 10px 12px; font-size: 14px; line-height: 1.35; background: rgba(0, 0, 0, 0.3); border-left: 3px solid var(--green); }
+.meta-preco { border-left-color: var(--red); }
+.meta-bonus span, .meta-preco span, .meta-card i { display: block; font-style: normal; font-family: var(--font-display); font-weight: 800; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mut); }
+.metas-feitas { margin: 10px 0 0; color: var(--mut); font-size: 13px; }
+.meta-card .mb, .meta-card .mp { display: block; font-size: 13px; line-height: 1.3; color: var(--txt); }
+.meta-card .mb i { color: var(--green); display: inline; margin-right: 4px; }
+.meta-card .mp i { color: #fca5a5; display: inline; margin-right: 4px; }
+.meta-card:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ---- luta: taticas liberadas ---- */
+.cmd.hab { border-color: rgba(34, 197, 94, 0.55); }
+.cmd.hab .cmd-ico { color: var(--green); }
+.cmd .tag-hab { position: absolute; top: 6px; right: 8px; font-size: 10px; padding: 0 5px; }
+.cmd-grade.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.cmd-grade.n6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cmd-grade.n7 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.conselho-op.escolhido { border-color: var(--gold); background: rgba(232, 184, 74, 0.14); }
+
+@media (max-width: 900px) {
+  .grade-ramos { grid-template-columns: 1fr; }
+  .faixa-prog { grid-template-columns: 1fr; }
+  .meta-atual, .meta-dupla, .hab-topo { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .prox-luta { grid-template-columns: 62px minmax(0, 1fr); }
+  .prox-foto { width: 62px; height: 62px; }
+  .prox-luta .btn { grid-column: 1 / -1; width: 100%; }
+  .rec-lista { grid-template-columns: 1fr; }
+  .hab-pontos b { font-size: 44px; }
+  .cmd-grade.n5, .cmd-grade.n6, .cmd-grade.n7 { grid-template-columns: 1fr 1fr; }
+  .cmd .tag-hab { display: none; }
+  .cmd-grade.n5 .cmd:last-child, .cmd-grade.n7 .cmd:last-child { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rec-card, .rar-epico::after, .rar-lendario::after, .chip-n, .no-hab.armado { animation: none !important; }
+}
