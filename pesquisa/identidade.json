@@ -988,17 +988,20 @@
  "Payton Talbott": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Las Vegas, Nevada, U.S."
+  "nascimento_local": "Las Vegas, Nevada, U.S.",
+  "conferido": true
  },
  "Said Nurmagomedov": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Makhachkala, Dagestan, Russia"
+  "nascimento_local": "Makhachkala, Dagestan, Russia",
+  "conferido": true
  },
  "Islam Makhachev": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Makhachkala, Dagestan ASSR, Russian SFSR, Soviet Union"
+  "nascimento_local": "Makhachkala, Dagestan ASSR, Russian SFSR, Soviet Union",
+  "conferido": true
  },
  "Justin Gaethje": {
   "apelido": "The Highlight",
@@ -1016,14 +1019,16 @@
   "nascimento_local": "Brasília, Distrito Federal, Brazil"
  },
  "Mateusz Gamrot": {
-  "apelido": null,
+  "apelido": "Gamer",
   "nacionalidade": null,
-  "nascimento_local": "Bielsko-Biała, Silesian Voivodeship, Poland"
+  "nascimento_local": "Bielsko-Biała, Silesian Voivodeship, Poland",
+  "conferido": true
  },
  "Beneil Dariush": {
   "apelido": null,
   "nacionalidade": "United States",
-  "nascimento_local": "Urmia, Iran"
+  "nascimento_local": "Urmia, Iran",
+  "conferido": true
  },
  "Rafael Fiziev": {
   "apelido": "Ataman",
@@ -1036,44 +1041,52 @@
   "nascimento_local": "Liverpool, Merseyside, England"
  },
  "Michael Chandler": {
-  "apelido": null,
+  "apelido": "Iron",
   "nacionalidade": null,
-  "nascimento_local": "High Ridge, Missouri, U.S."
+  "nascimento_local": "High Ridge, Missouri, U.S.",
+  "conferido": true
  },
  "Dan Hooker": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Auckland, New Zealand"
+  "nascimento_local": "Auckland, New Zealand",
+  "conferido": true
  },
  "Bobby Green": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "San Bernardino, California, U.S."
+  "nascimento_local": "San Bernardino, California, U.S.",
+  "conferido": true
  },
  "Jalin Turner": {
-  "apelido": null,
+  "apelido": "The Tarantula",
   "nacionalidade": null,
-  "nascimento_local": "San Bernardino, California, U.S."
+  "nascimento_local": "San Bernardino, California, U.S.",
+  "conferido": true
  },
  "Grant Dawson": {
-  "apelido": null,
+  "apelido": "KGD",
   "nacionalidade": null,
-  "nascimento_local": "Cambria, Wisconsin, U.S."
+  "nascimento_local": "Cambria, Wisconsin, U.S.",
+  "conferido": true
  },
  "Ignacio Bahamondes": {
-  "apelido": null,
+  "apelido": "La Jaula",
   "nacionalidade": null,
-  "nascimento_local": "Santiago, Chile"
+  "nascimento_local": "Santiago, Chile",
+  "conferido": true
  },
  "Mauricio Ruffy": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Coruripe, Alagoas, Brazil"
+  "nascimento_local": "Coruripe, Alagoas, Brazil",
+  "conferido": true
  },
  "Chase Hooper": {
-  "apelido": null,
+  "apelido": "The Dream",
   "nacionalidade": null,
-  "nascimento_local": "Enumclaw, Washington, U.S."
+  "nascimento_local": "Enumclaw, Washington, U.S.",
+  "conferido": true
  },
  "Israel Adesanya": {
   "apelido": "The Last Stylebender",
@@ -1081,39 +1094,46 @@
   "nascimento_local": "Lagos, Lagos State, Nigeria"
  },
  "Dricus du Plessis": {
-  "apelido": null,
+  "apelido": "Stillknocks",
   "nacionalidade": null,
-  "nascimento_local": "Welkom, Orange Free State, South Africa"
+  "nascimento_local": "Welkom, Orange Free State, South Africa",
+  "conferido": true
  },
  "Sean Strickland": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Anaheim, California, U.S."
+  "nascimento_local": "Anaheim, California, U.S.",
+  "conferido": true
  },
  "Khamzat Chimaev": {
-  "apelido": null,
+  "apelido": "Borz",
   "nacionalidade": "Russian / Emirati",
-  "nascimento_local": "Gvardeyskoye, Chechen Republic, Russia"
+  "nascimento_local": "Gvardeyskoye, Chechen Republic, Russia",
+  "conferido": true
  },
  "Paulo Costa": {
-  "apelido": null,
+  "apelido": "Borrachinha",
   "nacionalidade": null,
-  "nascimento_local": "Belo Horizonte, Minas Gerais, Brazil"
+  "nascimento_local": "Belo Horizonte, Minas Gerais, Brazil",
+  "conferido": true
  },
  "Nassourdine Imavov": {
-  "apelido": null,
+  "apelido": "The Sniper",
   "nacionalidade": "Russian / French",
-  "nascimento_local": "Khasavyurt, Dagestan, Russia"
+  "nascimento_local": "Khasavyurt, Dagestan, Russia",
+  "conferido": true
  },
  "Marvin Vettori": {
-  "apelido": null,
+  "apelido": "The Italian Dream",
   "nacionalidade": null,
-  "nascimento_local": "Trento, Italy"
+  "nascimento_local": "Trento, Italy",
+  "conferido": true
  },
  "Caio Borralho": {
-  "apelido": null,
+  "apelido": "The Natural",
   "nacionalidade": null,
-  "nascimento_local": "São Luís, Maranhão, Brazil"
+  "nascimento_local": "São Luís, Maranhão, Brazil",
+  "conferido": true
  },
  "Jack Hermansson": {
   "apelido": "The Joker",
@@ -1121,14 +1141,16 @@
   "nascimento_local": "Uddevalla, Sweden"
  },
  "Brendan Allen": {
-  "apelido": null,
+  "apelido": "All In",
   "nacionalidade": null,
-  "nascimento_local": "Beaufort, South Carolina, U.S."
+  "nascimento_local": "Beaufort, South Carolina, U.S.",
+  "conferido": true
  },
  "Reinier de Ridder": {
-  "apelido": null,
+  "apelido": "The Dutch Knight",
   "nacionalidade": null,
-  "nascimento_local": "Tilburg, Netherlands"
+  "nascimento_local": "Tilburg, Netherlands",
+  "conferido": true
  },
  "Anthony Hernandez": {
   "apelido": "Fluffy",
@@ -1143,17 +1165,20 @@
  "Bo Nickal": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Rifle, Colorado, U.S."
+  "nascimento_local": "Rifle, Colorado, U.S.",
+  "conferido": true
  },
  "Joe Pyfer": {
-  "apelido": null,
+  "apelido": "Bodybagz",
   "nacionalidade": null,
-  "nascimento_local": "Vineland, New Jersey, U.S."
+  "nascimento_local": "Vineland, New Jersey, U.S.",
+  "conferido": true
  },
  "Michel Pereira": {
-  "apelido": null,
+  "apelido": "Demolidor",
   "nacionalidade": null,
-  "nascimento_local": "Marabá, Pará, Brazil"
+  "nascimento_local": "Marabá, Pará, Brazil",
+  "conferido": true
  },
  "Kamaru Usman": {
   "apelido": "The Nigerian Nightmare",
@@ -1161,9 +1186,10 @@
   "nascimento_local": "Auchi, Edo, Nigeria"
  },
  "Leon Edwards": {
-  "apelido": null,
+  "apelido": "Rocky",
   "nacionalidade": null,
-  "nascimento_local": "Kingston, Jamaica"
+  "nascimento_local": "Kingston, Jamaica",
+  "conferido": true
  },
  "Belal Muhammad": {
   "apelido": "Remember the Name",
@@ -1178,42 +1204,50 @@
  "Jack Della Maddalena": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Perth, Western Australia, Australia"
+  "nascimento_local": "Perth, Western Australia, Australia",
+  "conferido": true
  },
  "Ian Machado Garry": {
-  "apelido": null,
+  "apelido": "The Future",
   "nacionalidade": null,
-  "nascimento_local": "Portmarnock, Dublin, Ireland"
+  "nascimento_local": "Portmarnock, Dublin, Ireland",
+  "conferido": true
  },
  "Sean Brady": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Philadelphia, Pennsylvania, U.S."
+  "nascimento_local": "Philadelphia, Pennsylvania, U.S.",
+  "conferido": true
  },
  "Michael Morales": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Pasaje, El Oro, Ecuador"
+  "nascimento_local": "Pasaje, El Oro, Ecuador",
+  "conferido": true
  },
  "Gilbert Burns": {
-  "apelido": null,
+  "apelido": "Durinho",
   "nacionalidade": null,
-  "nascimento_local": "Niterói, Rio de Janeiro, Brazil"
+  "nascimento_local": "Niterói, Rio de Janeiro, Brazil",
+  "conferido": true
  },
  "Joaquin Buckley": {
-  "apelido": null,
+  "apelido": "New Mansa",
   "nacionalidade": null,
-  "nascimento_local": "St. Louis, Missouri, U.S."
+  "nascimento_local": "St. Louis, Missouri, U.S.",
+  "conferido": true
  },
  "Carlos Prates": {
-  "apelido": null,
+  "apelido": "The Nightmare",
   "nacionalidade": null,
-  "nascimento_local": "Taubaté, São Paulo, Brazil"
+  "nascimento_local": "Taubaté, São Paulo, Brazil",
+  "conferido": true
  },
  "Geoff Neal": {
-  "apelido": null,
+  "apelido": "Handz of Steel",
   "nacionalidade": null,
-  "nascimento_local": "Austin, Texas, U.S."
+  "nascimento_local": "Austin, Texas, U.S.",
+  "conferido": true
  },
  "Michael Page": {
   "apelido": "Venom",
@@ -1238,27 +1272,32 @@
  "Magomed Ankalaev": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Teletl, Dagestan, Russia"
+  "nascimento_local": "Teletl, Dagestan, Russia",
+  "conferido": true
  },
  "Jiří Procházka": {
-  "apelido": null,
+  "apelido": "BJP",
   "nacionalidade": "Czech",
-  "nascimento_local": "Znojmo, Czechoslovakia"
+  "nascimento_local": "Znojmo, Czechoslovakia",
+  "conferido": true
  },
  "Jamahal Hill": {
-  "apelido": null,
+  "apelido": "Sweet Dreams",
   "nacionalidade": null,
-  "nascimento_local": "Chicago, Illinois, U.S."
+  "nascimento_local": "Chicago, Illinois, U.S.",
+  "conferido": true
  },
  "Jan Błachowicz": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Cieszyn, Poland"
+  "nascimento_local": "Cieszyn, Poland",
+  "conferido": true
  },
  "Khalil Rountree": {
-  "apelido": null,
+  "apelido": "The War Horse",
   "nacionalidade": null,
-  "nascimento_local": "Los Angeles, California, U.S."
+  "nascimento_local": "Los Angeles, California, U.S.",
+  "conferido": true
  },
  "Carlos Ulberg": {
   "apelido": "Black Jag",
@@ -1266,34 +1305,40 @@
   "nascimento_local": "Auckland, New Zealand"
  },
  "Aleksandar Rakić": {
-  "apelido": null,
+  "apelido": "Rocket",
   "nacionalidade": "Serbian",
-  "nascimento_local": "Vienna, Austria"
+  "nascimento_local": "Vienna, Austria",
+  "conferido": true
  },
  "Nikita Krylov": {
-  "apelido": null,
+  "apelido": "The Miner",
   "nacionalidade": "Russian",
-  "nascimento_local": "Krasnyi Luch, Luhansk, Ukraine"
+  "nascimento_local": "Krasnyi Luch, Luhansk, Ukraine",
+  "conferido": true
  },
  "Anthony Smith": {
-  "apelido": null,
+  "apelido": "Lionheart",
   "nacionalidade": null,
-  "nascimento_local": "Corpus Christi, Texas, U.S."
+  "nascimento_local": "Corpus Christi, Texas, U.S.",
+  "conferido": true
  },
  "Volkan Oezdemir": {
-  "apelido": null,
+  "apelido": "No Time",
   "nacionalidade": null,
-  "nascimento_local": "Fribourg, Switzerland"
+  "nascimento_local": "Fribourg, Switzerland",
+  "conferido": true
  },
  "Johnny Walker": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Belford Roxo, Rio de Janeiro, Brazil"
+  "nascimento_local": "Belford Roxo, Rio de Janeiro, Brazil",
+  "conferido": true
  },
  "Azamat Murzakanov": {
-  "apelido": null,
+  "apelido": "The Professional",
   "nacionalidade": "Russian",
-  "nascimento_local": "Kyzburun III, Kabardino-Balkarian ASSR, Russian SFSR, Soviet Union / (now Dygulybgey, Kabardino-Balkaria, Russia)"
+  "nascimento_local": "Kyzburun III, Kabardino-Balkarian ASSR, Russian SFSR, Soviet Union / (now Dygulybgey, Kabardino-Balkaria, Russia)",
+  "conferido": true
  },
  "Bogdan Guskov": {
   "apelido": "Czarevitch",
@@ -1301,14 +1346,16 @@
   "nascimento_local": "Dukent, Uzbekistan"
  },
  "Ryan Spann": {
-  "apelido": null,
+  "apelido": "Superman",
   "nacionalidade": null,
-  "nascimento_local": "Beaumont, Texas, U.S."
+  "nascimento_local": "Beaumont, Texas, U.S.",
+  "conferido": true
  },
  "Alexandre Pantoja": {
-  "apelido": null,
+  "apelido": "The Cannibal",
   "nacionalidade": "Brazilian",
-  "nascimento_local": "Rio de Janeiro, Brazil"
+  "nascimento_local": "Rio de Janeiro, Brazil",
+  "conferido": true
  },
  "Brandon Moreno": {
   "apelido": "The Assassin Baby",
@@ -1316,24 +1363,28 @@
   "nascimento_local": "Tijuana, Baja California, Mexico"
  },
  "Brandon Royval": {
-  "apelido": null,
+  "apelido": "Raw Dawg",
   "nacionalidade": null,
-  "nascimento_local": "Denver, Colorado, U.S."
+  "nascimento_local": "Denver, Colorado, U.S.",
+  "conferido": true
  },
  "Deiveson Figueiredo": {
-  "apelido": null,
+  "apelido": "Daico",
   "nacionalidade": null,
-  "nascimento_local": "Soure, Pará, Brazil"
+  "nascimento_local": "Soure, Pará, Brazil",
+  "conferido": true
  },
  "Tatsuro Taira": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Naha, Okinawa, Japan"
+  "nascimento_local": "Naha, Okinawa, Japan",
+  "conferido": true
  },
  "Amir Albazi": {
-  "apelido": null,
+  "apelido": "The Prince",
   "nacionalidade": null,
-  "nascimento_local": "Baghdad, Iraq"
+  "nascimento_local": "Baghdad, Iraq",
+  "conferido": true
  },
  "Kai Kara-France": {
   "apelido": "Don't Blink",
@@ -1346,19 +1397,22 @@
   "nascimento_local": "Luanda, Angola"
  },
  "Muhammad Mokaev": {
-  "apelido": null,
+  "apelido": "The Punisher",
   "nacionalidade": "United Kingdom",
-  "nascimento_local": "Buynaksk, Dagestan, Russia"
+  "nascimento_local": "Buynaksk, Dagestan, Russia",
+  "conferido": true
  },
  "Steve Erceg": {
-  "apelido": null,
+  "apelido": "Astro Boy",
   "nacionalidade": null,
-  "nascimento_local": "Perth, Australia"
+  "nascimento_local": "Perth, Australia",
+  "conferido": true
  },
  "Alex Perez": {
-  "apelido": null,
+  "apelido": "The Insider",
   "nacionalidade": null,
-  "nascimento_local": "Hanford, California, U.S."
+  "nascimento_local": "Hanford, California, U.S.",
+  "conferido": true
  },
  "Asu Almabayev": {
   "apelido": "Zulfikar",
@@ -1366,9 +1420,10 @@
   "nascimento_local": "Janatalap, Sarysu District, Kazakhstan"
  },
  "Joshua Van": {
-  "apelido": null,
+  "apelido": "The Fearless",
   "nacionalidade": "Myanmar / United States",
-  "nascimento_local": "Hakha, Chin State, Myanmar"
+  "nascimento_local": "Hakha, Chin State, Myanmar",
+  "conferido": true
  },
  "Alexander Volkanovski": {
   "apelido": "The Hulk (formerly) / The Great",
@@ -1376,24 +1431,28 @@
   "nascimento_local": "Wollongong, New South Wales, Australia"
  },
  "Ilia Topuria": {
-  "apelido": null,
+  "apelido": "El Matador",
   "nacionalidade": "Georgian / Spanish",
-  "nascimento_local": "Halle, Germany"
+  "nascimento_local": "Halle, Germany",
+  "conferido": true
  },
  "Yair Rodríguez": {
-  "apelido": null,
+  "apelido": "El Pantera (The Panther)",
   "nacionalidade": null,
-  "nascimento_local": "Parral, Chihuahua, Mexico"
+  "nascimento_local": "Parral, Chihuahua, Mexico",
+  "conferido": true
  },
  "Movsar Evloev": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Ordzhonikidzvskaya,"
+  "nascimento_local": "Ordzhonikidzvskaya,",
+  "conferido": true
  },
  "Diego Lopes": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Manaus, Amazonas, Brazil"
+  "nascimento_local": "Manaus, Amazonas, Brazil",
+  "conferido": true
  },
  "Jean Silva": {
   "apelido": "Lord",
@@ -1403,22 +1462,26 @@
  "Josh Emmett": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Phoenix, Arizona, U.S."
+  "nascimento_local": "Phoenix, Arizona, U.S.",
+  "conferido": true
  },
  "Arnold Allen": {
-  "apelido": null,
+  "apelido": "Almighty",
   "nacionalidade": null,
-  "nascimento_local": "Ipswich, Suffolk, England"
+  "nascimento_local": "Ipswich, Suffolk, England",
+  "conferido": true
  },
  "Calvin Kattar": {
-  "apelido": null,
+  "apelido": "The Boston Finisher",
   "nacionalidade": null,
-  "nascimento_local": "Methuen, Massachusetts, U.S."
+  "nascimento_local": "Methuen, Massachusetts, U.S.",
+  "conferido": true
  },
  "Lerone Murphy": {
-  "apelido": null,
+  "apelido": "The Miracle",
   "nacionalidade": null,
-  "nascimento_local": "Manchester, England"
+  "nascimento_local": "Manchester, England",
+  "conferido": true
  },
  "Dan Ige": {
   "apelido": "100 Grand",
@@ -1428,7 +1491,8 @@
  "Tom Aspinall": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Salford, Greater Manchester, England"
+  "nascimento_local": "Salford, Greater Manchester, England",
+  "conferido": true
  },
  "Ciryl Gane": {
   "apelido": "Bon Gamin (Good Kid)",
@@ -1438,22 +1502,26 @@
  "Sergei Pavlovich": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Orlovsky, Rostov Oblast, Russia"
+  "nascimento_local": "Orlovsky, Rostov Oblast, Russia",
+  "conferido": true
  },
  "Tai Tuivasa": {
-  "apelido": null,
+  "apelido": "Bam Bam",
   "nacionalidade": null,
-  "nascimento_local": "Sydney, Australia"
+  "nascimento_local": "Sydney, Australia",
+  "conferido": true
  },
  "Jailton Almeida": {
-  "apelido": null,
+  "apelido": "Malhadinho",
   "nacionalidade": null,
-  "nascimento_local": "Salvador, Bahia, Brazil"
+  "nascimento_local": "Salvador, Bahia, Brazil",
+  "conferido": true
  },
  "Serghei Spivac": {
-  "apelido": null,
+  "apelido": "Polar Bear",
   "nacionalidade": null,
-  "nascimento_local": "Chișinău, Moldova"
+  "nascimento_local": "Chișinău, Moldova",
+  "conferido": true
  },
  "Marcin Tybura": {
   "apelido": "Tybur",
@@ -1461,9 +1529,10 @@
   "nascimento_local": "Uniejow, Poland"
  },
  "Waldo Cortes-Acosta": {
-  "apelido": null,
+  "apelido": "Salsa Boy",
   "nacionalidade": null,
-  "nascimento_local": "Fundación, Barahona Province, Dominican Republic"
+  "nascimento_local": "Fundación, Barahona Province, Dominican Republic",
+  "conferido": true
  },
  "Jairzinho Rozenstruik": {
   "apelido": "Bigi Boy",
@@ -1471,18 +1540,21 @@
   "nascimento_local": "Paramaribo, Suriname"
  },
  "Alexandr Romanov": {
-  "apelido": null,
+  "apelido": "King Kong",
   "nacionalidade": null,
-  "nascimento_local": "Comrat, SSR Moldova, Soviet Union"
+  "nascimento_local": "Comrat, SSR Moldova, Soviet Union",
+  "conferido": true
  },
  "Mick Parkin": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Sunderland, Tyne and Wear, England"
+  "nascimento_local": "Sunderland, Tyne and Wear, England",
+  "conferido": true
  },
  "Marcos Rogério de Lima": {
   "apelido": null,
   "nacionalidade": null,
-  "nascimento_local": "Ribeirão Pires, São Paulo, Brazil"
+  "nascimento_local": "Ribeirão Pires, São Paulo, Brazil",
+  "conferido": true
  }
 }

@@ -48,7 +48,7 @@ function carregarPesquisa() {
   const mapa = {};
   if (!fs.existsSync(PESQUISA)) return mapa;
   for (const arq of fs.readdirSync(PESQUISA)) {
-    if (!arq.endsWith('.json')) continue;
+    if (!arq.endsWith('.json') || arq === 'identidade.json') continue;
     const lista = JSON.parse(fs.readFileSync(path.join(PESQUISA, arq), 'utf8'));
     for (const p of lista) {
       if (p.encontrado) mapa[p.nome] = p;
@@ -103,6 +103,42 @@ function calibrar(lutador, p, divIndex, periodo) {
 const CAMINHO_FOTOS = path.join(__dirname, '..', 'fotos', 'creditos.json');
 const fotos = fs.existsSync(CAMINHO_FOTOS) ? JSON.parse(fs.readFileSync(CAMINHO_FOTOS, 'utf8')) : {};
 
+// Apelido e nacionalidade (pesquisa/identidade.json, gerado por tools/fetch-identidade.js).
+const PAISES = {
+  'U.S.': 'Estados Unidos', 'US': 'Estados Unidos', 'USA': 'Estados Unidos', 'United States': 'Estados Unidos', Brazil: 'Brasil', Russia: 'Rússia', 'Soviet Union': 'Rússia', England: 'Inglaterra',
+  Scotland: 'Escócia', Wales: 'País de Gales', 'Northern Ireland': 'Irlanda do Norte', 'United Kingdom': 'Reino Unido', Ireland: 'Irlanda', 'New Zealand': 'Nova Zelândia', Netherlands: 'Países Baixos',
+  Australia: 'Austrália', Japan: 'Japão', Poland: 'Polônia', Iran: 'Irã', Jamaica: 'Jamaica', Canada: 'Canadá', Sweden: 'Suécia', Ecuador: 'Equador', Kazakhstan: 'Cazaquistão', Nigeria: 'Nigéria',
+  Uzbekistan: 'Uzbequistão', Mexico: 'México', 'West Germany': 'Alemanha', Germany: 'Alemanha', Cuba: 'Cuba', Cyprus: 'Chipre', Denmark: 'Dinamarca', Iceland: 'Islândia', 'South Korea': 'Coreia do Sul',
+  Belarus: 'Belarus', Cameroon: 'Camarões', China: 'China', Georgia: 'Geórgia', Chile: 'Chile', 'South Africa': 'África do Sul', Italy: 'Itália', Czechoslovakia: 'República Tcheca', Austria: 'Áustria',
+  Ukraine: 'Ucrânia', Switzerland: 'Suíça', Iraq: 'Iraque', Angola: 'Angola', Myanmar: 'Mianmar', France: 'França', Moldova: 'Moldávia', 'Dominican Republic': 'República Dominicana', Suriname: 'Suriname',
+  Argentina: 'Argentina', Peru: 'Peru', Colombia: 'Colômbia', Venezuela: 'Venezuela', Spain: 'Espanha', Portugal: 'Portugal', Sweden2: 'Suécia', Norway: 'Noruega', Finland: 'Finlândia', Lithuania: 'Lituânia',
+  Armenia: 'Armênia', Azerbaijan: 'Azerbaijão', Kyrgyzstan: 'Quirguistão', Mongolia: 'Mongólia', Thailand: 'Tailândia', Philippines: 'Filipinas', 'Puerto Rico': 'Porto Rico', Samoa: 'Samoa', Tonga: 'Tonga',
+  Croatia: 'Croácia', Serbia: 'Sérvia', Bosnia: 'Bósnia', Hungary: 'Hungria', Romania: 'Romênia', Bulgaria: 'Bulgária', Turkey: 'Turquia', Israel: 'Israel', Lebanon: 'Líbano', Egypt: 'Egito', Morocco: 'Marrocos',
+};
+function nacionalidadePT(id) {
+  if (!id) return null;
+  if (id.nacionalidade && /^[A-Z][a-z]+$/.test(id.nacionalidade)) {
+    const adj = { American: 'Estados Unidos', Brazilian: 'Brasil', Russian: 'Rússia', English: 'Inglaterra', Canadian: 'Canadá', Australian: 'Austrália', Mexican: 'México', Polish: 'Polônia', Irish: 'Irlanda' };
+    if (adj[id.nacionalidade]) return adj[id.nacionalidade];
+  }
+  const ultimo = String(id.nascimento_local || '').split(',').pop().replace(/[()\[\]]/g, '').trim();
+  if (PAISES[ultimo]) return PAISES[ultimo];
+  const todo = String(id.nascimento_local || '');
+  const achou = Object.keys(PAISES).find((k) => new RegExp('\\b' + k.replace('.', '\\.') + '\\b').test(todo));
+  return achou ? PAISES[achou] : null;
+}
+// Ajustes manuais de apelidos (a Wikipedia traz grafias ou nomes alternativos estranhos).
+const APELIDOS_MANUAIS = { 'Charles Oliveira': 'do Bronx', 'Rodrigo Minotauro': 'Big Nog', 'Antônio Rogério Nogueira': 'Lil Nog', 'Ken Shamrock': "The World's Most Dangerous Man", 'Tank Abbott': 'Tank', 'Bas Rutten': 'El Guapo', 'TJ Dillashaw': 'Killashaw', 'Rafael dos Anjos': 'RDA', 'Chael Sonnen': 'The American Gangster', 'Tito Ortiz': 'The Huntington Beach Bad Boy' };
+function limparApelido(nome, bruto) {
+  if (APELIDOS_MANUAIS[nome]) return APELIDOS_MANUAIS[nome];
+  if (!bruto) return null;
+  let a = String(bruto).split(' / ').pop();
+  a = a.replace(/\([^)]*\)/g, '').replace(/\s+/g, ' ').trim();
+  return a && a.length <= 30 ? a : null;
+}
+const CAMINHO_ID = path.join(__dirname, '..', 'pesquisa', 'identidade.json');
+const identidade = fs.existsSync(CAMINHO_ID) ? JSON.parse(fs.readFileSync(CAMINHO_ID, 'utf8')) : {};
+
 const pesquisa = carregarPesquisa();
 const dados = {};
 let total = 0;
@@ -113,7 +149,7 @@ for (const periodo of ['eras', 'auge', 'atual']) {
   dados[periodo] = {};
   const pasta = path.join(RAIZ, periodo);
   for (const arq of fs.readdirSync(pasta)) {
-    if (!arq.endsWith('.json')) continue;
+    if (!arq.endsWith('.json') || arq === 'identidade.json') continue;
     const div = JSON.parse(fs.readFileSync(path.join(pasta, arq), 'utf8'));
     const divIndex = Math.max(0, ORDEM.indexOf(div.divisao));
     dados[periodo][div.divisao] = {
@@ -129,6 +165,8 @@ for (const periodo of ['eras', 'auge', 'atual']) {
           nome: l.nome,
           lenda: !!l.lenda,
           estilo: l.estilo,
+          apelido: limparApelido(l.nome, identidade[l.nome] && identidade[l.nome].apelido),
+          nacionalidade: nacionalidadePT(identidade[l.nome]) || { 'Cain Velásquez': 'Estados Unidos', 'Movsar Evloev': 'Rússia' }[l.nome] || null,
           nascimento_ano: p ? num(p.nascimento_ano) : null,
           altura_cm: p ? num(p.altura_cm) : null,
           alcance_cm: p ? num(p.alcance_cm) : null,
