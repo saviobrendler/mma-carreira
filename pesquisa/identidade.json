@@ -1,0 +1,1488 @@
+{
+ "Royce Gracie": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Rio de Janeiro, Brazil",
+  "conferido": true
+ },
+ "Ken Shamrock": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Warner Robins, Georgia, U.S.",
+  "conferido": true
+ },
+ "Dan Severn": {
+  "apelido": "The Beast",
+  "nacionalidade": null,
+  "nascimento_local": "Coldwater, Michigan, U.S.",
+  "conferido": true
+ },
+ "Frank Shamrock": {
+  "apelido": null,
+  "nacionalidade": "American",
+  "nascimento_local": null,
+  "conferido": true
+ },
+ "Tank Abbott": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Huntington Beach, California, U.S.",
+  "conferido": true
+ },
+ "Maurice Smith": {
+  "apelido": "Mo",
+  "nacionalidade": null,
+  "nascimento_local": "Seattle, Washington, U.S.",
+  "conferido": true
+ },
+ "Kimo Leopoldo": {
+  "apelido": null,
+  "nacionalidade": "American",
+  "nascimento_local": "Munich, West Germany",
+  "conferido": true
+ },
+ "Gerard Gordeau": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "The Hague, Netherlands",
+  "conferido": true
+ },
+ "Marco Ruas": {
+  "apelido": "The King of the Streets",
+  "nacionalidade": null,
+  "nascimento_local": "Rio de Janeiro, Brazil",
+  "conferido": true
+ },
+ "Mark Coleman": {
+  "apelido": "The Hammer",
+  "nacionalidade": null,
+  "nascimento_local": "Fremont, Ohio, U.S.",
+  "conferido": true
+ },
+ "Randy Couture": {
+  "apelido": "The Natural",
+  "nacionalidade": null,
+  "nascimento_local": "Everett, Washington, U.S.",
+  "conferido": true
+ },
+ "Pedro Rizzo": {
+  "apelido": "The Rock",
+  "nacionalidade": null,
+  "nascimento_local": "Rio de Janeiro, Brazil",
+  "conferido": true
+ },
+ "Bas Rutten": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Tilburg, Netherlands",
+  "conferido": true
+ },
+ "Kevin Randleman": {
+  "apelido": "The Monster",
+  "nacionalidade": "American",
+  "nascimento_local": "Sandusky, Ohio, U.S.",
+  "conferido": true
+ },
+ "Ricco Rodriguez": {
+  "apelido": "Suave",
+  "nacionalidade": null,
+  "nascimento_local": "San Jose, California, U.S.",
+  "conferido": true
+ },
+ "Rodrigo Minotauro": {
+  "apelido": "Minotauro",
+  "nacionalidade": null,
+  "nascimento_local": "Vitória da Conquista, Bahia, Brazil",
+  "conferido": true
+ },
+ "Dominick Cruz": {
+  "apelido": "The Dominator",
+  "nacionalidade": null,
+  "nascimento_local": "San Diego, California, U.S."
+ },
+ "Urijah Faber": {
+  "apelido": "The California Kid",
+  "nacionalidade": null,
+  "nascimento_local": "Isla Vista, California, U.S.",
+  "conferido": true
+ },
+ "Renan Barão": {
+  "apelido": "The Baron",
+  "nacionalidade": null,
+  "nascimento_local": "Natal, Rio Grande do Norte, Brazil",
+  "conferido": true
+ },
+ "TJ Dillashaw": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Sonora, California, U.S.",
+  "conferido": true
+ },
+ "Cody Garbrandt": {
+  "apelido": "No Love",
+  "nacionalidade": null,
+  "nascimento_local": "Uhrichsville, Ohio, U.S."
+ },
+ "Marlon Moraes": {
+  "apelido": "Magic",
+  "nacionalidade": null,
+  "nascimento_local": "Nova Friburgo, Brazil",
+  "conferido": true
+ },
+ "Raphael Assunção": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Recife, Pernambuco, Brazil",
+  "conferido": true
+ },
+ "Michael McDonald": {
+  "apelido": "Mayday",
+  "nacionalidade": null,
+  "nascimento_local": "Modesto, California, United States",
+  "conferido": true
+ },
+ "Bryan Caraway": {
+  "apelido": "Kid Lightning",
+  "nacionalidade": null,
+  "nascimento_local": "Yakima, Washington, U.S.",
+  "conferido": true
+ },
+ "Eddie Wineland": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Chesterton, Indiana, U.S.",
+  "conferido": true
+ },
+ "Rob Font": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Leominster, Massachusetts, U.S.",
+  "conferido": true
+ },
+ "Pedro Munhoz": {
+  "apelido": "The Young Punisher",
+  "nacionalidade": null,
+  "nascimento_local": "São Paulo, Brazil"
+ },
+ "Jimmie Rivera": {
+  "apelido": "El Terror",
+  "nacionalidade": null,
+  "nascimento_local": "Ramsey, New Jersey, United States",
+  "conferido": true
+ },
+ "Thomas Almeida": {
+  "apelido": "Thominhas",
+  "nacionalidade": null,
+  "nascimento_local": "São Paulo, Brazil"
+ },
+ "John Lineker": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Paranaguá, Paraná, Brazil",
+  "conferido": true
+ },
+ "BJ Penn": {
+  "apelido": "The Prodigy",
+  "nacionalidade": null,
+  "nascimento_local": "Kailua, Hawaii, U.S.",
+  "conferido": true
+ },
+ "Khabib Nurmagomedov": {
+  "apelido": "The Eagle",
+  "nacionalidade": "Russian",
+  "nascimento_local": "Sildi, Dagestan ASSR, Russian SFSR, Soviet Union"
+ },
+ "Anthony Pettis": {
+  "apelido": "Showtime",
+  "nacionalidade": null,
+  "nascimento_local": "Milwaukee, Wisconsin, U.S."
+ },
+ "Eddie Alvarez": {
+  "apelido": "The Underground King",
+  "nacionalidade": null,
+  "nascimento_local": "Philadelphia, Pennsylvania, U.S."
+ },
+ "Rafael dos Anjos": {
+  "apelido": null,
+  "nacionalidade": "Brazilian / American",
+  "nascimento_local": "Niterói, Rio de Janeiro, Brazil",
+  "conferido": true
+ },
+ "Donald Cerrone": {
+  "apelido": "Cowboy",
+  "nacionalidade": null,
+  "nascimento_local": "Denver, Colorado, U.S."
+ },
+ "Frankie Edgar": {
+  "apelido": "The Answer",
+  "nacionalidade": null,
+  "nascimento_local": "Toms River, New Jersey, U.S."
+ },
+ "Benson Henderson": {
+  "apelido": "Smooth",
+  "nacionalidade": null,
+  "nascimento_local": "Colorado Springs, Colorado, U.S."
+ },
+ "Gilbert Melendez": {
+  "apelido": "El Niño",
+  "nacionalidade": null,
+  "nascimento_local": "Santa Ana, California, United States",
+  "conferido": true
+ },
+ "Nate Diaz": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Stockton, California, U.S.",
+  "conferido": true
+ },
+ "Gray Maynard": {
+  "apelido": "The Bully",
+  "nacionalidade": null,
+  "nascimento_local": "Phoenix, Arizona, United States",
+  "conferido": true
+ },
+ "Tony Ferguson": {
+  "apelido": "El Cucuy",
+  "nacionalidade": null,
+  "nascimento_local": "Oxnard, California, U.S."
+ },
+ "Edson Barboza": {
+  "apelido": null,
+  "nacionalidade": "Brazilian / American",
+  "nascimento_local": "Nova Friburgo, Rio de Janeiro, Brazil",
+  "conferido": true
+ },
+ "Jim Miller": {
+  "apelido": "A-10",
+  "nacionalidade": null,
+  "nascimento_local": "Sparta Township, New Jersey, U.S.",
+  "conferido": true
+ },
+ "Clay Guida": {
+  "apelido": "The Carpenter",
+  "nacionalidade": null,
+  "nascimento_local": "Round Lake, Illinois, United States",
+  "conferido": true
+ },
+ "Dustin Poirier": {
+  "apelido": "The Diamond",
+  "nacionalidade": null,
+  "nascimento_local": "Lafayette, Louisiana, U.S."
+ },
+ "Kevin Lee": {
+  "apelido": "The Motown Phenom",
+  "nacionalidade": null,
+  "nascimento_local": "Grand Rapids, Michigan, U.S."
+ },
+ "Joe Lauzon": {
+  "apelido": "J-Lau",
+  "nacionalidade": null,
+  "nascimento_local": "Brockton, Massachusetts, United States"
+ },
+ "Al Iaquinta": {
+  "apelido": "Raging",
+  "nacionalidade": null,
+  "nascimento_local": "Valley Stream, New York, U.S."
+ },
+ "Gleison Tibau": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Tibau, Rio Grande do Norte, Brazil",
+  "conferido": true
+ },
+ "Anderson Silva": {
+  "apelido": "The Spider",
+  "nacionalidade": "Brazilian / American",
+  "nascimento_local": "São Paulo, Brazil",
+  "conferido": true
+ },
+ "Wanderlei Silva": {
+  "apelido": "The Axe Murderer",
+  "nacionalidade": null,
+  "nascimento_local": "Curitiba, Brazil",
+  "conferido": true
+ },
+ "Dan Henderson": {
+  "apelido": "Hendo",
+  "nacionalidade": null,
+  "nascimento_local": "Downey, California, U.S.",
+  "conferido": true
+ },
+ "Vitor Belfort": {
+  "apelido": "The Phenom",
+  "nacionalidade": "Brazilian / American",
+  "nascimento_local": "Rio de Janeiro, Brazil"
+ },
+ "Chris Weidman": {
+  "apelido": "The All-American",
+  "nacionalidade": null,
+  "nascimento_local": "Baldwin, New York, U.S.",
+  "conferido": true
+ },
+ "Yoel Romero": {
+  "apelido": "Soldier of God",
+  "nacionalidade": "Cuban / American",
+  "nascimento_local": "Pinar del Río, Cuba",
+  "conferido": true
+ },
+ "Michael Bisping": {
+  "apelido": "The Count",
+  "nacionalidade": "British",
+  "nascimento_local": "Nicosia, Cyprus",
+  "conferido": true
+ },
+ "Robert Whittaker": {
+  "apelido": "The Reaper",
+  "nacionalidade": null,
+  "nascimento_local": "Ōtāhuhu, Auckland, New Zealand",
+  "conferido": true
+ },
+ "Chael Sonnen": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Clackamas County, Oregon, U.S.",
+  "conferido": true
+ },
+ "Luke Rockhold": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Santa Cruz, California, U.S.",
+  "conferido": true
+ },
+ "Rich Franklin": {
+  "apelido": "Ace",
+  "nacionalidade": null,
+  "nascimento_local": "Cincinnati, Ohio, U.S.",
+  "conferido": true
+ },
+ "Ronaldo Souza": {
+  "apelido": "Jacaré",
+  "nacionalidade": null,
+  "nascimento_local": "Vila Velha, Espírito Santo, Brazil",
+  "conferido": true
+ },
+ "Gegard Mousasi": {
+  "apelido": "The Dreamcatcher",
+  "nacionalidade": "Dutch",
+  "nascimento_local": "Tehran, Iran",
+  "conferido": true
+ },
+ "Kelvin Gastelum": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "San Jose, California, U.S.",
+  "conferido": true
+ },
+ "Derek Brunson": {
+  "apelido": "The One",
+  "nacionalidade": null,
+  "nascimento_local": "Wilmington, North Carolina, U.S.",
+  "conferido": true
+ },
+ "Jared Cannonier": {
+  "apelido": "Tha Killa Gorilla",
+  "nacionalidade": null,
+  "nascimento_local": "Dallas, Texas, U.S.",
+  "conferido": true
+ },
+ "Uriah Hall": {
+  "apelido": "Primetime",
+  "nacionalidade": "Jamaican / American",
+  "nascimento_local": "Spanish Town, Jamaica",
+  "conferido": true
+ },
+ "Brad Tavares": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Kailua, Hawaii, U.S.",
+  "conferido": true
+ },
+ "Yushin Okami": {
+  "apelido": "Thunder",
+  "nacionalidade": null,
+  "nascimento_local": "Kanagawa, Japan",
+  "conferido": true
+ },
+ "Nate Marquardt": {
+  "apelido": "The Great",
+  "nacionalidade": "American",
+  "nascimento_local": "Lander, Wyoming, United States",
+  "conferido": true
+ },
+ "Georges St-Pierre": {
+  "apelido": "Rush",
+  "nacionalidade": null,
+  "nascimento_local": "Saint-Isidore, Montérégie, Quebec, Canada"
+ },
+ "Matt Hughes": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Hillsboro, Illinois, U.S.",
+  "conferido": true
+ },
+ "Nick Diaz": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Stockton, California, U.S.",
+  "conferido": true
+ },
+ "Matt Serra": {
+  "apelido": "The Terror",
+  "nacionalidade": null,
+  "nascimento_local": "East Meadow, New York, U.S."
+ },
+ "Johny Hendricks": {
+  "apelido": "Bigg Rigg",
+  "nacionalidade": null,
+  "nascimento_local": "Ada, Oklahoma, U.S.",
+  "conferido": true
+ },
+ "Robbie Lawler": {
+  "apelido": "Ruthless",
+  "nacionalidade": "American",
+  "nascimento_local": "San Diego, California, U.S.",
+  "conferido": true
+ },
+ "Tyron Woodley": {
+  "apelido": "The Chosen One",
+  "nacionalidade": null,
+  "nascimento_local": "Ferguson, Missouri, U.S."
+ },
+ "Carlos Condit": {
+  "apelido": "The Natural Born Killer",
+  "nacionalidade": null,
+  "nascimento_local": "Albuquerque, New Mexico, U.S."
+ },
+ "Rory MacDonald": {
+  "apelido": "Red King",
+  "nacionalidade": null,
+  "nascimento_local": "Quesnel, British Columbia, Canada",
+  "conferido": true
+ },
+ "Diego Sanchez": {
+  "apelido": "The Nightmare",
+  "nacionalidade": null,
+  "nascimento_local": "Albuquerque, New Mexico, U.S."
+ },
+ "Jake Ellenberger": {
+  "apelido": "The Juggernaut",
+  "nacionalidade": null,
+  "nascimento_local": "Omaha, Nebraska, U.S.",
+  "conferido": true
+ },
+ "Josh Koscheck": {
+  "apelido": "Kos",
+  "nacionalidade": null,
+  "nascimento_local": "Waynesburg, Pennsylvania, U.S.",
+  "conferido": true
+ },
+ "Jon Fitch": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Fort Wayne, Indiana, U.S.",
+  "conferido": true
+ },
+ "Thiago Alves": {
+  "apelido": "Pitbull",
+  "nacionalidade": null,
+  "nascimento_local": "Fortaleza, Brazil",
+  "conferido": true
+ },
+ "Martin Kampmann": {
+  "apelido": "Hitman",
+  "nacionalidade": "Danish",
+  "nascimento_local": "Aarhus, Denmark",
+  "conferido": true
+ },
+ "Dan Hardy": {
+  "apelido": "The Outlaw",
+  "nacionalidade": null,
+  "nascimento_local": "Nottingham, England",
+  "conferido": true
+ },
+ "Stephen Thompson": {
+  "apelido": "Wonderboy",
+  "nacionalidade": null,
+  "nascimento_local": "Simpsonville, South Carolina, U.S."
+ },
+ "Demian Maia": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "São Paulo, Brazil",
+  "conferido": true
+ },
+ "Jake Shields": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Mountain Ranch, California, U.S.",
+  "conferido": true
+ },
+ "Colby Covington": {
+  "apelido": "Chaos",
+  "nacionalidade": null,
+  "nascimento_local": "Clovis, California, U.S."
+ },
+ "Neil Magny": {
+  "apelido": "The Haitian Sensation",
+  "nacionalidade": null,
+  "nascimento_local": "Brooklyn, New York City, U.S.",
+  "conferido": true
+ },
+ "Gunnar Nelson": {
+  "apelido": "Gunni",
+  "nacionalidade": null,
+  "nascimento_local": "Akureyri, Iceland"
+ },
+ "Jorge Masvidal": {
+  "apelido": "Gamebred / Street Jesus",
+  "nacionalidade": null,
+  "nascimento_local": "Miami, Florida, U.S."
+ },
+ "Jon Jones": {
+  "apelido": "Bones",
+  "nacionalidade": null,
+  "nascimento_local": "Rochester, New York, U.S."
+ },
+ "Chuck Liddell": {
+  "apelido": "The Iceman",
+  "nacionalidade": null,
+  "nascimento_local": "Santa Barbara, California, U.S.",
+  "conferido": true
+ },
+ "Tito Ortiz": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Huntington Beach, California, U.S.",
+  "conferido": true
+ },
+ "Lyoto Machida": {
+  "apelido": "The Dragon",
+  "nacionalidade": null,
+  "nascimento_local": "Salvador, Bahia, Brazil",
+  "conferido": true
+ },
+ "Mauricio Rua": {
+  "apelido": "Shogun",
+  "nacionalidade": null,
+  "nascimento_local": "Curitiba, Brazil"
+ },
+ "Daniel Cormier": {
+  "apelido": "DC",
+  "nacionalidade": null,
+  "nascimento_local": "Lafayette, Louisiana, U.S."
+ },
+ "Rampage Jackson": {
+  "apelido": "Rampage",
+  "nacionalidade": null,
+  "nascimento_local": "Memphis, Tennessee, U.S.",
+  "conferido": true
+ },
+ "Stephan Bonnar": {
+  "apelido": "The American Psycho",
+  "nacionalidade": null,
+  "nascimento_local": "Hammond, Indiana, U.S.",
+  "conferido": true
+ },
+ "Forrest Griffin": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Columbus, Ohio, U.S.",
+  "conferido": true
+ },
+ "Rashad Evans": {
+  "apelido": "Suga",
+  "nacionalidade": null,
+  "nascimento_local": "Niagara Falls, New York, U.S."
+ },
+ "Ryan Bader": {
+  "apelido": "Darth",
+  "nacionalidade": null,
+  "nascimento_local": "Reno, Nevada, U.S.",
+  "conferido": true
+ },
+ "Glover Teixeira": {
+  "apelido": null,
+  "nacionalidade": "Brazil / United States (since 2020)",
+  "nascimento_local": "Sobrália, Minas Gerais, Brazil",
+  "conferido": true
+ },
+ "Alexander Gustafsson": {
+  "apelido": "The Mauler",
+  "nacionalidade": null,
+  "nascimento_local": "Arboga, Sweden"
+ },
+ "Anthony Johnson": {
+  "apelido": "Rumble",
+  "nacionalidade": null,
+  "nascimento_local": "Dublin, Georgia, U.S.",
+  "conferido": true
+ },
+ "Phil Davis": {
+  "apelido": "Mr. Wonderful",
+  "nacionalidade": null,
+  "nascimento_local": "Harrisburg, Pennsylvania, U.S.",
+  "conferido": true
+ },
+ "Dominick Reyes": {
+  "apelido": "The Devastator",
+  "nacionalidade": null,
+  "nascimento_local": "Hesperia, California, U.S."
+ },
+ "Thiago Santos": {
+  "apelido": "Marreta",
+  "nacionalidade": null,
+  "nascimento_local": "Rio de Janeiro, Brazil"
+ },
+ "Corey Anderson": {
+  "apelido": "Overtime",
+  "nacionalidade": null,
+  "nascimento_local": "Rockford, Illinois, U.S.",
+  "conferido": true
+ },
+ "Ovince Saint Preux": {
+  "apelido": "OSP",
+  "nacionalidade": "American and Haitian",
+  "nascimento_local": "Immokalee, Florida, U.S.",
+  "conferido": true
+ },
+ "Antônio Rogério Nogueira": {
+  "apelido": "Minotouro",
+  "nacionalidade": null,
+  "nascimento_local": "Vitória da Conquista, Bahia, Brazil",
+  "conferido": true
+ },
+ "Demetrious Johnson": {
+  "apelido": "Mighty Mouse",
+  "nacionalidade": null,
+  "nascimento_local": "Madisonville, Kentucky, U.S."
+ },
+ "Henry Cejudo": {
+  "apelido": "The Messenger",
+  "nacionalidade": null,
+  "nascimento_local": "Los Angeles, California, U.S.",
+  "conferido": true
+ },
+ "Joseph Benavidez": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "San Antonio, Texas, U.S.",
+  "conferido": true
+ },
+ "John Dodson": {
+  "apelido": "The Magician",
+  "nacionalidade": null,
+  "nascimento_local": "Albuquerque, New Mexico, United States",
+  "conferido": true
+ },
+ "Ian McCall": {
+  "apelido": "Uncle Creepy",
+  "nacionalidade": null,
+  "nascimento_local": "Costa Mesa, California, U.S.",
+  "conferido": true
+ },
+ "Kyoji Horiguchi": {
+  "apelido": "Karate Kid",
+  "nacionalidade": null,
+  "nascimento_local": "Takasaki, Gunma, Japan"
+ },
+ "Jussier Formiga": {
+  "apelido": "Formiga (Ant)",
+  "nacionalidade": null,
+  "nascimento_local": "Natal, Rio Grande do Norte, Brazil",
+  "conferido": true
+ },
+ "Ray Borg": {
+  "apelido": "The Tazmexican Devil",
+  "nacionalidade": null,
+  "nascimento_local": "Tucson, Arizona, U.S.",
+  "conferido": true
+ },
+ "Tim Elliott": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Arkansas City, Kansas, U.S.",
+  "conferido": true
+ },
+ "Wilson Reis": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Januária, Minas Gerais, Brazil",
+  "conferido": true
+ },
+ "Ali Bagautinov": {
+  "apelido": "Puncher",
+  "nacionalidade": "Russian",
+  "nascimento_local": "Kizlyar, Dagestan ASSR, Russian SFSR, Soviet Union",
+  "conferido": true
+ },
+ "Sergio Pettis": {
+  "apelido": "The Phenom",
+  "nacionalidade": null,
+  "nascimento_local": "Milwaukee, Wisconsin, U.S.",
+  "conferido": true
+ },
+ "Louis Smolka": {
+  "apelido": "Da Last Samurai",
+  "nacionalidade": null,
+  "nascimento_local": "Kapolei, Hawaii, U.S.",
+  "conferido": true
+ },
+ "José Aldo": {
+  "apelido": "Junior",
+  "nacionalidade": null,
+  "nascimento_local": "Manaus, Amazonas, Brazil"
+ },
+ "Conor McGregor": {
+  "apelido": "Notorious",
+  "nacionalidade": null,
+  "nascimento_local": "Dublin, Ireland",
+  "conferido": true
+ },
+ "Chad Mendes": {
+  "apelido": "Money",
+  "nacionalidade": null,
+  "nascimento_local": "Hanford, California, U.S."
+ },
+ "Max Holloway": {
+  "apelido": "Blessed",
+  "nacionalidade": null,
+  "nascimento_local": "Honolulu, Hawaii, U.S.",
+  "conferido": true
+ },
+ "Ricardo Lamas": {
+  "apelido": "The Bully",
+  "nacionalidade": null,
+  "nascimento_local": "Chicago, Illinois, U.S."
+ },
+ "Cub Swanson": {
+  "apelido": "Cub/Killer",
+  "nacionalidade": null,
+  "nascimento_local": "Palm Springs, California, U.S."
+ },
+ "Chan Sung Jung": {
+  "apelido": "The Korean Zombie",
+  "nacionalidade": null,
+  "nascimento_local": "Pohang, South Korea",
+  "conferido": true
+ },
+ "Charles Oliveira": {
+  "apelido": "do Bronxs",
+  "nacionalidade": null,
+  "nascimento_local": "Guarujá, Brazil"
+ },
+ "Jeremy Stephens": {
+  "apelido": "Lil Heathen",
+  "nacionalidade": null,
+  "nascimento_local": "Des Moines, Iowa, U.S."
+ },
+ "Dennis Bermudez": {
+  "apelido": "The Menace",
+  "nacionalidade": null,
+  "nascimento_local": "Saugerties, New York, U.S.",
+  "conferido": true
+ },
+ "Darren Elkins": {
+  "apelido": "The Damage",
+  "nacionalidade": null,
+  "nascimento_local": "Portage, Indiana, U.S.",
+  "conferido": true
+ },
+ "Zabit Magomedsharipov": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Khasavyurt, Dagestan ASSR, Russian SFSR, Soviet Union",
+  "conferido": true
+ },
+ "Brian Ortega": {
+  "apelido": "T-City",
+  "nacionalidade": "American • Mexican",
+  "nascimento_local": "Los Angeles, California, U.S."
+ },
+ "Brock Lesnar": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Webster, South Dakota, U.S.",
+  "conferido": true
+ },
+ "Cain Velásquez": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nota": "sem pagina"
+ },
+ "Junior dos Santos": {
+  "apelido": "Cigano",
+  "nacionalidade": null,
+  "nascimento_local": "Caçador, Santa Catarina, Brazil",
+  "conferido": true
+ },
+ "Fabrício Werdum": {
+  "apelido": "Vai Cavalo (Go Horse)",
+  "nacionalidade": null,
+  "nascimento_local": "Porto Alegre, Rio Grande do Sul, Brazil",
+  "conferido": true
+ },
+ "Alistair Overeem": {
+  "apelido": "The Demolition Man",
+  "nacionalidade": "Dutch",
+  "nascimento_local": "Hounslow, London, England",
+  "conferido": true
+ },
+ "Andrei Arlovski": {
+  "apelido": "The Pit Bull",
+  "nacionalidade": "Belarusian / American",
+  "nascimento_local": "Bobruysk, Byelorussian SSR, Soviet Union / (now Babruysk, Belarus)",
+  "conferido": true
+ },
+ "Frank Mir": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Las Vegas, Nevada, U.S.",
+  "conferido": true
+ },
+ "Mark Hunt": {
+  "apelido": "The Super Samoan",
+  "nacionalidade": null,
+  "nascimento_local": "South Auckland, New Zealand",
+  "conferido": true
+ },
+ "Josh Barnett": {
+  "apelido": "The Warmaster",
+  "nacionalidade": null,
+  "nascimento_local": "Seattle, Washington, U.S.",
+  "conferido": true
+ },
+ "Shane Carwin": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Greeley, Colorado, U.S.",
+  "conferido": true
+ },
+ "Roy Nelson": {
+  "apelido": "Big Country",
+  "nacionalidade": null,
+  "nascimento_local": "Las Vegas, Nevada, U.S.",
+  "conferido": true
+ },
+ "Ben Rothwell": {
+  "apelido": "Big Ben",
+  "nacionalidade": null,
+  "nascimento_local": "Kenosha, Wisconsin, U.S.",
+  "conferido": true
+ },
+ "Stipe Miocic": {
+  "apelido": null,
+  "nacionalidade": "United States / Croatia",
+  "nascimento_local": "Euclid, Ohio, U.S.",
+  "conferido": true
+ },
+ "Antônio Silva": {
+  "apelido": "Bigfoot",
+  "nacionalidade": null,
+  "nascimento_local": "Brasília, Distrito Federal, Brazil",
+  "conferido": true
+ },
+ "Travis Browne": {
+  "apelido": "Hapa",
+  "nacionalidade": null,
+  "nascimento_local": "Honolulu, Hawaii, U.S.",
+  "conferido": true
+ },
+ "Gabriel Gonzaga": {
+  "apelido": "Napão ()",
+  "nacionalidade": null,
+  "nascimento_local": "Rio de Janeiro, Brazil",
+  "conferido": true
+ },
+ "Matt Mitrione": {
+  "apelido": "Meathead",
+  "nacionalidade": null,
+  "nascimento_local": "Springfield, Illinois, U.S.",
+  "conferido": true
+ },
+ "Stefan Struve": {
+  "apelido": "Skyscraper",
+  "nacionalidade": null,
+  "nascimento_local": "Beverwijk, Netherlands",
+  "conferido": true
+ },
+ "Francis Ngannou": {
+  "apelido": "The Predator",
+  "nacionalidade": "Cameroon / France",
+  "nascimento_local": "Batié, Cameroon"
+ },
+ "Derrick Lewis": {
+  "apelido": "The Black Beast",
+  "nacionalidade": null,
+  "nascimento_local": "New Orleans, Louisiana, U.S.",
+  "conferido": true
+ },
+ "Alexander Volkov": {
+  "apelido": "Drago",
+  "nacionalidade": "Russian",
+  "nascimento_local": "Moscow, Russian SFSR, Soviet Union",
+  "conferido": true
+ },
+ "Curtis Blaydes": {
+  "apelido": "Razor",
+  "nacionalidade": null,
+  "nascimento_local": "Naperville, Illinois, U.S.",
+  "conferido": true
+ },
+ "Merab Dvalishvili": {
+  "apelido": "The Machine",
+  "nacionalidade": null,
+  "nascimento_local": "Vani, Georgian SSR, Soviet Union",
+  "conferido": true
+ },
+ "Sean O'Malley": {
+  "apelido": "Suga",
+  "nacionalidade": null,
+  "nascimento_local": "Helena, Montana, U.S."
+ },
+ "Aljamain Sterling": {
+  "apelido": "Funk Master",
+  "nacionalidade": null,
+  "nascimento_local": "Uniondale, New York, U.S.",
+  "conferido": true
+ },
+ "Petr Yan": {
+  "apelido": "No Mercy",
+  "nacionalidade": null,
+  "nascimento_local": "Dudinka, Russia"
+ },
+ "Cory Sandhagen": {
+  "apelido": "The Sandman",
+  "nacionalidade": null,
+  "nascimento_local": "Aurora, Colorado, U.S.",
+  "conferido": true
+ },
+ "Marlon Vera": {
+  "apelido": "Chito",
+  "nacionalidade": null,
+  "nascimento_local": "Chone, Ecuador"
+ },
+ "Umar Nurmagomedov": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Kizilyurt, Dagestan, Russia",
+  "conferido": true
+ },
+ "Song Yadong": {
+  "apelido": "The Kung Fu Kid",
+  "nacionalidade": null,
+  "nascimento_local": "Harbin, Heilongjiang, China",
+  "conferido": true
+ },
+ "Mario Bautista": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Winnemucca, Nevada, U.S.",
+  "conferido": true
+ },
+ "Raoni Barcelos": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Rio de Janeiro, Brazil",
+  "conferido": true
+ },
+ "Payton Talbott": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Las Vegas, Nevada, U.S."
+ },
+ "Said Nurmagomedov": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Makhachkala, Dagestan, Russia"
+ },
+ "Islam Makhachev": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Makhachkala, Dagestan ASSR, Russian SFSR, Soviet Union"
+ },
+ "Justin Gaethje": {
+  "apelido": "The Highlight",
+  "nacionalidade": null,
+  "nascimento_local": "Safford, Arizona, U.S."
+ },
+ "Arman Tsarukyan": {
+  "apelido": "Akhalkalakets (formerly) / The Batman",
+  "nacionalidade": "Armenian / Russian",
+  "nascimento_local": "Akhalkalaki, Georgia"
+ },
+ "Renato Moicano": {
+  "apelido": "Money Moicano",
+  "nacionalidade": null,
+  "nascimento_local": "Brasília, Distrito Federal, Brazil"
+ },
+ "Mateusz Gamrot": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Bielsko-Biała, Silesian Voivodeship, Poland"
+ },
+ "Beneil Dariush": {
+  "apelido": null,
+  "nacionalidade": "United States",
+  "nascimento_local": "Urmia, Iran"
+ },
+ "Rafael Fiziev": {
+  "apelido": "Ataman",
+  "nacionalidade": null,
+  "nascimento_local": "Korday, Kazakhstan"
+ },
+ "Paddy Pimblett": {
+  "apelido": "The Baddy",
+  "nacionalidade": null,
+  "nascimento_local": "Liverpool, Merseyside, England"
+ },
+ "Michael Chandler": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "High Ridge, Missouri, U.S."
+ },
+ "Dan Hooker": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Auckland, New Zealand"
+ },
+ "Bobby Green": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "San Bernardino, California, U.S."
+ },
+ "Jalin Turner": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "San Bernardino, California, U.S."
+ },
+ "Grant Dawson": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Cambria, Wisconsin, U.S."
+ },
+ "Ignacio Bahamondes": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Santiago, Chile"
+ },
+ "Mauricio Ruffy": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Coruripe, Alagoas, Brazil"
+ },
+ "Chase Hooper": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Enumclaw, Washington, U.S."
+ },
+ "Israel Adesanya": {
+  "apelido": "The Last Stylebender",
+  "nacionalidade": "Nigeria / New Zealand",
+  "nascimento_local": "Lagos, Lagos State, Nigeria"
+ },
+ "Dricus du Plessis": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Welkom, Orange Free State, South Africa"
+ },
+ "Sean Strickland": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Anaheim, California, U.S."
+ },
+ "Khamzat Chimaev": {
+  "apelido": null,
+  "nacionalidade": "Russian / Emirati",
+  "nascimento_local": "Gvardeyskoye, Chechen Republic, Russia"
+ },
+ "Paulo Costa": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Belo Horizonte, Minas Gerais, Brazil"
+ },
+ "Nassourdine Imavov": {
+  "apelido": null,
+  "nacionalidade": "Russian / French",
+  "nascimento_local": "Khasavyurt, Dagestan, Russia"
+ },
+ "Marvin Vettori": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Trento, Italy"
+ },
+ "Caio Borralho": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "São Luís, Maranhão, Brazil"
+ },
+ "Jack Hermansson": {
+  "apelido": "The Joker",
+  "nacionalidade": "Norwegian / Swedish",
+  "nascimento_local": "Uddevalla, Sweden"
+ },
+ "Brendan Allen": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Beaufort, South Carolina, U.S."
+ },
+ "Reinier de Ridder": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Tilburg, Netherlands"
+ },
+ "Anthony Hernandez": {
+  "apelido": "Fluffy",
+  "nacionalidade": null,
+  "nascimento_local": "Dunnigan, California, U.S."
+ },
+ "Roman Dolidze": {
+  "apelido": "The Caucasian",
+  "nacionalidade": "Georgian",
+  "nascimento_local": "Batumi, Adjara, Georgian SSR, Soviet Union"
+ },
+ "Bo Nickal": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Rifle, Colorado, U.S."
+ },
+ "Joe Pyfer": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Vineland, New Jersey, U.S."
+ },
+ "Michel Pereira": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Marabá, Pará, Brazil"
+ },
+ "Kamaru Usman": {
+  "apelido": "The Nigerian Nightmare",
+  "nacionalidade": null,
+  "nascimento_local": "Auchi, Edo, Nigeria"
+ },
+ "Leon Edwards": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Kingston, Jamaica"
+ },
+ "Belal Muhammad": {
+  "apelido": "Remember the Name",
+  "nacionalidade": null,
+  "nascimento_local": "Chicago, Illinois, U.S."
+ },
+ "Shavkat Rakhmonov": {
+  "apelido": "Nomad",
+  "nacionalidade": "Kazakh",
+  "nascimento_local": "Shoʻrchi, Surxondaryo Region, Uzbekistan"
+ },
+ "Jack Della Maddalena": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Perth, Western Australia, Australia"
+ },
+ "Ian Machado Garry": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Portmarnock, Dublin, Ireland"
+ },
+ "Sean Brady": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Philadelphia, Pennsylvania, U.S."
+ },
+ "Michael Morales": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Pasaje, El Oro, Ecuador"
+ },
+ "Gilbert Burns": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Niterói, Rio de Janeiro, Brazil"
+ },
+ "Joaquin Buckley": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "St. Louis, Missouri, U.S."
+ },
+ "Carlos Prates": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Taubaté, São Paulo, Brazil"
+ },
+ "Geoff Neal": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Austin, Texas, U.S."
+ },
+ "Michael Page": {
+  "apelido": "Venom",
+  "nacionalidade": null,
+  "nascimento_local": "Westminster, London, England"
+ },
+ "Vicente Luque": {
+  "apelido": "The Silent Assassin",
+  "nacionalidade": "Brazilian / American",
+  "nascimento_local": "Westwood, New Jersey, U.S."
+ },
+ "Kevin Holland": {
+  "apelido": "Trailblazer",
+  "nacionalidade": null,
+  "nascimento_local": "Riverside, California, U.S."
+ },
+ "Alex Pereira": {
+  "apelido": "Poatan",
+  "nacionalidade": null,
+  "nascimento_local": "São Bernardo do Campo, São Paulo, Brazil"
+ },
+ "Magomed Ankalaev": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Teletl, Dagestan, Russia"
+ },
+ "Jiří Procházka": {
+  "apelido": null,
+  "nacionalidade": "Czech",
+  "nascimento_local": "Znojmo, Czechoslovakia"
+ },
+ "Jamahal Hill": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Chicago, Illinois, U.S."
+ },
+ "Jan Błachowicz": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Cieszyn, Poland"
+ },
+ "Khalil Rountree": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Los Angeles, California, U.S."
+ },
+ "Carlos Ulberg": {
+  "apelido": "Black Jag",
+  "nacionalidade": null,
+  "nascimento_local": "Auckland, New Zealand"
+ },
+ "Aleksandar Rakić": {
+  "apelido": null,
+  "nacionalidade": "Serbian",
+  "nascimento_local": "Vienna, Austria"
+ },
+ "Nikita Krylov": {
+  "apelido": null,
+  "nacionalidade": "Russian",
+  "nascimento_local": "Krasnyi Luch, Luhansk, Ukraine"
+ },
+ "Anthony Smith": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Corpus Christi, Texas, U.S."
+ },
+ "Volkan Oezdemir": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Fribourg, Switzerland"
+ },
+ "Johnny Walker": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Belford Roxo, Rio de Janeiro, Brazil"
+ },
+ "Azamat Murzakanov": {
+  "apelido": null,
+  "nacionalidade": "Russian",
+  "nascimento_local": "Kyzburun III, Kabardino-Balkarian ASSR, Russian SFSR, Soviet Union / (now Dygulybgey, Kabardino-Balkaria, Russia)"
+ },
+ "Bogdan Guskov": {
+  "apelido": "Czarevitch",
+  "nacionalidade": null,
+  "nascimento_local": "Dukent, Uzbekistan"
+ },
+ "Ryan Spann": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Beaumont, Texas, U.S."
+ },
+ "Alexandre Pantoja": {
+  "apelido": null,
+  "nacionalidade": "Brazilian",
+  "nascimento_local": "Rio de Janeiro, Brazil"
+ },
+ "Brandon Moreno": {
+  "apelido": "The Assassin Baby",
+  "nacionalidade": null,
+  "nascimento_local": "Tijuana, Baja California, Mexico"
+ },
+ "Brandon Royval": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Denver, Colorado, U.S."
+ },
+ "Deiveson Figueiredo": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Soure, Pará, Brazil"
+ },
+ "Tatsuro Taira": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Naha, Okinawa, Japan"
+ },
+ "Amir Albazi": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Baghdad, Iraq"
+ },
+ "Kai Kara-France": {
+  "apelido": "Don't Blink",
+  "nacionalidade": null,
+  "nascimento_local": "Auckland, New Zealand"
+ },
+ "Manel Kape": {
+  "apelido": "Starboy",
+  "nacionalidade": "Angola / Portugal",
+  "nascimento_local": "Luanda, Angola"
+ },
+ "Muhammad Mokaev": {
+  "apelido": null,
+  "nacionalidade": "United Kingdom",
+  "nascimento_local": "Buynaksk, Dagestan, Russia"
+ },
+ "Steve Erceg": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Perth, Australia"
+ },
+ "Alex Perez": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Hanford, California, U.S."
+ },
+ "Asu Almabayev": {
+  "apelido": "Zulfikar",
+  "nacionalidade": null,
+  "nascimento_local": "Janatalap, Sarysu District, Kazakhstan"
+ },
+ "Joshua Van": {
+  "apelido": null,
+  "nacionalidade": "Myanmar / United States",
+  "nascimento_local": "Hakha, Chin State, Myanmar"
+ },
+ "Alexander Volkanovski": {
+  "apelido": "The Hulk (formerly) / The Great",
+  "nacionalidade": null,
+  "nascimento_local": "Wollongong, New South Wales, Australia"
+ },
+ "Ilia Topuria": {
+  "apelido": null,
+  "nacionalidade": "Georgian / Spanish",
+  "nascimento_local": "Halle, Germany"
+ },
+ "Yair Rodríguez": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Parral, Chihuahua, Mexico"
+ },
+ "Movsar Evloev": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Ordzhonikidzvskaya,"
+ },
+ "Diego Lopes": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Manaus, Amazonas, Brazil"
+ },
+ "Jean Silva": {
+  "apelido": "Lord",
+  "nacionalidade": null,
+  "nascimento_local": "Foz do Iguaçu, Paraná, Brazil"
+ },
+ "Josh Emmett": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Phoenix, Arizona, U.S."
+ },
+ "Arnold Allen": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Ipswich, Suffolk, England"
+ },
+ "Calvin Kattar": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Methuen, Massachusetts, U.S."
+ },
+ "Lerone Murphy": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Manchester, England"
+ },
+ "Dan Ige": {
+  "apelido": "100 Grand",
+  "nacionalidade": null,
+  "nascimento_local": "Haleiwa, Hawaii, U.S."
+ },
+ "Tom Aspinall": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Salford, Greater Manchester, England"
+ },
+ "Ciryl Gane": {
+  "apelido": "Bon Gamin (Good Kid)",
+  "nacionalidade": null,
+  "nascimento_local": "La Roche-sur-Yon, Vendée, France"
+ },
+ "Sergei Pavlovich": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Orlovsky, Rostov Oblast, Russia"
+ },
+ "Tai Tuivasa": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Sydney, Australia"
+ },
+ "Jailton Almeida": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Salvador, Bahia, Brazil"
+ },
+ "Serghei Spivac": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Chișinău, Moldova"
+ },
+ "Marcin Tybura": {
+  "apelido": "Tybur",
+  "nacionalidade": null,
+  "nascimento_local": "Uniejow, Poland"
+ },
+ "Waldo Cortes-Acosta": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Fundación, Barahona Province, Dominican Republic"
+ },
+ "Jairzinho Rozenstruik": {
+  "apelido": "Bigi Boy",
+  "nacionalidade": null,
+  "nascimento_local": "Paramaribo, Suriname"
+ },
+ "Alexandr Romanov": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Comrat, SSR Moldova, Soviet Union"
+ },
+ "Mick Parkin": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Sunderland, Tyne and Wear, England"
+ },
+ "Marcos Rogério de Lima": {
+  "apelido": null,
+  "nacionalidade": null,
+  "nascimento_local": "Ribeirão Pires, São Paulo, Brazil"
+ }
+}

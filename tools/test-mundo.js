@@ -96,12 +96,12 @@ teste('evento do camp: bloqueia a decisao ate ser resolvido e depois fecha a eta
   assert.strictEqual(c.evento, null);
 });
 
-teste('treino pesado: rola 2x, gasta energia, da bonus de luta e exige energia', () => {
+teste('atividade de treino (boxe): rola 2x, gasta energia, da bonus de luta e exige energia', () => {
   const c = nova();
   aceitar(c);
   c.tetos.striking = 99; c.tetos.defesa = 99;
   const ops = MMA.opcoesEtapa(c);
-  const pesado = ops.find((o) => /^pesado:/.test(o.id));
+  const pesado = ops.find((o) => o.id === 'atv:boxe');
   assert.ok(pesado && pesado.custo > 0 && pesado.attr);
   const antes = c.atributos[pesado.attr];
   const e0 = c.energia;
@@ -113,7 +113,7 @@ teste('treino pesado: rola 2x, gasta energia, da bonus de luta e exige energia',
   const d = nova();
   aceitar(d);
   d.energia = 20;
-  const p2 = MMA.opcoesEtapa(d).find((o) => /^pesado:/.test(o.id));
+  const p2 = MMA.opcoesEtapa(d).find((o) => o.id === 'atv:boxe');
   assert.strictEqual(p2.ok, false);
   assert.strictEqual(MMA.decidirCamp(d, p2.id).ok, false);
 });
@@ -122,7 +122,7 @@ teste('treino respeita o teto de potencial', () => {
   const c = nova();
   aceitar(c);
   const ops = MMA.opcoesEtapa(c);
-  const pesado = ops.find((o) => /^pesado:/.test(o.id));
+  const pesado = ops.find((o) => o.id === 'atv:boxe');
   c.tetos[pesado.attr] = c.atributos[pesado.attr];
   const antes = c.atributos[pesado.attr];
   MMA.decidirCamp(c, pesado.id, () => 0.0);
@@ -403,7 +403,7 @@ teste('academia: nutricao da mais energia por semana, fisio cura mais rapido, gi
       d.atributos.striking = d.tetos.striking - 10;
       const antes = d.atributos.striking;
       aceitar(d);
-      const pesado = MMA.opcoesEtapa(d).find((o) => o.attr === 'striking' && /^pesado:/.test(o.id));
+      const pesado = MMA.opcoesEtapa(d).find((o) => o.id === 'atv:boxe');
       if (!pesado) { n += 0; continue; }
       MMA.decidirCamp(d, pesado.id, MMA.criarRng(i + 1));
       n += d.atributos.striking - antes;

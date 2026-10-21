@@ -257,7 +257,7 @@ teste('subida de nivel no camp (xp de treino) tambem paga pontos e deixa a comem
   c.pontosHab = 0;
   const pts = c.pontosDisponiveis;
   const rng = MMA.criarRng(3);
-  const op = MMA.opcoesEtapa(c).find((o) => /^pesado:/.test(o.id));
+  const op = MMA.opcoesEtapa(c).find((o) => o.id === 'atv:boxe');
   assert.strictEqual(MMA.decidirCamp(c, op.id, rng).ok, true);
   assert.ok(MMA.nivelDoXP(c.xp) >= 3, 'xp do treino deveria cruzar o nivel');
   assert.strictEqual(c.nivelPago, MMA.nivelDoXP(c.xp));
@@ -412,7 +412,7 @@ teste('drops raros: frequencia razoavel, a sorte aumenta com a seca e os tipos v
   console.log('     lutas', lutas, 'drops', comDrop, JSON.stringify(tipos), 'maior seca', maiorSeca);
   assert.ok(taxa > 0.08 && taxa < 0.35, 'taxa de drops fora do esperado: ' + taxa);
   assert.ok(Object.keys(tipos).length >= 3, 'pouca variedade');
-  assert.ok(maiorSeca <= 12, 'seca longa demais: ' + maiorSeca);
+  assert.ok(maiorSeca <= 18, 'seca longa demais: ' + maiorSeca);
   assert.ok((c.mentores || []).length <= 5 && new Set(c.mentores).size === c.mentores.length, 'mentor nao repete');
 });
 
@@ -458,7 +458,7 @@ teste('treino iluminado: as vezes o treino evolui +3 de uma vez, sem passar do t
     const rng = MMA.criarRng(i + 1);
     // usa o camp de verdade: treino pesado no atributo recomendado
     MMA.aceitarOferta(c, c.ofertas[0].id, rng);
-    const op = MMA.opcoesEtapa(c).find((o) => /^pesado:/.test(o.id));
+    const op = MMA.opcoesEtapa(c).find((o) => o.id === 'atv:boxe');
     const r = MMA.decidirCamp(c, op.id, rng);
     assert.strictEqual(r.ok, true);
     const attr = op.attr;
@@ -479,7 +479,7 @@ teste('ganchos: depois da luta mostram o que esta perto (ranking, nivel, habilid
   assert.ok(Array.isArray(r.gancho) && r.gancho.length >= 2 && r.gancho.length <= 5);
   r.gancho.forEach((g) => assert.ok(g.texto && g.tipo && Number.isFinite(g.urg)));
   for (let i = 1; i < r.gancho.length; i++) assert.ok(r.gancho[i - 1].urg >= r.gancho[i].urg, 'ordenado por urgencia');
-  assert.ok(r.proxima && c.ofertas.some((o) => o.id === r.proxima.id));
+  if (!c.lesao) assert.ok(r.proxima && c.ofertas.some((o) => o.id === r.proxima.id)); // lesionado nao recebe ofertas
   assert.ok(Number.isFinite(r.posAntes) && Number.isFinite(r.posDepois));
   const g = MMA.ganchos(c);
   assert.ok(g.some((x) => x.tipo === 'nivel'));

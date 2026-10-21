@@ -4,3 +4,6 @@ design-referencia
 contato.html
 receber.html
 node_modules
+.git
+.gitignore
+docs

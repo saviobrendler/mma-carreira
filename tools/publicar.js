@@ -11,7 +11,7 @@ const RAIZ = path.join(__dirname, '..');
 const MARCA = path.join(RAIZ, '.vercel', 'ultimo-deploy.hash');
 const SITE = 'https://mma-carreira.vercel.app';
 // Mesma lista do .vercelignore (mais pastas internas): nada disso vai ao ar, entao nao conta como mudanca.
-const IGNORAR = new Set(['tools', 'pesquisa', 'design-referencia', 'contato.html', 'receber.html', 'node_modules', '.vercel', '.claude', '.vercelignore']);
+const IGNORAR = new Set(['.git', '.gitignore', 'docs', 'tools', 'pesquisa', 'design-referencia', 'contato.html', 'receber.html', 'node_modules', '.vercel', '.claude', '.vercelignore']);
 
 function arquivos(dir, base) {
   let lista = [];

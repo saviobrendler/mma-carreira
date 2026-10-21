@@ -48,7 +48,7 @@
   const ESTRATEGIAS = {
     trocar: { nome: 'Trocar em pé', descr: 'Troca golpes em pé, sem buscar a queda.', striking: 1.15, custo: 1.2, derrubada: 0, dano: 1 },
     pressionar: { nome: 'Pressionar', descr: 'Ataque constante. Mais dano, mais desgaste.', striking: 1.1, custo: 1.5, derrubada: 0.1, dano: 1.1 },
-    derrubar: { nome: 'Derrubar', descr: 'Busca a queda e leva a luta ao chão.', striking: 0.85, custo: 1.3, derrubada: 0.5, dano: 0.95 },
+    derrubar: { nome: 'Derrubar', descr: 'Busca a queda e leva a luta ao chão.', striking: 0.85, custo: 1.3, derrubada: 0.72, dano: 0.95 },
     cautela: { nome: 'Cautela', descr: 'Poupa energia e foca em defesa.', striking: 0.9, custo: 0.7, derrubada: 0.05, dano: 0.8 },
     contra: { nome: 'Contra-golpe', descr: 'Espera o rival e pune o erro dele. Poupa fôlego.', striking: 0.85, custo: 0.8, derrubada: 0, dano: 0.9, req: 'contra' },
     clinch: { nome: 'Clinch', descr: 'Colado no rival: joelhadas e projeções.', striking: 0.95, custo: 1.3, derrubada: 0.3, dano: 0.95, req: 'clinch' },
@@ -241,16 +241,22 @@
   const TEXTOS_CHUTE = ['acerta um low kick', 'acerta um chute no corpo', 'acerta um chute alto'];
   const TEXTOS_JOELHO = ['acerta um joelho'];
 
-  function escolherIA(f, r) {
+  // Escolha de tatica em pe: olha o proprio ponto forte e a fraqueza do rival (um wrestler contra quem
+  // defende mal a queda insiste nela; contra quem defende bem, volta para a trocacao).
+  function escolherIA(f, r, opp) {
     if (f.stam < 35) return 'cautela';
-    const ataque = f.attr.striking + f.attr.velocidade * 0.3;
-    const luta = f.attr.wrestling + f.attr.grappling * 0.5;
+    const a = f.attr;
+    const o = opp ? opp.attr : null;
+    const queda = a.wrestling + a.grappling * 0.4 - (o ? o.defesa * 0.6 + o.wrestling * 0.2 : 40);
+    const troca = a.striking + a.velocidade * 0.3 - (o ? o.defesa * 0.6 + o.striking * 0.15 : 45);
+    let pQueda = clamp(0.36 + (queda - troca) / 100, 0.04, 0.78);
+    if (o && o.bjj - a.bjj > 14 && a.wrestling < 70) pQueda *= 0.6; // nao leva o grappler para onde ele quer
     const p = r();
-    if (luta >= ataque && p < 0.6) return 'derrubar';
-    if (ataque > luta + 8) return p < 0.5 ? 'pressionar' : 'trocar';
-    if (p < 0.33) return 'pressionar';
-    if (p < 0.66) return 'trocar';
-    return 'cautela';
+    if (p < pQueda) return 'derrubar';
+    const q = r();
+    if (troca > 10) return q < 0.5 ? 'pressionar' : q < 0.92 ? 'trocar' : 'cautela';
+    if (troca < -8) return q < 0.38 ? 'cautela' : q < 0.82 ? 'trocar' : 'pressionar';
+    return q < 0.33 ? 'pressionar' : q < 0.66 ? 'trocar' : 'cautela';
   }
 
   // Tracos do lutador (ate 3 na carreira) e golpes de assinatura (ate 2).
@@ -275,6 +281,41 @@
     triangulo: { nome: 'Triângulo', tipo: 'finalizacao', descr: 'Finalização muito mais provável, por cima ou da guarda.' },
     mata_leao: { nome: 'Mata-leão', tipo: 'finalizacao', descr: 'Finalização muito mais provável, por cima ou da guarda.' },
     chave_de_braco: { nome: 'Chave de braço', tipo: 'finalizacao', descr: 'Finalização muito mais provável, por cima ou da guarda.' },
+  };
+
+  // Estrategias de round: o jogador escolhe uma antes de cada round e o motor decide as taticas de cada
+  // momento seguindo os pesos. pe / cima / baixo = onde a luta esta (em pe, por cima, por baixo).
+  const ESTRATEGIAS_ROUND = {
+    trocacao: {
+      nome: 'Trocação agressiva', curta: 'Trocação', descr: 'Vai para a trocação e busca o nocaute. Bate mais, mas se expõe.',
+      pe: { trocar: 5, pressionar: 3.5, cautela: 1, derrubar: 0.5 }, cima: { castigar: 6, controlar: 3, finalizar: 1 }, baixo: { escapar: 5, proteger: 3, guarda: 2 },
+    },
+    contra: {
+      nome: 'Contra-ataque', curta: 'Contra-ataque', descr: 'Espera o rival errar e pune. Poupa fôlego, mas cede a iniciativa.',
+      pe: { contra: 5, cautela: 3.5, trocar: 2.5, derrubar: 0.5, pressionar: 0.5 }, cima: { controlar: 5, castigar: 4, finalizar: 1 }, baixo: { escapar: 5, proteger: 4, guarda: 1 },
+    },
+    pressao: {
+      nome: 'Pressão constante', curta: 'Pressão', descr: 'Avança o tempo todo, cansa o rival e acumula rounds. Gasta fôlego.',
+      pe: { pressionar: 6, trocar: 2, clinch: 1, derrubar: 1 }, cima: { castigar: 5, controlar: 4, finalizar: 1 }, baixo: { escapar: 6, proteger: 3, guarda: 1 },
+    },
+    quedas: {
+      nome: 'Priorizar quedas', curta: 'Quedas', descr: 'Insiste na queda para tirar o rival da zona de conforto.',
+      pe: { derrubar: 6, pressionar: 1.5, trocar: 1.5, clinch: 1 }, cima: { controlar: 5, castigar: 4, finalizar: 1 }, baixo: { escapar: 6, proteger: 3, guarda: 1 },
+    },
+    wrestling: {
+      nome: 'Wrestling e controle', curta: 'Controle', descr: 'Derruba e segura: ganha rounds com controle, sem se arriscar.',
+      pe: { derrubar: 4.5, clinch: 2, pressionar: 1.5, cautela: 1, trocar: 1 }, cima: { controlar: 7, castigar: 2.5, finalizar: 0.5 }, baixo: { escapar: 7, proteger: 2, guarda: 1 },
+    },
+    finalizacao: {
+      nome: 'Buscar finalização', curta: 'Finalização', descr: 'Leva para o chão e ataca submissões, mesmo por baixo.',
+      pe: { derrubar: 4, clinch: 1.5, trocar: 2, cautela: 1.5, pressionar: 1 }, cima: { finalizar: 6, controlar: 3, castigar: 1 }, baixo: { guarda: 6, raspar: 1.5, escapar: 2, proteger: 0.5 },
+    },
+    equilibrada: { nome: 'Estratégia equilibrada', curta: 'Equilibrada', descr: 'Lê o rival e alterna as ferramentas conforme a situação.', adaptativa: true },
+    resistencia: {
+      nome: 'Administrar resistência', curta: 'Resistência', descr: 'Poupa fôlego e dano para vir forte nos rounds finais.',
+      pe: { cautela: 4, trocar: 3, contra: 1.5, derrubar: 1, pressionar: 0.5 }, cima: { controlar: 6, castigar: 3, finalizar: 1 }, baixo: { proteger: 4, escapar: 4, guarda: 2 },
+      custo: 0.82,
+    },
   };
 
   // Efeito da tatica de quem se defende sobre o ataque do rival (pedra-papel-tesoura leve).
@@ -321,6 +362,7 @@
       this.conselhoUsado = 0; // conselhos do corner usados neste intervalo
       this.conselhoIds = []; // quais (o mesmo nao repete no intervalo)
       this.desbloqueios = [o.desbloqueiosA || [], []]; // taticas extras liberadas pela arvore
+      this.estrategia = [o.estrategiaA && ESTRATEGIAS_ROUND[o.estrategiaA] ? o.estrategiaA : null, null]; // estrategia de round de cada lado
     }
 
     get encerrada() {
@@ -347,6 +389,7 @@
         conselhoUsado: this.conselhoUsado,
         conselhoIds: this.conselhoIds,
         desbloqueios: this.desbloqueios,
+        estrategia: this.estrategia,
       };
     }
 
@@ -377,6 +420,7 @@
       l.conselhoUsado = Number(j.conselhoUsado) || 0;
       l.conselhoIds = j.conselhoIds || [];
       l.desbloqueios = j.desbloqueios || [[], []];
+      l.estrategia = j.estrategia || [null, null];
       l.rng = rng || Math.random;
       return l;
     }
@@ -403,9 +447,56 @@
     abrirRound() {
       if (this.resultado) throw new Error('Luta já encerrada.');
       if (!this.rd) {
-        this.rd = { num: this.rodadas.length + 1, eventos: [], dano: [0, 0], ctrl: [0, 0], chao: -1, ko: -1, sub: -1, medico: -1, i: 0, ass: [false, false], exp: [0, 0] };
+        this.rd = { num: this.rodadas.length + 1, eventos: [], dano: [0, 0], ctrl: [0, 0], chao: -1, ko: -1, sub: -1, medico: -1, i: 0, ass: [false, false], exp: [0, 0], est0: JSON.parse(JSON.stringify(this.estatisticas)) };
       }
       return this.rd;
+    }
+
+    // Define a estrategia de round de um lado (null volta a IA adaptativa).
+    definirEstrategia(lado, id) {
+      if (id !== null && !ESTRATEGIAS_ROUND[id]) return false;
+      this.estrategia[lado] = id;
+      return true;
+    }
+
+    // Estatisticas do round em andamento (diferenca desde a abertura do round).
+    estatisticasRound() {
+      const rd = this.rd;
+      const campos = ['tentativas', 'acertos', 'acertosPe', 'acertosChao', 'quedasTent', 'quedasOk', 'subTent', 'subOk', 'chaoTempo'];
+      return [0, 1].map((i) => {
+        const o = {};
+        campos.forEach((k) => { o[k] = this.estatisticas[i][k] - (rd && rd.est0 ? rd.est0[i][k] : 0); });
+        return o;
+      });
+    }
+
+    // Tatica de um momento para quem segue uma estrategia de round (sorteio por pesos, so taticas liberadas).
+    taticaPlano(lado) {
+      const id = this.estrategia[lado];
+      const plano = ESTRATEGIAS_ROUND[id];
+      if (!plano || plano.adaptativa) return this.taticaIA(lado);
+      const rd = this.rd;
+      const f = this.f[lado];
+      const sit = !rd || rd.chao < 0 ? 'pe' : rd.chao === lado ? 'cima' : 'baixo';
+      let pesos = Object.assign({}, plano[sit]);
+      if (sit === 'pe' && f.stam < 30) pesos = { cautela: 3, trocar: 1 };
+      if (sit === 'baixo' && f.dano > 95) pesos.proteger = (pesos.proteger || 0) + 3;
+      const livres = this.desbloqueios[lado] || [];
+      ['contra', 'clinch', 'raspar'].forEach((k) => {
+        if (pesos[k] && livres.indexOf(k) < 0) {
+          const alvo = k === 'raspar' ? 'escapar' : k === 'contra' ? 'cautela' : 'pressionar';
+          pesos[alvo] = (pesos[alvo] || 0) + pesos[k];
+          delete pesos[k];
+        }
+      });
+      const chaves = Object.keys(pesos);
+      const total = chaves.reduce((t, k) => t + pesos[k], 0);
+      let x = this.rng() * total;
+      for (const k of chaves) {
+        x -= pesos[k];
+        if (x <= 0) return k;
+      }
+      return chaves[chaves.length - 1];
     }
 
     // Onde esta o lutador 0 (o jogador): 'pe', 'cima' (por cima no chao) ou 'baixo'.
@@ -419,7 +510,8 @@
     parcialRound() {
       const rd = this.rd;
       if (!rd) return 0;
-      return rd.dano[0] - rd.dano[1] + (rd.ctrl[0] - rd.ctrl[1]) * 1.2;
+      const e = this.estatisticasRound();
+      return rd.dano[0] - rd.dano[1] + (rd.ctrl[0] - rd.ctrl[1]) * 1.5 + (e[0].quedasOk - e[1].quedasOk) * 2.2 + (e[0].subTent - e[1].subTent) * 0.35 + (e[0].acertos - e[1].acertos) * 0.25;
     }
 
     // A assinatura do lado e usavel agora? (uma vez por round, e precisa servir para a situacao)
@@ -455,7 +547,7 @@
           if (rd && rd.i >= 6 && p < 0.6) return this.plano.fecha;
           if (this.provocacao > 0 && r() < 0.22 * this.provocacao) return 'pressionar';
         }
-        return escolherIA(f[lado], r);
+        return escolherIA(f[lado], r, f[1 - lado]);
       }
       const eu = f[lado].attr;
       const ele = f[1 - lado].attr;
@@ -466,13 +558,14 @@
         return 'controlar';
       }
       if (f[lado].stam < 40 || f[lado].dano > 70) return 'proteger';
-      if (eu.bjj > ele.bjj + 6 && r() < 0.5) return 'guarda';
+      if ((eu.bjj > ele.bjj + 6 && r() < 0.8) || (eu.bjj >= 76 && r() < 0.5)) return 'guarda';
       return 'escapar';
     }
 
     // Aceita a chave do jogador so se ela vale para a situacao atual; senao, decide a IA.
     _chave(lado, chave) {
       const rd = this.rd;
+      if (!chave) return this.estrategia[lado] ? this.taticaPlano(lado) : this.taticaIA(lado);
       if (chave === 'assinatura') return this.assinaturaDisponivel(lado) ? 'assinatura' : this.taticaIA(lado);
       const liberada = (x) => !x.req || this.desbloqueios[lado].indexOf(x.req) >= 0;
       if (rd.chao < 0) return ESTRATEGIAS[chave] && liberada(ESTRATEGIAS[chave]) ? chave : this.taticaIA(lado);
@@ -504,7 +597,7 @@
       const golpear = (a, d, fator, mult, texto, extra, kind) => {
         // No chao o golpe depende mais de grappling (cotovelada, socos por cima).
         const habilidade = fator < 1 ? f[a].attr.striking * 0.4 + f[a].attr.grappling * 0.6 : f[a].attr.striking;
-        const base = ((f[a].attr.forca * 0.3 + habilidade * 0.45 + f[a].attr.velocidade * 0.2) / 100) * 11;
+        const base = ((f[a].attr.forca * 0.3 + habilidade * 0.45 + f[a].attr.velocidade * 0.2) / 100) * 10.7;
         let m = mult;
         if (this.tem(a, 'nocauteador')) m *= 1.07;
         if (this.tem(a, 'pressao') && kind === 'pressionar') m *= 1.08;
@@ -534,6 +627,8 @@
         let c = custo;
         if (this.tem(lado, 'cardio')) c *= 0.8;
         if (this.tem(lado, 'pressao') && chave === 'pressionar') c *= 0.85;
+        const plano = ESTRATEGIAS_ROUND[this.estrategia[lado]];
+        if (plano && plano.custo) c *= plano.custo;
         return c;
       };
       const desgaste = (a, ca, ka, d, cd, kd) => {
@@ -550,11 +645,13 @@
         const bb = sigB ? { custo: 2.4, dano: 1, fuga: 0.8, subSofrida: 1, subPropria: 2.4 } : TATICAS_CHAO[chaves[b]];
         rd.ctrl[t]++;
         this.estatisticas[t].chaoTempo++;
-        this.estatisticas[t].subTent++;
+        const buscando = chaves[t] === 'finalizar' || (sigT && sigT.tipo === 'finalizacao');
+        if (buscando) this.estatisticas[t].subTent++;
         const subT = (this.tem(t, 'mestre_finalizacao') ? 1.25 : 1) * (this.tem(b, 'mestre_finalizacao') ? 0.8 : 1) * (this.tem(t, 'hab_pescoco') ? 1.2 : 1) * (this.tem(b, 'hab_pescoco') ? 0.8 : 1);
-        const pSub = clamp(0.04 + (f[t].attr.bjj - f[b].attr.bjj) / 300 + (f[t].attr.bjj / 100) * 0.04, 0.005, 0.25) * fadiga(f[b]) * 0.6 * tt.sub * bb.subSofrida * subT;
+        const pSub = clamp(0.04 + (f[t].attr.bjj - f[b].attr.bjj) / 300 + (f[t].attr.bjj / 100) * 0.04, 0.005, 0.25) * fadiga(f[b]) * 0.46 * tt.sub * bb.subSofrida * subT;
         if (r() < pSub) {
           rd.sub = t;
+          if (!buscando) this.estatisticas[t].subTent++;
           this.estatisticas[t].subOk++;
           push(`${f[t].nome} encaixa ${sigT ? 'o ' + sigT.nome.toLowerCase() : 'a finalização'}! ${f[b].nome} bate.`, 'destaque', { ator: t, alvo: b, tipo2: 'sub' });
           return novos;
@@ -588,7 +685,10 @@
         }
         if (rd.ko < 0) {
           const dom = (this.tem(t, 'wrestler_dominante') ? 0.85 : 1) * (this.tem(t, 'hab_controle') ? 0.85 : 1);
-          const pFuga = clamp((0.2 + (f[b].attr.bjj - f[t].attr.bjj) / 80 + (f[b].attr.grappling - f[t].attr.grappling) / 160 + (f[b].stam / 100 - 0.5) * 0.2) * tt.fuga * bb.fuga * dom, 0.03, 0.75);
+          // Quem segura por cima usa wrestling e grappling; quem escapa usa jiu-jitsu, grappling e wrestling.
+          const controle = f[t].attr.wrestling * 0.45 + f[t].attr.grappling * 0.4 + f[t].attr.forca * 0.15;
+          const escape = f[b].attr.bjj * 0.35 + f[b].attr.grappling * 0.35 + f[b].attr.wrestling * 0.3;
+          const pFuga = clamp((0.2 + (escape - controle) / 70 + (f[b].stam / 100 - 0.5) * 0.2) * tt.fuga * bb.fuga * dom, 0.03, 0.75);
           if (r() < pFuga) {
             rd.chao = -1;
             push(`${f[b].nome} levanta.`, 'normal', { ator: b, alvo: t, tipo2: 'levanta' });
@@ -615,7 +715,7 @@
       if (tentaQueda) {
         this.estatisticas[a].quedasTent++;
         const wr = this.tem(a, 'wrestler_dominante') ? 1.1 : 1;
-        const pQueda = clamp((0.65 + (f[a].attr.wrestling - f[d].attr.defesa) / 80 + (f[a].attr.grappling - f[d].attr.grappling) / 400) * cd.queda * expo * wr * (sig ? 1.3 : 1), 0.1, 0.92) * fadiga(f[a]);
+        const pQueda = clamp((0.46 + (f[a].attr.wrestling * 0.75 + f[a].attr.grappling * 0.25 - f[d].attr.defesa) / 62 + (f[a].attr.grappling - f[d].attr.grappling) / 300) * cd.queda * expo * wr * (sig ? 1.3 : 1), 0.1, 0.92) * fadiga(f[a]);
         if (r() < pQueda) {
           rd.chao = a;
           this.estatisticas[a].quedasOk++;
@@ -658,12 +758,18 @@
         const chaoAntes = rd.chao;
         const eventos = this._troca(chave0, chave1);
         rd.i++;
+        if ((rd.ko >= 0 || rd.sub >= 0) && rd.tempoSeg === undefined) rd.tempoSeg = clamp(Math.round((300 * (rd.i - this.rng())) / 8), 5, 299);
         eventos.forEach((e) => novos.push(e));
         if (rd.chao !== chaoAntes || rd.ko >= 0 || rd.sub >= 0) break;
       }
       const acabou = rd.i >= 8 || rd.ko >= 0 || rd.sub >= 0;
       const rodada = acabou ? this._fecharRound() : null;
       return { eventos: novos, rodada: rodada, situacao: this.situacao(), troca: rd.i };
+    }
+
+    _tempoTxt(seg) {
+      const t = Number.isFinite(seg) ? seg : 300;
+      return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
     }
 
     _desfazerBuff() {
@@ -698,7 +804,8 @@
         }
       }
 
-      const rodada = { num: num, eventos: rd.eventos, dano: dano.slice(), placar: [10, 10], ko: ko >= 0, sub: sub >= 0, juizes: null };
+      const estRound = this.estatisticasRound();
+      const rodada = { num: num, eventos: rd.eventos, dano: dano.slice(), placar: [10, 10], ko: ko >= 0, sub: sub >= 0, juizes: null, est: estRound, ctrl: ctrl.slice() };
 
       // Folego sentido no fim do round, antes da recuperacao do intervalo (e o que a interface mostra).
       rodada.stamFim = [f[0].stam, f[1].stam];
@@ -710,13 +817,17 @@
       if (ko >= 0) {
         const vencedor = 1 - ko;
         rodada.placar = vencedor === 0 ? [10, 8] : [8, 10];
-        this.resultado = { vencedor: vencedor, metodo: 'Nocaute', round: num, detalhe: medico >= 0 ? 'parada médica' : null };
+        this.resultado = { vencedor: vencedor, metodo: 'Nocaute', round: num, detalhe: medico >= 0 ? 'parada médica' : null, tempo: this._tempoTxt(medico >= 0 ? 300 : rd.tempoSeg) };
       } else if (sub >= 0) {
         rodada.placar = sub === 0 ? [10, 8] : [8, 10];
-        this.resultado = { vencedor: sub, metodo: 'Finalização', round: num };
+        this.resultado = { vencedor: sub, metodo: 'Finalização', round: num, tempo: this._tempoTxt(rd.tempoSeg) };
       } else {
         // Tres juizes: em round parelho eles podem discordar.
-        const diff = dano[0] - dano[1] + (ctrl[0] - ctrl[1]) * 1.2 + (r() - 0.5) * 0.6;
+        // Alem do dano e do controle, os juizes contam quedas, ameacas de finalizacao e quem tomou a iniciativa.
+        const quedas = (estRound[0].quedasOk - estRound[1].quedasOk) * 2.2;
+        const ameacas = (estRound[0].subTent - estRound[1].subTent) * 0.35;
+        const ritmo = (estRound[0].acertos - estRound[1].acertos) * 0.25;
+        const diff = dano[0] - dano[1] + (ctrl[0] - ctrl[1]) * 1.5 + quedas + ameacas + ritmo + (r() - 0.5) * 0.6;
         const card = (d) => (d > 0 ? [10, d > 6 ? 8 : 9] : [d < -6 ? 8 : 9, 10]);
         rodada.placar = card(diff);
         rodada.juizes = [0, 1, 2].map(() => card(diff + (r() - 0.5) * 4.6));
@@ -809,11 +920,30 @@
         vencedor = this.totais[0] > this.totais[1] ? 0 : this.totais[1] > this.totais[0] ? 1 : null;
         metodo = vencedor === null ? 'Empate' : 'Decisão dividida';
       }
-      return { vencedor: vencedor, metodo: metodo, round: this.rodadasTotais, cartoes: this.cartoes.map((c) => c.slice()) };
+      return { vencedor: vencedor, metodo: metodo, round: this.rodadasTotais, tempo: '5:00', cartoes: this.cartoes.map((c) => c.slice()) };
     }
 
-    simularCompleta() {
-      while (!this.encerrada) this.rodarRound(null);
+    // Quem manda no "Ver resultado": segue a estrategia escolhida e, entre os rounds, ajusta como um corner
+    // faria (atras no placar vai para cima; na frente administra; sem folego poupa).
+    _ajusteAuto() {
+      const f = this.f;
+      const atual = this.estrategia[0];
+      if (f[0].stam < 38 && atual !== 'resistencia') return this.definirEstrategia(0, 'resistencia');
+      const restam = this.rodadasTotais - this.rodadas.length;
+      const placar = this.totais[0] - this.totais[1];
+      if (restam <= 1 && placar < 0) return this.definirEstrategia(0, f[0].attr.bjj > f[1].attr.bjj + 6 ? 'finalizacao' : 'pressao');
+      if (placar > 0 && restam <= 2 && atual !== 'wrestling') return this.definirEstrategia(0, f[0].attr.wrestling > f[1].attr.defesa ? 'wrestling' : 'resistencia');
+      return false;
+    }
+
+    // Luta inteira de uma vez. opcoes: { estrategia, auto } (o jogador no lado 0). Mesmas regras do round a round.
+    simularCompleta(opcoes) {
+      const o = opcoes || {};
+      if (o.estrategia) this.definirEstrategia(0, o.estrategia);
+      while (!this.encerrada) {
+        if (o.auto && this.rodadas.length > 0) this._ajusteAuto();
+        this.rodarRound(null);
+      }
       return this.resultado;
     }
   }
@@ -863,8 +993,9 @@
     const atributos = criarAtributos(estilo, distribuicao, modalidade ? MODALIDADES[modalidade].bonus : null);
     const potencial = 78 + Math.floor(rng() * 14); // 78 a 91
     const c = {
-      versao: 1,
+      versao: 2,
       nome: opcoes.nome || 'Sem nome',
+      apelido: opcoes.apelido ? String(opcoes.apelido).slice(0, 24) : null,
       primeiroNome: opcoes.primeiroNome || null,
       sobrenome: opcoes.sobrenome || null,
       pais: opcoes.pais || null,
@@ -920,6 +1051,9 @@
       aposentado: false,
       tutorialLuta: false,
       pontosHab: 1, // pontos da arvore de habilidades
+      eventosPassados: [], // eventos de que o jogador participou, com o card e os resultados
+      premios: [], // bonus de desempenho (Performance da Noite etc.)
+      defesasTotal: 0, // defesas de titulo na carreira inteira
       nivelPago: 1, // nivel cujas recompensas ja foram pagas
       celebrarNivel: null, // subida de nivel que a interface ainda vai comemorar
       habilidades: [],
@@ -1258,6 +1392,7 @@
     // O plano do rival e sorteado agora: o scouting do camp revela esse plano e a luta o segue.
     const plano = gerarPlano(of.op.lutador.atributos, rng || Math.random);
     c.agendada = Object.assign({}, of, { semanaLuta: semanaLuta, semanaAceite: c.semana, plano: plano });
+    c.agendada.evento = gerarEvento(c, of, semanaLuta, rng || Math.random);
     c.lutaBonus = null; // aceitar outra luta deixa a relampago passar
     c.ofertas = [];
     c.camp = novoCamp(semanas);
@@ -1286,6 +1421,7 @@
       if (lista.length < 2) return;
       const ocupados = new Set();
       if (c.agendada && divId === c.divisaoId) ocupados.add(c.agendada.op.nome);
+      nomesDoCard(c).forEach((n) => ocupados.add(n));
       const nomeCampeao = campeaoAtual(c, periodo, divId);
       const campeaoIA = lista.find((x) => x.nome === nomeCampeao);
       const disputas = [];
@@ -1658,6 +1794,13 @@
     const lesionou = !!lesaoNova;
 
     const recompensas = sortearRecompensas(carreira, { venceu: venceu, finalizou: finalizou, round: res.round, metodo: res.metodo, luta: luta, bolsaBase: bolsaBase }, r);
+    const evento = agend && agend.evento ? agend.evento : null;
+    const premioNoite = recompensas.find((x) => x.tipo === 'performance' || x.tipo === 'luta_noite');
+    if (premioNoite) {
+      if (!carreira.premios) carreira.premios = [];
+      carreira.premios.unshift({ tipo: premioNoite.tipo, titulo: premioNoite.titulo, semana: carreira.semana, oponente: oponente.nome, valor: premioNoite.valor || 0, evento: evento ? evento.nome : null });
+    }
+    if (defendeu) carreira.defesasTotal = (carreira.defesasTotal || 0) + 1;
     carreira.historico.push({
       semana: carreira.semana,
       divisao: carreira.divisaoId,
@@ -1665,10 +1808,24 @@
       resultado: venceu ? 'Vitória' : empatou ? 'Empate' : 'Derrota',
       metodo: res.metodo,
       round: res.round,
+      tempo: res.tempo || null,
       titulo: !!titulo,
+      defesa: !!defendeu,
+      rankOp: rankOp || null,
+      rivalidade: heat > 0,
+      premio: premioNoite ? premioNoite.titulo : null,
+      evento: evento ? evento.nome : null,
+      data: evento ? evento.data : null,
       lesao: lesaoNova ? lesaoNova.nome : null,
       bolsa: bolsa,
     });
+    if (evento) {
+      // o resto do card acontece: ranking e cinturoes dos outros mudam junto
+      const lutaJog = evento.card.find((x) => x.jogador);
+      if (lutaJog) lutaJog.resultado = { vencedor: venceu ? carreira.nome : empatou ? null : oponente.nome, perdedor: venceu ? oponente.nome : empatou ? null : carreira.nome, metodo: res.metodo, round: res.round, tempo: res.tempo || '5:00', titulo: !!titulo };
+      resolverCard(carreira, evento, r);
+      registrarEvento(carreira, evento, { venceu: venceu, empatou: empatou, oponente: oponente.nome, metodo: res.metodo, round: res.round, tempo: res.tempo || null, titulo: !!titulo });
+    }
 
     if (!carreira.estatisticas) carreira.estatisticas = Object.assign({ lutas: 0 }, ESTAT_VAZIA);
     const est = luta.estatisticas[0];
@@ -1689,7 +1846,7 @@
     return {
       venceu: venceu, empatou: empatou, lesionou: lesionou, bolsa: bolsa, defendeu: defendeu,
       fama: famaGanha, nivelFamaSubiu: nivelFama(carreira).nivel > nivelFamaAntes, rivalidade: rivalidade,
-      recompensas: recompensas, meta: meta,
+      recompensas: recompensas, meta: meta, evento: evento, tempo: res.tempo || null,
       nivelAntes: nivelAntes, nivelDepois: nivelDoXP(carreira.xp),
       pontosHabGanhos: Math.max(0, (carreira.pontosHab || 0) - pontosHabAntes),
       posAntes: posAntes, posDepois: posicaoDoJogador(carreira),
@@ -1894,6 +2051,18 @@
 
   // ---- Camp de treino: o tempo ate a luta vira poucas decisoes ----
 
+  // Atividades de uma semana de camp. rolls: [atributo, quantas chances de evoluir]; luta: bonus so na luta marcada.
+  const ATIVIDADES = {
+    boxe: { nome: 'Boxe', icone: 'luva', descr: 'Jab, esquiva e mãos rápidas. Afina a trocação.', rolls: [['striking', 2]], luta: { striking: 2, velocidade: 1 }, custo: 25, risco: 0.04 },
+    muaythai: { nome: 'Muay Thai', icone: 'pressao', descr: 'Chutes, joelhos e clinch. Mais potência nos golpes.', rolls: [['striking', 1], ['forca', 1]], luta: { striking: 2, forca: 2 }, custo: 28, risco: 0.05 },
+    wrestling: { nome: 'Wrestling', icone: 'queda', descr: 'Quedas e defesa de quedas. Decide quem manda onde a luta acontece.', rolls: [['wrestling', 2]], luta: { wrestling: 2, defesa: 2 }, custo: 28, risco: 0.05 },
+    jiujitsu: { nome: 'Jiu-jítsu', icone: 'chao', descr: 'Posições, passagens e finalizações. Desgasta menos.', rolls: [['bjj', 1], ['grappling', 1]], luta: { bjj: 2, grappling: 2 }, custo: 22, risco: 0.02 },
+    sparring: { nome: 'Sparring', icone: 'luta', descr: 'O mais parecido com a luta: ganha timing e leitura, mas o risco de lesão é o maior.', rolls: [['qi', 1]], luta: { striking: 3, wrestling: 2, qi: 2 }, custo: 30, risco: 0.1 },
+    condicionamento: { nome: 'Condicionamento', icone: 'folego', descr: 'Corrida, circuitos e tiros. Você chega com mais fôlego aos rounds finais.', rolls: [['resistencia', 2]], luta: {}, stam: 6, custo: 25, risco: 0.03 },
+    recuperacao: { nome: 'Recuperação', icone: 'lua', descr: 'Fisioterapia, sono e massagem. Sem treino, mas o corpo agradece.', recupera: 30, custo: 0, risco: 0 },
+  };
+  const ATIVIDADE_DO_ATRIBUTO = { striking: 'boxe', velocidade: 'boxe', forca: 'muaythai', wrestling: 'wrestling', defesa: 'wrestling', bjj: 'jiujitsu', grappling: 'jiujitsu', resistencia: 'condicionamento', qi: 'sparring', queixo: 'sparring' };
+
   function custoEnergia(c, base) {
     return Math.max(5, base - 3 * nivelAcademia(c, 'preparador'));
   }
@@ -2028,29 +2197,27 @@
     const nutri = nivelAcademia(c, 'nutri');
     const chanceTxt = (attr) => Math.round(Math.min(1, chanceTreino(c, attr).chance * (1 + 0.1 * nivelAcademia(c, 'ginasio'))) * 100) + '%';
     if (et.tipo === 'plano') {
-      const cand = candidatosTreino(c);
-      const A = cand[0];
-      const B = cand[1];
-      const cp = custoEnergia(c, 30);
-      const cl = custoEnergia(c, 15);
-      const op = [];
-      [A, B].forEach((x, i) => {
-        if (!x) return;
-        op.push({
-          id: 'pesado:' + x.attr, titulo: 'Treino pesado: ' + ROTULOS[x.attr], attr: x.attr, recomendado: !!x.recomendado && i === 0,
-          descr: '2 chances de evoluir (' + chanceTxt(x.attr) + ' cada) e +' + (2 + tec) + ' em ' + ROTULOS[x.attr] + ' na luta.',
-          custo: cp, risco: 'Risco de lesão médio', motivo: x.motivo, ok: energia >= 30, razao: 'Energia baixa para um treino pesado (mínimo 30).',
-        });
+      const rec0 = listaRecomendacao(c)[0];
+      let recId = rec0 && rec0.necessario ? ATIVIDADE_DO_ATRIBUTO[rec0.attr] : null;
+      if (energia < 45) recId = 'recuperacao';
+      if (!recId && rec0) recId = ATIVIDADE_DO_ATRIBUTO[rec0.attr];
+      return Object.keys(ATIVIDADES).map((id) => {
+        const a = ATIVIDADES[id];
+        const custo = a.recupera ? -a.recupera : custoEnergia(c, a.custo);
+        const ganhos = [];
+        (a.rolls || []).forEach(([attr, n]) => ganhos.push((n > 1 ? n + ' chances' : '1 chance') + ' de evoluir ' + ROTULOS[attr] + ' (' + chanceTxt(attr) + ')'));
+        const bonus = Object.keys(a.luta || {}).map((k, i) => '+' + (a.luta[k] + (i === 0 ? tec : 0)) + ' ' + ROTULOS[k]);
+        if (bonus.length) ganhos.push(bonus.join(', ') + ' na luta');
+        if (a.stam) ganhos.push('começa a luta com +' + a.stam + ' de fôlego');
+        if (a.recupera) ganhos.push('recupera ' + a.recupera + ' de energia e acelera a cura');
+        const risco = a.risco >= 0.09 ? 'Risco de lesão alto' : a.risco >= 0.045 ? 'Risco de lesão médio' : a.risco > 0 ? 'Risco de lesão baixo' : 'Sem risco';
+        const atr = a.rolls && a.rolls[0] ? a.rolls[0][0] : null;
+        return {
+          id: 'atv:' + id, atv: id, attr: atr, titulo: a.nome, icone: a.icone, descr: a.descr, ganhos: ganhos,
+          custo: custo, risco: risco, recomendado: id === recId, motivo: id === recId && rec0 && energia >= 45 ? rec0.motivo : id === recId ? 'Energia baixa: o corpo pede descanso' : '',
+          ok: a.recupera ? true : energia >= Math.max(30, custo + 5), razao: 'Energia baixa para treinar assim (precisa de ' + Math.max(30, custo + 5) + ').',
+        };
       });
-      if (A && B) {
-        op.push({
-          id: 'leve', titulo: 'Equilibrado: ' + ROTULOS[A.attr] + ' + ' + ROTULOS[B.attr], attr: A.attr, attr2: B.attr,
-          descr: '1 chance de evoluir em cada (' + chanceTxt(A.attr) + ' e ' + chanceTxt(B.attr) + ') e +1 em cada na luta.',
-          custo: cl, risco: 'Risco de lesão baixo', motivo: 'Menos desgaste, dois focos', ok: energia >= 15, razao: 'Energia baixa.',
-        });
-      }
-      op.push({ id: 'recuperar', titulo: 'Recuperar', descr: 'Recupera 30 de energia e acelera a cura. Sem treino.', custo: -30, risco: 'Sem risco', motivo: 'Chegue inteiro à luta', ok: true });
-      return op;
     }
     if (et.tipo === 'scouting') {
       const cand = candidatosTreino(c);
@@ -2064,8 +2231,8 @@
     }
     if (et.tipo === 'corte') {
       return [
-        { id: 'seguro', titulo: 'Corte seguro', descr: 'Bate o peso sem sacrifício. Você chega com o fôlego que tiver.', custo: 0, risco: 'Sem risco', recomendado: true, ok: true },
-        { id: 'agressivo', titulo: 'Corte agressivo', descr: '+3 em força e +2 em queixo na luta, mas começa com menos fôlego (' + Math.max(4, 12 - 3 * nutri) + ' a menos).', custo: 0, risco: 'Fôlego menor na luta', ok: true },
+        { id: 'seguro', titulo: 'Corte de peso seguro', descr: 'Dieta controlada: bate o peso sem sacrifício. Você chega com o fôlego que tiver.', custo: 0, risco: 'Sem risco', recomendado: true, ok: true },
+        { id: 'agressivo', titulo: 'Corte de peso agressivo', descr: '+3 em força e +2 em queixo na luta, mas começa com menos fôlego (' + Math.max(4, 12 - 3 * nutri) + ' a menos).', custo: 0, risco: 'Fôlego menor na luta', ok: true },
       ];
     }
     if (et.tipo === 'coletiva') {
@@ -2136,24 +2303,23 @@
     };
 
     if (et.tipo === 'plano') {
-      if (op.id === 'recuperar') {
-        c.energia = Math.min(100, c.energia + 30);
+      const a = ATIVIDADES[op.atv];
+      if (a.recupera) {
+        c.energia = Math.min(100, c.energia + a.recupera);
         curarLesao(c);
-        linhas.push('Você recuperou o corpo e a cabeça. Energia em ' + Math.round(c.energia) + '.');
-      } else if (op.id === 'leve') {
-        c.energia = clamp(c.energia - op.custo, 0, 100);
-        rolar(op.attr);
-        rolar(op.attr2);
-        somaAttr(op.attr, 1);
-        somaAttr(op.attr2, 1);
-        tentarLesao(0.02);
+        linhas.push('Semana de recuperação. Energia em ' + Math.round(c.energia) + '.');
       } else {
         c.energia = clamp(c.energia - op.custo, 0, 100);
-        rolar(op.attr);
-        rolar(op.attr);
-        somaAttr(op.attr, 2 + tec);
-        linhas.push('Bônus de luta: +' + (2 + tec) + ' em ' + ROTULOS[op.attr] + '.');
-        tentarLesao(0.06);
+        a.rolls.forEach(([attr, n]) => { for (let k = 0; k < n; k++) rolar(attr); });
+        const bonus = [];
+        Object.keys(a.luta || {}).forEach((k, i) => {
+          const v = a.luta[k] + (i === 0 ? tec : 0);
+          somaAttr(k, v);
+          bonus.push('+' + v + ' ' + ROTULOS[k]);
+        });
+        if (a.stam) ef.stamBonus += a.stam;
+        if (bonus.length || a.stam) linhas.push('Bônus na luta: ' + bonus.concat(a.stam ? ['+' + a.stam + ' de fôlego'] : []).join(', ') + '.');
+        tentarLesao(a.risco);
       }
     } else if (et.tipo === 'scouting') {
       if (op.id === 'estudar') {
@@ -2559,6 +2725,270 @@
     return of.slice().sort((a, b) => peso(b) - peso(a))[0];
   }
 
+  // ---- Datas, eventos e fight cards ----
+
+  // Numero aproximado do primeiro UFC numerado de cada ano (o evento do jogo cai no ano da carreira).
+  const INICIO_NUMERADOS = { 1993: 1, 1994: 2, 1995: 4, 1996: 8, 1997: 11, 1998: 13, 1999: 18, 2000: 23, 2001: 29, 2002: 34, 2003: 40, 2004: 44, 2005: 49, 2006: 56, 2007: 66, 2008: 79, 2009: 92, 2010: 106, 2011: 125, 2012: 141, 2013: 155, 2014: 168, 2015: 182, 2016: 195, 2017: 207, 2018: 218, 2019: 233, 2020: 246, 2021: 257, 2022: 270, 2023: 283, 2024: 296, 2025: 311, 2026: 324, 2027: 337, 2028: 350, 2029: 363, 2030: 376 };
+
+  const LOCAIS = {
+    eras: ['Mammoth Gardens, Denver', 'Mark of the Quad Cities, Moline', 'Hammerstein Ballroom, Nova York', 'Trump Taj Mahal, Atlantic City', 'Mandalay Bay Events Center, Las Vegas', 'Ginásio Ibirapuera, São Paulo', 'Nippon Budokan, Tóquio'],
+    auge: ['MGM Grand Garden Arena, Las Vegas', 'Madison Square Garden, Nova York', 'Ginásio do Ibirapuera, São Paulo', 'Rod Laver Arena, Melbourne', 'Air Canada Centre, Toronto', 'TD Garden, Boston', 'Staples Center, Los Angeles', 'Barclays Center, Nova York', 'O2 Arena, Londres', 'Maracanãzinho, Rio de Janeiro'],
+    atual: ['T-Mobile Arena, Las Vegas', 'Madison Square Garden, Nova York', 'UFC APEX, Las Vegas', 'Rogers Arena, Vancouver', 'O2 Arena, Londres', 'Etihad Arena, Abu Dhabi', 'Farmasi Arena, Rio de Janeiro', 'Scotiabank Arena, Toronto', 'Accor Arena, Paris', 'Qudos Bank Arena, Sydney', 'Climate Pledge Arena, Seattle', 'Kaseya Center, Miami', 'Ginásio do Ibirapuera, São Paulo'],
+  };
+
+  // Os eventos acontecem aos sabados: semana 1 do periodo = primeiro sabado do ano-base.
+  function dataDaSemana(periodo, semana) {
+    const base = Date.UTC(ANO_PERIODO[periodo] || 2026, 0, 1) + (Math.max(1, semana) - 1) * 7 * 86400000;
+    const d0 = new Date(base);
+    const d = new Date(base + ((6 - d0.getUTCDay() + 7) % 7) * 86400000);
+    return { ano: d.getUTCFullYear(), mes: d.getUTCMonth() + 1, dia: d.getUTCDate(), ts: d.getTime() };
+  }
+
+  function dataTexto(d, curta) {
+    if (!d) return '';
+    const dt = new Date(d.ts);
+    return dt.toLocaleDateString('pt-BR', curta ? { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' } : { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  }
+
+  function numeroUFC(d) {
+    const ini = INICIO_NUMERADOS[d.ano];
+    if (!ini) return null;
+    const prox = INICIO_NUMERADOS[d.ano + 1] || ini + 12;
+    const inicioAno = Date.UTC(d.ano, 0, 1);
+    const frac = (d.ts - inicioAno) / (365 * 86400000);
+    return clamp(Math.floor(ini + (prox - ini) * frac), ini, prox - 1);
+  }
+
+  function sobrenome(nome) {
+    return String(nome).split(' ').slice(-1)[0];
+  }
+
+  function lutadorPorNome(periodo, divId, nome) {
+    return lutadoresDaDivisao(periodo, divId).find((l) => l.nome === nome) || null;
+  }
+
+  // Resolve uma luta entre dois lutadores do computador (mesmas regras de qualquer luta) e atualiza pontos e cinturao.
+  function lutaDaIA(c, periodo, divId, a, b, titulo, r) {
+    const chave = chaveDivisao(periodo, divId);
+    const mapa = c.elenco[chave] || (c.elenco[chave] = {});
+    const luta = new Luta(
+      { nome: a.nome, atributos: atributosIA(a.lutador || a, periodo, c.semana) },
+      { nome: b.nome, atributos: atributosIA(b.lutador || b, periodo, c.semana) },
+      { rodadas: titulo ? 5 : 3, rng: r }
+    );
+    const res = luta.simularCompleta();
+    const vencedor = res.vencedor === null ? (r() < 0.5 ? 0 : 1) : res.vencedor;
+    const v = vencedor === 0 ? a : b;
+    const p = vencedor === 0 ? b : a;
+    const pontosDe = (x) => (mapa[x.nome] !== undefined ? mapa[x.nome] : x.pontos !== undefined ? x.pontos : rating(x.lutador || x) * 2);
+    mapa[v.nome] = clamp(pontosDe(v) + (titulo ? 12 : 10), 20, 400);
+    mapa[p.nome] = clamp(pontosDe(p) - 10, 20, 400);
+    if (titulo) c.campeoes[chave] = v.nome;
+    return { vencedor: v.nome, perdedor: p.nome, metodo: res.metodo, round: res.round, tempo: res.tempo, titulo: !!titulo };
+  }
+
+  // Monta as outras lutas do card (de outras categorias e, as vezes, da mesma), sem repetir ninguem.
+  function outrasLutasDoCard(c, ocupados, alvo, numerado, r) {
+    const periodo = c.periodo;
+    const dados = (raiz.DADOS && raiz.DADOS[periodo]) || {};
+    const divs = embaralhar(Object.keys(dados), r);
+    const lutas = [];
+    const usar = (a, b, divId, titulo, ra, rb) => {
+      ocupados.add(a.nome);
+      ocupados.add(b.nome);
+      lutas.push({ a: { nome: a.nome, div: divId }, b: { nome: b.nome, div: divId }, titulo: !!titulo, rounds: titulo ? 5 : 3, rank: [ra, rb] });
+    };
+    if (periodo !== 'eras' && numerado) {
+      let titulos = 0;
+      divs.forEach((divId) => {
+        if (titulos >= 2 || divId === c.divisaoId || r() < 0.45) return;
+        const lista = ranking(c, periodo, divId).filter((x) => !x.jogador);
+        const nomeC = campeaoAtual(c, periodo, divId);
+        const camp = lista.find((x) => x.nome === nomeC);
+        const cont = lista.find((x) => x.nome !== nomeC && !ocupados.has(x.nome));
+        if (camp && cont && !ocupados.has(camp.nome)) {
+          usar(camp, cont, divId, true, 1, lista.indexOf(cont) + 1);
+          titulos++;
+        }
+      });
+    }
+    let k = 0;
+    let tentativas = 0;
+    while (lutas.length < alvo && tentativas++ < 80) {
+      const divId = divs[k++ % divs.length];
+      const lista = ranking(c, periodo, divId).filter((x) => !x.jogador);
+      const livres = lista.filter((x) => !ocupados.has(x.nome));
+      if (livres.length < 2) continue;
+      const i = Math.floor(r() * Math.min(livres.length - 1, 10));
+      const a = livres[i];
+      const b = livres[i + 1];
+      usar(a, b, divId, false, lista.indexOf(a) + 1, lista.indexOf(b) + 1);
+    }
+    return lutas;
+  }
+
+  // O evento da luta marcada: nome, data, local e o card completo (a luta do jogador entra no lugar que merece).
+  function gerarEvento(c, of, semanaLuta, rng) {
+    const r = rng || Math.random;
+    const periodo = c.periodo;
+    const data = dataDaSemana(periodo, semanaLuta);
+    const numerado = !!of.titulo || r() < 0.55;
+    const numero = numerado ? numeroUFC(data) : null;
+    const locais = LOCAIS[periodo] || LOCAIS.atual;
+    const local = locais[Math.floor(r() * locais.length)];
+    const ocupados = new Set([c.nome, of.op.nome]);
+    const total = periodo === 'eras' ? 4 : periodo === 'auge' ? 7 : 8;
+    const outras = outrasLutasDoCard(c, ocupados, total - 1, numerado, r);
+    const pos = posicaoDoJogador(c) || 10;
+    const meu = { a: { nome: c.nome, div: c.divisaoId, jogador: true }, b: { nome: of.op.nome, div: c.divisaoId }, titulo: !!of.titulo, rounds: of.titulo ? 5 : 3, jogador: true, rank: [pos, of.rank || 10] };
+    const valor = (l) => (l.jogador ? (l.titulo ? 2000 : 0) + 40 - (pos + (of.rank || 10)) / 2 + 6 : (l.titulo ? 1000 : 0) + 40 - (l.rank[0] + l.rank[1]) / 2);
+    const card = outras.concat([meu]).sort((x, y) => valor(y) - valor(x));
+    card.forEach((l, i) => {
+      l.id = i === 0 ? 'principal' : 'l' + i;
+      l.bloco = i === 0 ? 'Luta principal' : i === 1 ? 'Co-principal' : i <= 4 ? 'Card principal' : 'Card preliminar';
+      delete l.rank;
+    });
+    const mainEv = card[0];
+    const subtitulo = sobrenome(mainEv.a.nome) + ' vs ' + sobrenome(mainEv.b.nome);
+    return {
+      numero: numero,
+      nome: numero ? 'UFC ' + numero : 'UFC Fight Night',
+      subtitulo: subtitulo,
+      semana: semanaLuta,
+      data: data,
+      local: local,
+      card: card,
+    };
+  }
+
+  // Quando a luta do jogador termina, o resto do card acontece e mexe no ranking e nos cinturoes.
+  function resolverCard(c, ev, r) {
+    if (!ev || ev.resolvido) return ev;
+    const periodo = c.periodo;
+    ev.card.forEach((l) => {
+      if (l.jogador) return;
+      const a = lutadorPorNome(periodo, l.a.div, l.a.nome);
+      const b = lutadorPorNome(periodo, l.b.div, l.b.nome);
+      if (!a || !b) return;
+      const linhaA = ranking(c, periodo, l.a.div).find((x) => x.nome === a.nome) || a;
+      const linhaB = ranking(c, periodo, l.b.div).find((x) => x.nome === b.nome) || b;
+      l.resultado = lutaDaIA(c, periodo, l.a.div, linhaA, linhaB, l.titulo, r);
+    });
+    ev.resolvido = true;
+    const destaque = ev.card.filter((l) => l.resultado && (l.titulo || l.id === 'principal')).slice(0, 3);
+    const noticias = destaque.map((l) => ({
+      semana: c.semana,
+      titulo: !!l.titulo,
+      texto: ev.nome + ': ' + l.resultado.vencedor + ' venceu ' + l.resultado.perdedor + (/Nocaute|Finalização/.test(l.resultado.metodo) ? ' por ' + l.resultado.metodo.toLowerCase() : '') + (l.titulo ? ' e ' + (l.resultado.vencedor === l.a.nome ? 'defendeu' : 'conquistou') + ' o cinturão' : '') + '.',
+    }));
+    c.noticias = noticias.concat(c.noticias || []).slice(0, 12);
+    return ev;
+  }
+
+  function registrarEvento(c, ev, resumoJogador) {
+    if (!c.eventosPassados) c.eventosPassados = [];
+    c.eventosPassados.unshift({ nome: ev.nome, subtitulo: ev.subtitulo, data: ev.data, local: ev.local, semana: ev.semana, jogador: resumoJogador, card: ev.card });
+    c.eventosPassados = c.eventosPassados.slice(0, 24);
+  }
+
+  // Quem esta em atividade no card: usado para o circuito nao escalar o mesmo atleta duas vezes.
+  function nomesDoCard(c) {
+    const ev = c.agendada && c.agendada.evento;
+    const s = new Set();
+    if (ev) ev.card.forEach((l) => { s.add(l.a.nome); s.add(l.b.nome); });
+    return s;
+  }
+
+  // ---- Comparacao de confrontos (por fase da luta, nao so pelo overall) ----
+
+  function comparacao(c, op) {
+    const eu = ajustarIdade(c.atributos, idadeAtual(c));
+    const ele = atributosDoOponente(c, op);
+    const lutasEu = c.recorde.v + c.recorde.d + c.recorde.e;
+    const k = op.lutador && op.lutador.cartel ? (op.lutador.cartel.vitorias || 0) + (op.lutador.cartel.derrotas || 0) : 12;
+    const areas = [
+      { id: 'trocacao', nome: 'Trocação', eu: eu.striking * 0.55 + eu.velocidade * 0.25 + eu.forca * 0.2, ele: ele.striking * 0.55 + ele.velocidade * 0.25 + ele.forca * 0.2 },
+      { id: 'wrestling', nome: 'Wrestling e quedas', eu: eu.wrestling * 0.75 + eu.forca * 0.25 - ele.defesa * 0.1, ele: ele.wrestling * 0.75 + ele.forca * 0.25 - eu.defesa * 0.1 },
+      { id: 'chao', nome: 'Jiu-jítsu e chão', eu: eu.bjj * 0.6 + eu.grappling * 0.4, ele: ele.bjj * 0.6 + ele.grappling * 0.4 },
+      { id: 'defesa', nome: 'Defesa', eu: eu.defesa * 0.7 + eu.queixo * 0.3, ele: ele.defesa * 0.7 + ele.queixo * 0.3 },
+      { id: 'resistencia', nome: 'Resistência', eu: eu.resistencia, ele: ele.resistencia },
+      { id: 'experiencia', nome: 'Experiência', eu: eu.qi * 0.7 + Math.min(30, lutasEu) * 0.5, ele: ele.qi * 0.7 + Math.min(30, k) * 0.5 },
+    ].map((a) => {
+      const d = a.eu - a.ele;
+      return Object.assign(a, { dif: d, vantagem: Math.abs(d) < 3.5 ? 'igual' : d > 0 ? 'eu' : 'ele' });
+    });
+    const melhores = areas.filter((a) => a.vantagem === 'eu').sort((x, y) => y.dif - x.dif);
+    const piores = areas.filter((a) => a.vantagem === 'ele').sort((x, y) => x.dif - y.dif);
+    const nomes = (l) => l.slice(0, 2).map((a) => a.nome.toLowerCase()).join(' e ');
+    let resumo = '';
+    if (melhores.length && piores.length) resumo = 'Você leva vantagem em ' + nomes(melhores) + '; ele é melhor em ' + nomes(piores) + '.';
+    else if (melhores.length) resumo = 'Você leva vantagem em ' + nomes(melhores) + ' e não vê pontos fracos claros.';
+    else if (piores.length) resumo = 'Ele é melhor em ' + nomes(piores) + '. Você precisa de um plano para escondê-los.';
+    else resumo = 'Confronto parelho em todas as fases: o plano e a resistência decidem.';
+    // Sugestao de estrategia
+    const por = (id) => areas.find((a) => a.id === id);
+    let sugestao = { id: 'equilibrada', motivo: 'Nenhuma fase decide sozinha: leia o rival e alterne.' };
+    const w = por('wrestling');
+    const t = por('trocacao');
+    const g = por('chao');
+    const rs = por('resistencia');
+    if (w.dif > 8 && ele.defesa < eu.wrestling) sugestao = { id: eu.wrestling > 70 ? 'wrestling' : 'quedas', motivo: 'Seu wrestling passa pela defesa de queda dele.' };
+    else if (g.dif > 10 && ele.wrestling < 62) sugestao = { id: 'finalizacao', motivo: 'No chão você é bem melhor e ele não tem como te segurar em pé.' };
+    else if (t.dif > 8) sugestao = { id: eu.velocidade > ele.velocidade + 5 ? 'contra' : 'trocacao', motivo: 'Em pé você tem a melhor ferramenta.' };
+    else if (rs.dif > 8) sugestao = { id: 'pressao', motivo: 'Você tem mais fôlego: pressione e cobre nos rounds finais.' };
+    else if (t.dif < -8 && w.dif > -3) sugestao = { id: 'quedas', motivo: 'Ele é perigoso em pé: leve a luta para onde ele é menos forte.' };
+    else if (g.dif < -10) sugestao = { id: 'trocacao', motivo: 'No chão ele é mais perigoso: mantenha a luta em pé.' };
+    else if (rs.dif < -8) sugestao = { id: 'resistencia', motivo: 'Ele tem mais fôlego: poupe energia e escolha os momentos.' };
+    return { areas: areas, resumo: resumo, sugestao: sugestao };
+  }
+
+  // ---- Legado: tudo o que a carreira ja fez ----
+
+  function legado(c) {
+    const h = c.historico || [];
+    const vit = h.filter((x) => x.resultado === 'Vitória');
+    const ko = vit.filter((x) => x.metodo === 'Nocaute');
+    const sub = vit.filter((x) => x.metodo === 'Finalização');
+    const dec = vit.filter((x) => /^Decisão/.test(x.metodo));
+    let seq = 0;
+    let maior = 0;
+    h.forEach((x) => {
+      seq = x.resultado === 'Vitória' ? seq + 1 : 0;
+      maior = Math.max(maior, seq);
+    });
+    const seg = (x) => {
+      const m = /^(\d+):(\d+)$/.exec(x.tempo || '');
+      return (x.round || 1) * 300 - 300 + (m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : 300);
+    };
+    const rapido = ko.concat(sub).sort((x, y) => seg(x) - seg(y))[0] || null;
+    const pontuacao = (x) => (x.titulo ? 6 : 0) + (x.resultado === 'Vitória' ? 2 : 0) + (x.metodo === 'Nocaute' || x.metodo === 'Finalização' ? 2 : 0) + (x.round === 1 && x.resultado === 'Vitória' && x.metodo !== 'Decisão unânime' ? 2 : 0) + (x.premio ? 3 : 0) + (x.rivalidade ? 2 : 0) + (x.rankOp && x.rankOp <= 3 ? 2 : 0);
+    const memoraveis = h.slice().map((x) => Object.assign({ pontos: pontuacao(x) }, x)).filter((x) => x.pontos >= 5).sort((x, y) => y.pontos - x.pontos || y.semana - x.semana).slice(0, 6);
+    const campeoes = Object.keys(c.titulosPor || {}).map((k) => {
+      const [per, div] = k.split('|');
+      const d = divisaoDados(per, div);
+      return d ? d.nome : div;
+    });
+    return {
+      titulos: c.titulos || 0,
+      categoriasCampeao: campeoes,
+      defesas: Math.max(c.defesasTotal || 0, c.defesas || 0),
+      vitorias: c.recorde.v,
+      derrotas: c.recorde.d,
+      empates: c.recorde.e,
+      nocautes: ko.length,
+      finalizacoes: sub.length,
+      decisoes: dec.length,
+      maiorSequencia: maior,
+      sequenciaAtual: c.sequencia || 0,
+      maisRapida: rapido,
+      memoraveis: memoraveis,
+      premios: (c.premios || []).slice(0, 20),
+      rivalidades: Object.keys(c.rivais || {}).map((n) => ({ nome: n, heat: c.rivais[n].heat, motivo: c.rivais[n].motivo })),
+      lutasTotal: h.length,
+      fama: nivelFama(c),
+    };
+  }
+
   // ---- Objetivos ----
 
   function objetivoAtual(c) {
@@ -2734,6 +3164,12 @@
     if (!Number.isFinite(c.semDrop)) c.semDrop = 0;
     if (!Array.isArray(c.mentores)) c.mentores = [];
     if (c.lutaBonus === undefined) c.lutaBonus = null;
+    if (c.apelido === undefined) c.apelido = null;
+    if (!Array.isArray(c.eventosPassados)) c.eventosPassados = [];
+    if (!Array.isArray(c.premios)) c.premios = [];
+    if (!Number.isFinite(c.defesasTotal)) c.defesasTotal = c.defesas || 0;
+    if (c.agendada && !c.agendada.evento) c.agendada.evento = gerarEvento(c, c.agendada, c.agendada.semanaLuta, Math.random);
+    c.versao = 2;
     if (!Number.isFinite(c.nivelPago)) c.nivelPago = nivelDoXP(c.xp);
     if (c.celebrarNivel === undefined) c.celebrarNivel = null;
     if (!c.agendada && !c.lutaAtiva && !c.aposentado && !c.lesao && c.ofertas.length === 0) gerarOfertas(c);
@@ -2752,6 +3188,7 @@
     MODALIDADES: MODALIDADES,
     ESTRATEGIAS: ESTRATEGIAS,
     TATICAS_CHAO: TATICAS_CHAO,
+    ESTRATEGIAS_ROUND: ESTRATEGIAS_ROUND,
     TRACOS: TRACOS,
     ASSINATURAS: ASSINATURAS,
     NIVEIS_FAMA: NIVEIS_FAMA,
@@ -2774,6 +3211,14 @@
     metaProgresso: metaProgresso,
     ganchos: ganchos,
     cinturoesSeVencer: cinturoesSeVencer,
+    dataDaSemana: dataDaSemana,
+    dataTexto: dataTexto,
+    numeroUFC: numeroUFC,
+    gerarEvento: gerarEvento,
+    comparacao: comparacao,
+    legado: legado,
+    sobrenome: sobrenome,
+    LOCAIS: LOCAIS,
     proximaOferta: proximaOferta,
     nivelFama: nivelFama,
     ganharFama: ganharFama,
@@ -2797,6 +3242,7 @@
     campConcluido: campConcluido,
     gerarEtapas: gerarEtapas,
     listaRecomendacao: listaRecomendacao,
+    ATIVIDADES: ATIVIDADES,
     ORDEM_DIVISOES: ORDEM_DIVISOES,
     DIVISOES_ERAS: DIVISOES_ERAS,
     PONTOS_CRIACAO: PONTOS_CRIACAO,
