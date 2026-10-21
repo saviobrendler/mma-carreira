@@ -53,22 +53,24 @@
     const ch = UI.chance(op);
     const pos = M.posicaoDoJogador(c);
     const semanas = Math.max(M.MIN_PREPARO, o.semanasAte);
-    const sobe = !o.titulo && pos && o.rank < pos;
+    void pos;
+    const papel = M.papelOferta(c, o);
+    const classePapel = { defesa: 'selo-ouro', titulo: 'selo-ouro', superluta: 'selo-azul', ex_campeao: 'selo-azul', relampago: 'selo-azul', revanche: 'selo-fogo', candidato: 'selo-verde', subir: 'selo-verde', ritmo: '', manter: '' }[papel.papel] || '';
     const tags = [
-      o.titulo ? '<span class="selo-ouro">Cinturão</span>' : '',
-      o.bonus ? '<span class="selo-azul">Luta-relâmpago</span>' : '',
-      o.rival ? `<span class="selo-fogo">${(c.rivais[op.nome] || {}).motivo === 'revanche' ? 'Revanche' : 'Rivalidade'}</span>` : '',
-      sobe ? '<span class="selo-verde">Sobe no ranking</span>' : '',
+      `<span class="${classePapel || 'selo-neutro'}">${UI.esc(papel.rotulo)}</span>`,
+      `<span class="selo-neutro">${papel.rounds} rounds${o.titulo ? ' · cinturão em jogo' : ''}</span>`,
       op.lenda ? '<span class="selo-lenda">Lenda</span>' : '',
     ].join('');
     const partes = op.nome.split(' ');
     return `<article class="desafio ${o.titulo ? 'titulo' : ''}${o.bonus ? ' bonus' : ''}${o.rival ? ' rival' : ''}" style="--i:${i}">
-      <div class="d-foto">${U().foto(UI, op.nome, 'alta')}<span class="d-rank">#${o.rank}</span></div>
+      <div class="d-foto">${U().foto(UI, op.nome, 'alta')}<span class="d-rank">${UI.esc(M.rotuloRank(c.periodo, o.rank))}</span></div>
       <div class="d-corpo">
         <div class="d-tags">${tags}</div>
         <h3><span>${UI.esc(partes.length > 1 ? partes[0] : '')}</span><b>${UI.esc(partes.length > 1 ? partes.slice(1).join(' ') : partes[0])}</b></h3>
         ${inf.apelido ? `<p class="d-apelido">“${UI.esc(inf.apelido)}”</p>` : ''}
         <p class="d-meta">${UI.esc([inf.nac, inf.cartel, M.ESTILOS[op.estilo] || ''].filter(Boolean).join(' · '))}</p>
+        <p class="d-papel">${UI.esc(papel.texto)}</p>
+        ${inf.forma && inf.forma.length ? `<div class="forma" title="Últimas lutas"><span>Forma</span>${inf.forma.map((x) => `<i class="${x === 'V' ? 'v' : 'd'}">${x}</i>`).join('')}</div>` : ''}${(M.historiaLutador(c, op.nome)[0]) ? `<p class="d-historia">${UI.esc(M.historiaLutador(c, op.nome)[0])}</p>` : ''}
         <p class="d-leitura">${UI.esc(cmp.resumo)}</p>
         <div class="d-rodape">
           <div class="d-dado"><small>Luta em</small><b>${semanas} sem.</b></div>
@@ -83,6 +85,19 @@
     </article>`;
   }
 
+  // Situacao do cinturao: a regra em frase simples, o que ja foi cumprido e quando vem a proxima chance.
+  T.situacao = function (UI, compacto) {
+    const c = UI.carreira;
+    const s = UI.MMA.situacaoTitulo(c);
+    const e = UI.esc;
+    const passos = s.passos.map((p) => `<li class="${p.feito ? 'ok' : ''}"><span class="sp-marca" aria-hidden="true">${p.feito ? '✓' : ''}</span><b>${e(p.rotulo)}</b><small>${e(p.texto)}</small></li>`).join('');
+    const defesas = s.tipo === 'campeao' ? `<div class="sit-defesas"><b>${s.defesas}</b><small>${s.defesas === 1 ? 'defesa' : 'defesas'}</small></div>` : '';
+    return `<section class="situacao ${s.tipo}${compacto ? ' compacto' : ''}" aria-label="Situação do cinturão">
+      <div class="sit-corpo"><span class="kicker ${s.tipo === 'campeao' || s.tipo === 'pode' ? 'gold' : ''}">Situação do cinturão</span><h2>${e(s.titulo)}</h2><p>${e(s.resumo)}</p>${compacto ? '' : `<p class="sit-regra">${e(s.regra)}</p>`}</div>
+      ${passos ? `<ul class="sit-passos">${passos}</ul>` : ''}${defesas}
+    </section>`;
+  };
+
   function listaDesafios(UI) {
     const c = UI.carreira;
     const ofs = c.ofertas || [];
@@ -90,7 +105,8 @@
     if (c.lesao) {
       return `<section class="vazio-j alerta"><span class="kicker">Em recuperação</span><h2>${UI.esc(c.lesao.nome)}</h2><p>Faltam ${c.lesao.semanas} ${UI.plural(c.lesao.semanas, 'semana', 'semanas')} para voltar a lutar. Quando você se recuperar, as ofertas aparecem aqui.</p>${UI.btn({ texto: 'Recuperar uma semana', acao: 'descansar', icone: 'lua', tipo: 'primary' })}</section>`;
     }
-    return `<header class="cab-j"><span class="kicker">Próxima luta</span><h1>Escolha seu próximo desafio</h1><p>Ao aceitar, o evento é marcado e o camp de treino começa. Olhe a análise de cada adversário antes de decidir.</p></header>
+    return `<header class="cab-j"><span class="kicker">Próxima luta</span><h1>Escolha seu próximo desafio</h1><p>Ao aceitar, o evento é marcado e o camp de treino começa. Cada luta mostra o papel que tem na sua carreira.</p></header>
+      ${T.situacao(UI)}
       <div class="lista-desafios">${ofs.map((o, i) => desafioCard(UI, o, i)).join('') || '<section class="vazio-j"><h2>Nenhuma oferta agora</h2><p>As ofertas voltam com o tempo.</p>' + UI.btn({ texto: 'Esperar uma semana', acao: 'descansar', icone: 'lua', tipo: 'primary' }) + '</section>'}</div>`;
   }
 
@@ -100,17 +116,19 @@
     if (c.lutaAtiva) {
       return `<section class="vazio-j quente"><span class="kicker">Luta em andamento</span><h2>Contra ${UI.esc(c.lutaAtiva.op.nome)}</h2><p>Você parou no meio do combate.</p>${UI.btn({ texto: 'Retomar luta', acao: 'retomar', tipo: 'primary', trailing: 'seta', cls: 'grande' })}</section>`;
     }
-    if (!c.agendada) return listaDesafios(UI);
+    if (!c.agendada) return T.avisoImprevisto(UI) + listaDesafios(UI);
     const a = c.agendada;
     const ev = a.evento;
     const dia = M.diaDeLuta(c);
     const sc = c.camp && c.camp.efeitos && c.camp.efeitos.scout;
     const risco = M.riscoLuta(c, a.op);
-    const cta = dia
+    const cta = c.imprevisto ? '' : dia
       ? UI.btn({ texto: 'Subir no octógono', acao: 'lutar-agora', tipo: 'primary', icone: 'luta', trailing: 'seta', cls: 'grande' })
       : UI.btn({ texto: 'Continuar o camp', acao: 'ir', data: { tela: 'treino' }, tipo: 'primary', icone: 'peso', trailing: 'seta', cls: 'grande' });
-    return `${U().cartazLuta(UI, true)}
-      <div class="acao-principal">${cta}<small>${dia ? 'O camp acabou. Defina sua estratégia na entrada do octógono.' : 'Faça as escolhas de cada semana de treino antes da luta.'}</small></div>
+    const papelMarcado = M.papelOferta(c, a);
+    return `${T.avisoImprevisto(UI)}${U().cartazLuta(UI, true)}${T.imprevisto(UI)}
+      <p class="papel-marcada"><b>${UI.esc(papelMarcado.rotulo)}</b> · ${UI.esc(papelMarcado.texto)}</p>
+      <div class="acao-principal">${cta}<small>${c.imprevisto ? 'Decida o imprevisto acima para seguir.' : dia ? 'O camp acabou. Defina sua estratégia na entrada do octógono.' : 'Faça as escolhas de cada semana de treino antes da luta.'}</small></div>
       <div class="duas-col">
         <section class="bloco-j"><header><h3>Card do evento</h3><span>${UI.esc(UI.MMA.dataTexto(ev.data))} · ${UI.esc(ev.local)}</span></header>${cardDoEvento(UI, ev)}</section>
         <section class="bloco-j"><header><h3>Análise do confronto</h3><span>${UI.esc(M.ESTILOS[a.op.estilo] || '')} · overall ${a.op.rating}</span></header>
@@ -125,7 +143,36 @@
   // TREINAMENTO
   // ---------------------------------------------------------------------------
 
-  const ICONE_ETAPA = { plano: 'peso', scouting: 'lupa', evento: 'calendario', corte: 'balanca', coletiva: 'pessoas' };
+  const ICONE_ETAPA = { plano: 'peso', scouting: 'lupa', evento: 'calendario', corte: 'balanca', pesagem: 'balanca', coletiva: 'pessoas' };
+
+  // Aviso do que aconteceu na semana da luta (troca de adversario, cancelamento, adiamento): some quando o jogador le.
+  T.avisoImprevisto = function (UI) {
+    const c = UI.carreira;
+    const i = c.ultimoImprevisto;
+    if (!i) return '';
+    return `<aside class="aviso-imp ${i.tipo}" role="status"><div><b>${UI.esc(i.titulo)}</b><p>${UI.esc(i.texto)}</p></div>${UI.btn({ texto: 'Entendi', acao: 'ok-imprevisto' })}</aside>`;
+  };
+
+  // Imprevisto que pede decisao (lesao de ultima hora): trava o dia da luta ate o jogador escolher.
+  T.imprevisto = function (UI) {
+    const c = UI.carreira;
+    const im = c.imprevisto;
+    if (!im) return '';
+    const botoes = im.opcoes.map((o) => `<button class="card-opcao evento-op" data-acao="imprevisto" data-id="${UI.esc(o.id)}"><b>${UI.esc(o.rotulo)}</b><small>${UI.esc(o.resumo)}</small></button>`).join('');
+    return `<section class="imprevisto" role="alert"><span class="kicker">Semana da luta · imprevisto</span><h2>${UI.esc(im.titulo)}</h2><p>${UI.esc(im.texto)}</p><div class="grade-opcoes">${botoes}</div></section>`;
+  };
+
+  // A balanca da pesagem: o resultado do corte de peso.
+  function cartaoBalanca(UI) {
+    const c = UI.carreira;
+    const p = c.camp && c.camp.efeitos && c.camp.efeitos.pesagem;
+    if (!p) return '';
+    const fmt = (v) => (v === null || v === undefined ? '—' : String(Number(v).toFixed(1)).replace('.', ','));
+    const e = UI.esc;
+    const cls = p.resultado === 'estourou' ? 'ruim' : 'ok';
+    const sel = p.resultado === 'estourou' ? 'Peso estourado' : p.resultado === 'sem' ? 'Peso aberto' : p.resultado === 'no_limite' ? 'No limite' : 'Peso batido';
+    return `<section class="balanca ${cls}"><div class="bal-n"><small>Balança</small><b>${fmt(p.kg)}${p.kg === null || p.kg === undefined ? '' : ' kg'}</b></div><div class="bal-n"><small>Limite</small><b>${fmt(p.limite)}${p.limite ? ' kg' : ''}</b></div><div class="bal-n"><small>Resultado</small><b>${e(sel)}</b></div><p>${e(p.texto)}</p></section>`;
+  }
 
   function stepper(UI) {
     const c = UI.carreira;
@@ -179,7 +226,7 @@
     const c = UI.carreira;
     const M = UI.MMA;
     if (c.lutaAtiva) return `<section class="vazio-j quente"><h2>Luta em andamento</h2><p>Termine o combate antes de treinar.</p>${UI.btn({ texto: 'Retomar luta', acao: 'retomar', tipo: 'primary' })}</section>`;
-    if (!c.agendada || !c.camp) return semCamp(UI);
+    if (!c.agendada || !c.camp) return T.avisoImprevisto(UI) + semCamp(UI);
     const a = c.agendada;
     const ev = a.evento;
     const et = M.etapaAtual(c);
@@ -191,18 +238,20 @@
       <div class="camp-energia"><span>Energia</span>${UI.barraAnim(c.energia, cor, 'energia')}<b>${energia}</b></div>
     </header>`;
     let corpo;
-    if (dia || !et) {
+    if (c.imprevisto) {
+      corpo = T.imprevisto(UI);
+    } else if (dia || !et) {
       corpo = `<section class="vazio-j ok"><span class="kicker gold">Camp concluído</span><h2>Chegou a hora</h2><p>Você completou a preparação. Veja a análise final e suba no octógono.</p>${UI.btn({ texto: 'Ir para a próxima luta', acao: 'ir', data: { tela: 'proxima' }, tipo: 'primary', trailing: 'seta', cls: 'grande' })}</section>`;
     } else if (et.tipo === 'evento') {
       corpo = UI.blocoEvento();
     } else {
       const ops = M.opcoesEtapa(c);
-      const sub = { plano: 'Escolha a atividade da semana. Cada uma melhora algo diferente, gasta energia e tem seu risco.', scouting: 'Estudar o adversário ou treinar mais?', corte: 'A pesagem está chegando.', coletiva: 'Como você trata o rival diante das câmeras?' }[et.tipo];
-      corpo = `<section class="decisao"><header><span class="kicker">Etapa ${c.camp.i + 1} de ${c.camp.etapas.length} · ${et.semanas ? et.semanas + ' ' + UI.plural(et.semanas, 'semana', 'semanas') : 'pré-luta'}</span><h2>${UI.esc(UI.etapaTitulo(et.tipo))}</h2><p>${UI.esc(sub)}</p></header><div class="atividades n${ops.length}">${ops.map((o) => cartaoAtividade(UI, o, et.tipo)).join('')}</div></section>`;
+      const sub = { pesagem: 'Dia da balança: veja o resultado do seu corte e escolha como encarar o rival.', plano: 'Escolha a atividade da semana. Cada uma melhora algo diferente, gasta energia e tem seu risco.', scouting: 'Estudar o adversário ou treinar mais?', corte: 'A pesagem está chegando.', coletiva: 'Como você trata o rival diante das câmeras?' }[et.tipo];
+      corpo = `${et.tipo === 'pesagem' ? cartaoBalanca(UI) : ''}<section class="decisao"><header><span class="kicker">Etapa ${c.camp.i + 1} de ${c.camp.etapas.length} · ${et.semanas ? et.semanas + ' ' + UI.plural(et.semanas, 'semana', 'semanas') : 'pré-luta'}</span><h2>${UI.esc(UI.etapaTitulo(et.tipo))}</h2><p>${UI.esc(sub)}</p></header><div class="atividades n${ops.length}">${ops.map((o) => cartaoAtividade(UI, o, et.tipo)).join('')}</div></section>`;
     }
     const ult = c.camp.historico.slice().reverse().slice(0, 4);
     const historico = ult.length ? `<section class="bloco-j"><header><h3>O que já aconteceu no camp</h3></header><ul class="log-camp">${ult.map((h) => `<li><b>${UI.esc(h.titulo)}</b><span>${(h.linhas || []).map((l) => UI.esc(l)).join(' · ')}</span></li>`).join('')}</ul></section>` : '';
-    return `${topo}${stepper(UI)}${corpo}${historico}`;
+    return `${T.avisoImprevisto(UI)}${topo}${stepper(UI)}${corpo}${historico}`;
   };
 
   window.TELAS = Object.assign(window.TELAS || {}, T);

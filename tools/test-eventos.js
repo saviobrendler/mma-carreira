@@ -17,7 +17,11 @@ function teste(nome, fn) {
   }
 }
 
-const nova = (extra) => MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+const nova = (extra) => {
+  const c = MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+  c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  return c;
+};
 function lutarForcado(c, resultado, rng) {
   const r = rng || MMA.criarRng(11);
   let g = 0;

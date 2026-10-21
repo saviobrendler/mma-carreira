@@ -92,7 +92,7 @@ teste('toda classe usada nos templates das telas e do combate tem estilo', () =>
   const definidas = new Set();
   todoCss.replace(/\.([a-zA-Z][\w-]*)/g, (m, c) => { definidas.add(c); return m; });
   // classes que so marcam estado ou ganchos de teste, sem estilo proprio
-  const livres = new Set(['luta-plano', 'luta-resumo', 'luta-sim', 'luta-fim', 'eu', 'ele', 'a', 'b', 'v', 'd', 'e', 'luta', 'rd-tempo', 'oculto', 'alta', 'mini', 'hero', 'sem']);
+  const livres = new Set(['luta-plano', 'luta-resumo', 'luta-sim', 'luta-fim', 'luta-comando', 'eu', 'ele', 'a', 'b', 'v', 'd', 'e', 'luta', 'rd-tempo', 'oculto', 'alta', 'mini', 'hero', 'sem']);
   const faltam = [...usadas].filter((t) => !definidas.has(t) && !livres.has(t));
   assert.deepStrictEqual(faltam, [], 'classes sem estilo: ' + faltam.join(', '));
 });

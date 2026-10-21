@@ -17,7 +17,11 @@ function teste(nome, fn) {
   }
 }
 
-const nova = (extra) => MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+const nova = (extra) => {
+  const c = MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+  c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  return c;
+};
 let semente = 700; // as ofertas aceitas usam semente fixa: o teste nao depende de sorte
 const aceitar = (c, i) => {
   const r = MMA.aceitarOferta(c, c.ofertas[i || 0].id, MMA.criarRng(semente++));
@@ -548,6 +552,11 @@ function lutarAgora(c, rng, esperto) {
 }
 
 function resolverEventoBot(c, rng) {
+  if (c.imprevisto) {
+    // imprevisto da semana da luta: o bot escolhe ao acaso entre lutar machucado e pedir adiamento
+    const r0 = MMA.resolverImprevisto(c, rng() < 0.5 ? 'lutar' : 'adiar', rng);
+    assert.ok(r0.ok, 'imprevisto nao resolveu');
+  }
   if (!c.evento) return;
   const r = MMA.resolverEvento(c, Math.floor(rng() * 2), rng);
   assert.ok(r.ok, 'evento nao resolveu: ' + (r.motivo || ''));

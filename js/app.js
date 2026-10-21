@@ -794,6 +794,7 @@
     scouting: { nome: 'Scouting', icone: 'lupa', titulo: 'O adversário', sub: 'Estudar ou treinar mais?' },
     evento: { nome: 'Evento', icone: 'calendario', titulo: 'Aconteceu algo', sub: '' },
     corte: { nome: 'Peso', icone: 'balanca', titulo: 'Corte de peso', sub: 'A pesagem está chegando.' },
+    pesagem: { nome: 'Pesagem', icone: 'balanca', titulo: 'Pesagem oficial e encarada', sub: 'A balança decide o corte; o resto é jogo mental.' },
     coletiva: { nome: 'Coletiva', icone: 'pessoas', titulo: 'Coletiva de imprensa', sub: 'Como você trata o rival diante das câmeras?' },
   };
 
@@ -964,6 +965,7 @@
       fotoB: fotoSrc(oponente.nome),
       corIniA: corDoNome(c.nome), corIniB: corDoNome(oponente.nome),
       eventoNome: ev ? ev.nome + (ev.subtitulo ? ' · ' + ev.subtitulo : '') : 'Noite de luta',
+      apresentacao: MMA.apresentacaoLuta(c, oponente, titulo),
       bloco: meuCard ? meuCard.bloco : '',
       sugestao: cmp.sugestao.id,
       sugestaoMotivo: cmp.sugestao.motivo,
@@ -1004,6 +1006,26 @@
 
   function roundARound(u) {
     return `<div class="rounds-detalhe">${u.rodadas.map((rd) => `<div class="round-bloco"><h4><span>Round ${rd.num}</span><span>${rd.placar[0]} – ${rd.placar[1]}</span></h4><ol>${rd.eventos.map((e) => `<li class="${e.tipo === 'destaque' ? 'destaque' : ''}">${esc(e.texto)}</li>`).join('')}</ol></div>`).join('')}</div>`;
+  }
+
+  // Replay em texto: os lances mais importantes da luta, em ordem, com o round de cada um.
+  function melhoresMomentos(u) {
+    const pontos = (e) => {
+      if (e.tipo2 === 'ko') return 100;
+      if (e.tipo2 === 'sub') return 95;
+      if (e.tipo2 === 'medico') return 85;
+      if (e.tipo2 === 'corte') return 60;
+      if (e.tipo2 === 'raspa') return 55;
+      if (e.tipo2 === 'queda') return 45;
+      if (e.tipo2 === 'golpe' || e.tipo2 === 'chao_golpe') return (e.valor || 0) * 6 + (e.assinatura ? 25 : 0) + (e.contra ? 8 : 0);
+      return 0;
+    };
+    const todos = [];
+    u.rodadas.forEach((rd) => rd.eventos.forEach((e, i) => { const p = pontos(e); if (p >= 30) todos.push({ rd: rd.num, i: i, e: e, p: p }); }));
+    if (!todos.length) return '';
+    const top = todos.slice().sort((a, b) => b.p - a.p).slice(0, 5).sort((a, b) => a.rd - b.rd || a.i - b.i);
+    const lista = top.map((m) => `<li class="${m.e.ator === 0 ? 'eu' : m.e.ator === 1 ? 'ele' : ''}${m.p >= 85 ? ' decisivo' : ''}"><span class="mm-r">R${m.rd}</span><span class="mm-t">${esc(m.e.texto)}</span></li>`).join('');
+    return painel({ cls: 'entra', i: 3, titulo: 'Melhores momentos', icone: 'estrela', meta: 'os lances que marcaram a luta', corpo: `<ol class="momentos">${lista}</ol>` });
   }
 
   // Cartoes dos juizes, um por linha de juiz com o total e quem eles deram.
@@ -1073,7 +1095,7 @@
         ${painel({ cls: 'entra', i: 1, titulo: 'Estatísticas', icone: 'barras', corpo: tabelaEstatLuta(u) })}
         ${painel({ cls: 'entra', i: 2, titulo: 'O que mudou', icone: 'historico', corpo: `<div class="consequencias">
           ${stat('Cartel', `${a.recorde.v}-${a.recorde.d}-${a.recorde.e}`, `${d.recorde.v}-${d.recorde.d}-${d.recorde.e}`, u.venceu ? 'sobe' : u.empatou ? '' : 'desce')}
-          ${stat('Ranking', a.pos ? '#' + a.pos : '—', d.pos ? '#' + d.pos : '—', a.pos && d.pos && d.pos !== a.pos ? (d.pos < a.pos ? 'sobe' : 'desce') : '')}
+          ${stat('Ranking', MMA.rotuloRank(c.periodo, a.pos), MMA.rotuloRank(c.periodo, d.pos), a.pos && d.pos && d.pos !== a.pos ? (d.pos < a.pos ? 'sobe' : 'desce') : '')}
           ${stat('Pontos no ranking', a.pontos, d.pontos, d.pontos > a.pontos ? 'sobe' : d.pontos < a.pontos ? 'desce' : '')}
           ${stat('Bolsa', '$0', '+$' + (u.bolsa || 0).toLocaleString('pt-BR'), '')}
           ${stat('Fama', f.nome, u.fama ? sinal(u.fama) + ' pts' : 'sem mudança', u.fama > 0 ? 'sobe' : u.fama < 0 ? 'desce' : '')}
@@ -1090,6 +1112,7 @@
           ${u.titulo && !u.venceu ? `<div class="res-destaque alerta">Cinturão: ${u.empatou ? 'mantido pelo campeão' : 'não conquistado'}</div>` : ''}
         </div>` })}
       </div>
+      ${melhoresMomentos(u)}
       ${painelRecompensas(u)}
       ${cardResultados(u)}
       ${posLuta}
@@ -1327,7 +1350,9 @@
         if (!r.ok) return toast(r.motivo);
         salvar();
         if (r.concluido) {
-          toast('Camp concluído. Dia da luta!');
+          if (!carreira.agendada) toast('A luta caiu: veja o aviso.');
+          else if (carreira.imprevisto) toast('Imprevisto na semana da luta: decida o que fazer.');
+          else toast('Camp concluído. Dia da luta!');
           return ir('proxima');
         }
         return render();
@@ -1447,6 +1472,19 @@
         avisos.forEach((a) => toast(a));
         return render();
       }
+
+      case 'imprevisto': {
+        const r = MMA.resolverImprevisto(carreira, d.id);
+        if (!r.ok) return toast(r.motivo);
+        salvar();
+        toast(r.texto);
+        return ir(r.resultado === 'lutar' || r.resultado === 'adiada' ? 'proxima' : 'proxima');
+      }
+
+      case 'ok-imprevisto':
+        carreira.ultimoImprevisto = null;
+        salvar();
+        return render();
 
       case 'evento': {
         const r = MMA.resolverEvento(carreira, Number(d.indice));
@@ -1570,7 +1608,7 @@
   const UI = {
     MMA, esc, icone, btn, badge, plural, fotoSrc, corDoNome, nomeDivisao, divisoesDoPeriodo, barraAnim, blocoEvento, painelNoticias, painelRivais, estado, PERIODOS,
     get carreira() { return carreira; },
-    dados: (nome) => POR_NOME[nome] || null,
+    dados: (nome) => POR_NOME[nome] || (carreira ? MMA.buscarLutador(carreira, nome) : null),
     credito: creditoFoto,
     categoria: categoriaAtual,
     etapaNome: (t) => ETAPA_UI[t].nome,

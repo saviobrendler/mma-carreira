@@ -100,6 +100,47 @@
       return { id: luta.estrategia[0] || 'equilibrada', motivo: 'O plano está funcionando: mantenha.' };
     }
 
+    // Clima da luta nos cartoes dos juizes e o que o corner diz olhando o round que acabou.
+    function climaRound() {
+      const feitos = luta.rodadas.length;
+      const restam = total - feitos;
+      const m = luta.cartoes.map((c) => c[0] - c[1]);
+      const meus = m.filter((x) => x > 0).length;
+      const dele = m.filter((x) => x < 0).length;
+      let txt;
+      let tom = 'neutro';
+      if (restam === 1) {
+        if (dele === 3) { txt = 'Round decisivo: você perde nos três cartões. Para virar, precisa vencer este round com folga ou buscar a finalização.'; tom = 'alerta'; }
+        else if (meus === 3) { txt = 'Round decisivo: você está na frente nos três cartões. Um round de cuidado garante a decisão.'; tom = 'bom'; }
+        else { txt = 'Round decisivo: o placar está apertado e este round decide a luta.'; tom = 'alerta'; }
+      } else if (dele === 3) { txt = 'Você perde nos três cartões. O córner quer mais volume e mais risco.'; tom = 'alerta'; }
+      else if (meus === 3) { txt = 'Você lidera nos três cartões. Mantenha o plano e não se exponha à toa.'; tom = 'bom'; }
+      else if (meus === 0 && dele === 0) txt = 'Luta empatada nos cartões: quem tomar a iniciativa agora abre vantagem.';
+      else txt = 'Cartões divididos: o próximo round pode virar a luta.';
+      return { txt: txt, tom: tom, decisivo: restam === 1 };
+    }
+
+    function falasCorner(rodada) {
+      const f = luta.f;
+      const e = rodada.est;
+      const falas = [];
+      if (e[1].quedasOk >= 1 && e[1].quedasOk >= e[0].quedasOk) falas.push('Ele já levou você ao chão ' + e[1].quedasOk + (e[1].quedasOk === 1 ? ' vez' : ' vezes') + ': reforce a defesa ou leve a luta para onde você manda (Wrestling e controle).');
+      if (e[1].acertos - e[0].acertos >= 3) falas.push('Ele acerta mais em pé (' + e[1].acertos + ' a ' + e[0].acertos + '): tente o Contra-ataque ou tire a luta da trocação.');
+      if (e[0].acertos - e[1].acertos >= 3) falas.push('Você domina a trocação (' + e[0].acertos + ' a ' + e[1].acertos + '): insista nela.');
+      if (f[0].stam < 45) falas.push('Seu fôlego está acabando: Administrar resistência ou o córner Respirar.');
+      if (f[1].stam < 40) falas.push('Ele está cansado: é hora de Pressão constante.');
+      if (f[0].corte) falas.push('Seu corte preocupa: use o conselho de tratar o corte para evitar a parada médica.');
+      if (f[1].corte) falas.push('Ele está cortado: golpes no rosto podem render uma parada médica.');
+      if (rodada.ctrl && rodada.ctrl[1] - rodada.ctrl[0] >= 2) falas.push('Ele controlou o chão por mais tempo: prepare a escapada ou impeça a queda.');
+      if (!falas.length) falas.push(rodada.placar[0] > rodada.placar[1] ? 'Bom round. Continue assim.' : rodada.placar[1] > rodada.placar[0] ? 'Round perdido. Precisamos mudar alguma coisa.' : 'Round parelho. Ajuste um detalhe e abra vantagem.');
+      return falas.slice(0, 3);
+    }
+
+    function blocoCorner(rodada) {
+      const c = climaRound();
+      return `<section class="tv-clima ${c.tom}${c.decisivo ? ' decisivo' : ''}"><div class="clima-topo">${c.decisivo ? '<span class="clima-selo">Round decisivo</span>' : ''}<p>${esc(c.txt)}</p></div><div class="corner-fala"><span class="kicker">Seu córner diz</span><ul>${falasCorner(rodada).map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div></section>`;
+    }
+
     function tabela(rodada) {
       const e = rodada.est;
       const ctrl = rodada.ctrl || [0, 0];
@@ -159,23 +200,33 @@
 
     // ---------- telas ----------
 
+    // Apresentacao do locutor: quem entra, de onde vem, o cartel e a pesagem.
+    function blocoApresentacao() {
+      const a = ctx.apresentacao;
+      if (!a || !a.linhas || !a.linhas.length) return '';
+      return `<section class="tv-apresentacao" aria-label="Apresentação da luta"><span class="kicker">Na entrada do octógono</span><ol>${a.linhas.map((l) => `<li>${esc(l)}</li>`).join('')}</ol></section>`;
+    }
+
     function telaPlano() {
       const sug = sugerir();
       selecionada = ESTR[sug.id] ? (luta.estrategia[0] || sug.id) : selecionada;
       raiz.innerHTML = `<div class="tv luta-plano">
         ${faixaEvento()}
         ${duelo(true)}
+        ${blocoApresentacao()}
         <section class="tv-plano">
           <header><span class="kicker gold">Antes da luta</span><h2>Sua estratégia inicial</h2><p>${esc(sug.motivo)} Você pode mudar o plano a cada round.</p></header>
           ${cartoesEstrategia(sug.id)}
           <div class="tv-acoes">
             <button type="button" class="btn primary grande" id="b-comecar">Simular round 1<span class="btn-seta">→</span></button>
+            <button type="button" class="btn secondary" id="b-comandar">Comandar o round<small>Você decide durante o round</small></button>
             <button type="button" class="btn secondary" id="b-resultado">Ver resultado<small>Simula a luta inteira agora</small></button>
           </div>
         </section>
       </div>`;
       ligarEstrategias();
       raiz.querySelector('#b-comecar').addEventListener('click', jogarRound);
+      raiz.querySelector('#b-comandar').addEventListener('click', comandarRound);
       raiz.querySelector('#b-resultado').addEventListener('click', verResultado);
       const sel = raiz.querySelector('.estr.sel');
       if (sel) sel.focus({ preventScroll: true });
@@ -205,12 +256,13 @@
       const proximo = luta.rodadas.length + 1;
       const rodape = final
         ? faixaFim()
-        : `<section class="tv-plano">
+        : `${blocoCorner(rodada)}<section class="tv-plano">
           <header><span class="kicker gold">Intervalo</span><h2>Estratégia para o round ${proximo}</h2><p>${esc(sug.motivo)}</p></header>
           ${cartoesEstrategia(sug.id)}
           ${opcoesCorner()}
           <div class="tv-acoes">
             <button type="button" class="btn primary grande" id="b-prox">Simular round ${proximo}<span class="btn-seta">→</span></button>
+            <button type="button" class="btn secondary" id="b-comandar">Comandar o round<small>Você decide durante o round</small></button>
             <button type="button" class="btn secondary" id="b-resto">Ver resultado<small>Simula o restante da luta agora</small></button>
           </div>
         </section>`;
@@ -233,6 +285,7 @@
       }
       ligarEstrategias();
       raiz.querySelector('#b-prox').addEventListener('click', jogarRound);
+      raiz.querySelector('#b-comandar').addEventListener('click', comandarRound);
       raiz.querySelector('#b-resto').addEventListener('click', verResultado);
       raiz.querySelectorAll('[data-conselho]').forEach((b) => b.addEventListener('click', () => {
         if (!vivo() || ocupado) return;
@@ -271,6 +324,115 @@
       });
     }
 
+    // ---------- comando durante o round ----------
+
+    const DICAS = {
+      trocar: (eu, ele) => dica(eu.striking - ele.defesa, 'Seus golpes passam', 'Ele se defende bem', 'Troca equilibrada'),
+      pressionar: (eu, ele, st) => (st < 60 ? 'Vai custar fôlego' : 'Pressão total'),
+      derrubar: (eu, ele) => dica(eu.wrestling - ele.defesa, 'Vantagem na queda', 'Ele defende bem a queda', 'Queda equilibrada'),
+      cautela: () => 'Poupa fôlego e permite contra-golpes',
+      contra: (eu, ele) => dica(eu.qi - ele.qi, 'Você lê bem o rival', 'Ele é difícil de ler', 'Pune o erro e poupa fôlego'),
+      clinch: (eu, ele) => dica(eu.forca - ele.forca, 'Você é mais forte colado', 'Ele é mais forte colado', 'Joelhos e projeções'),
+      raspar: (eu, ele) => dica(eu.grappling - ele.grappling, 'Boa chance de inverter', 'Difícil inverter', 'Pode inverter a posição'),
+      controlar: () => 'Equilibrado',
+      castigar: (eu, ele) => dica((eu.striking + eu.forca) / 2 - ele.queixo, 'Pode nocautear', 'Queixo duro', 'Dano seguro'),
+      finalizar: (eu, ele) => dica(eu.bjj - ele.bjj, 'Vantagem no jiu-jítsu', 'Ele é melhor no chão', 'Jiu-jítsu parelho'),
+      escapar: (eu, ele) => dica(eu.grappling - ele.grappling, 'Escape provável', 'Difícil sair', 'Escape possível'),
+      proteger: () => 'Reduz o dano que você sofre',
+      guarda: (eu, ele) => dica(eu.bjj - ele.bjj, 'Boa chance de finalizar', 'Arriscado', 'Chance razoável'),
+    };
+    function dica(v, bom, ruim, igual) {
+      return v > 8 ? bom : v < -8 ? ruim : igual;
+    }
+
+    function chavesDaSituacao() {
+      const sit = luta.situacao();
+      const extra = (luta.desbloqueios && luta.desbloqueios[0]) || [];
+      const base = sit === 'pe'
+        ? ['trocar', 'pressionar', 'derrubar', 'cautela'].concat(['contra', 'clinch'].filter((x) => extra.indexOf(x) >= 0))
+        : sit === 'cima' ? ['controlar', 'castigar', 'finalizar'] : ['escapar', 'proteger', 'guarda'].concat(extra.indexOf('raspar') >= 0 ? ['raspar'] : []);
+      return luta.assinaturaDisponivel(0) ? base.concat(['assinatura']) : base;
+    }
+
+    function dadosDoComando(k) {
+      if (k === 'assinatura') {
+        const sig = luta.assinatura[0];
+        return { nome: sig.nome, descr: MMA.ASSINATURAS[sig.id] ? MMA.ASSINATURAS[sig.id].descr : 'Golpe especial, uma vez por round.' };
+      }
+      return MMA.ESTRATEGIAS[k] || MMA.TATICAS_CHAO[k];
+    }
+
+    // Tela do round ao vivo: o relogio, quem esta ganhando, o que acabou de acontecer e o que fazer agora.
+    function telaComando(ultimos) {
+      const rd = luta.abrirRound();
+      const sit = luta.situacao();
+      const chaves = chavesDaSituacao();
+      const eu = luta.f[0].attr;
+      const ele = luta.f[1].attr;
+      const resta = Math.max(0, Math.round(300 - (300 * rd.i) / 8));
+      const d = luta.parcialRound();
+      const pos = clamp(d * 3.2, -48, 48);
+      const quem = d > 4 ? 'Você está ganhando o round' : d < -4 ? 'O rival está ganhando o round' : 'Round parelho';
+      const titulo = sit === 'pe' ? 'Em pé. O que você faz?' : sit === 'cima' ? 'Você está por cima. Aproveite!' : 'Você está por baixo. Reaja!';
+      const lei = luta.leituraRival ? luta.leituraRival() : null;
+      const feed = (ultimos && ultimos.length ? ultimos : rd.eventos.slice(-3)).slice(-4);
+      raiz.innerHTML = `<div class="tv luta-comando">
+        ${faixaEvento()}
+        ${duelo(false)}
+        <section class="cmd-painel">
+          <div class="cmd-topo"><div class="cmd-round"><small>Round</small><b>${rd.num}</b></div><div class="cmd-relogio"><small>Tempo</small><b>${mmss(resta)}</b></div>
+            <div class="cmd-momento"><span>${esc(quem)}</span><div class="momento-barra"><i style="width:${50 + pos}%" class="mom-a"></i><i style="width:${50 - pos}%" class="mom-b"></i></div></div></div>
+          <div class="cmd-condicao"><span>Seu fôlego <b>${Math.round(luta.f[0].stam)}%</b></span><span>Seu dano <b>${100 - MMA.vidaPct(luta.f[0])}%</b></span><span>Fôlego dele <b>${Math.round(luta.f[1].stam)}%</b></span><span>Dano dele <b>${100 - MMA.vidaPct(luta.f[1])}%</b></span></div>
+          ${feed.length ? `<ol class="cmd-feed" aria-live="polite">${feed.map((e) => `<li class="${e.ator === 0 ? 'eu' : e.ator === 1 ? 'ele' : ''}">${esc(e.texto)}</li>`).join('')}</ol>` : '<p class="vazio">O round começou.</p>'}
+          <h2 class="cmd-titulo">${titulo}</h2>
+          ${lei ? `<p class="cmd-leitura">Leitura do córner: ${esc(lei.texto)}</p>` : ''}
+          <div class="cmd-grade n${chaves.length}" role="group" aria-label="Escolha sua ação">${chaves.map((k, i) => {
+            const dd = dadosDoComando(k);
+            const fn = DICAS[k];
+            const dicaTxt = k === 'assinatura' ? 'Uma vez por round' : fn ? fn(eu, ele, luta.f[0].stam) : '';
+            return `<button type="button" class="cmd${k === 'assinatura' ? ' ass' : ''}" data-cmd="${k}"><kbd>${i + 1}</kbd><b>${esc(dd.nome)}</b><small>${esc(dd.descr)}</small><em>${esc(dicaTxt)}</em></button>`;
+          }).join('')}</div>
+          <div class="tv-acoes"><button type="button" class="btn secondary" id="b-auto-round">Deixar o plano decidir o resto do round<small>Segue a estratégia escolhida</small></button></div>
+        </section>
+      </div>`;
+      raiz.querySelectorAll('[data-cmd]').forEach((b) => b.addEventListener('click', () => comando(b.dataset.cmd)));
+      raiz.querySelector('#b-auto-round').addEventListener('click', terminarRoundNoPlano);
+      const primeiro = raiz.querySelector('[data-cmd]');
+      if (primeiro) primeiro.focus({ preventScroll: true });
+    }
+
+    function aposMomento(m) {
+      ctx.aoSalvar();
+      ocupado = false;
+      if (m.rodada) return telaResumo(m.rodada, luta.encerrada);
+      telaComando(m.eventos);
+    }
+
+    function comandarRound() {
+      if (ocupado || !vivo() || luta.encerrada) return;
+      luta.definirEstrategia(0, selecionada);
+      luta.abrirRound();
+      window.scrollTo(0, 0);
+      telaComando([]);
+    }
+
+    function comando(chave) {
+      if (ocupado || !vivo() || luta.encerrada) return;
+      ocupado = true;
+      aposMomento(luta.jogarMomento(chave, 2));
+    }
+
+    function terminarRoundNoPlano() {
+      if (ocupado || !vivo() || luta.encerrada) return;
+      ocupado = true;
+      luta.definirEstrategia(0, selecionada);
+      luta.rodarRound(null);
+      ctx.aoSalvar();
+      ocupado = false;
+      telaResumo(luta.rodadas[luta.rodadas.length - 1], luta.encerrada);
+      window.scrollTo(0, 0);
+    }
+
     // ---------- acoes ----------
 
     async function jogarRound() {
@@ -307,8 +469,12 @@
         document.removeEventListener('keydown', teclas);
         return;
       }
-      if (ocupado || luta.encerrada || !raiz.querySelector('.estrategias')) return;
+      if (ocupado || luta.encerrada) return;
       if (ev.target && /input|textarea|select/i.test(ev.target.tagName)) return;
+      const nc = Number(ev.key);
+      const botoesCmd = raiz.querySelectorAll('[data-cmd]');
+      if (botoesCmd.length && nc >= 1 && nc <= botoesCmd.length) { comando(botoesCmd[nc - 1].dataset.cmd); return; }
+      if (!raiz.querySelector('.estrategias')) return;
       const n = Number(ev.key);
       if (n >= 1 && n <= ordem.length) {
         selecionada = ordem[n - 1];
@@ -326,13 +492,7 @@
 
     function iniciar() {
       if (luta.encerrada) return telaResumo(luta.rodadas[luta.rodadas.length - 1], true);
-      if (luta.rd && luta.rd.i > 0) {
-        // luta salva no meio de um round por uma versao anterior: termina o round e mostra o resumo
-        luta.definirEstrategia(0, selecionada);
-        luta.rodarRound(null);
-        ctx.aoSalvar();
-        return telaResumo(luta.rodadas[luta.rodadas.length - 1], luta.encerrada);
-      }
+      if (luta.rd && luta.rd.i > 0) return telaComando([]); // round em andamento: volta de onde parou
       if (luta.rodadas.length) return telaResumo(luta.rodadas[luta.rodadas.length - 1], false);
       telaPlano();
     }

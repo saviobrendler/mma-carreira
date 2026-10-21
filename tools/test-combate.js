@@ -94,7 +94,7 @@ teste('as estrategias mudam o que acontece: quedas, finalizacao, trocacao e resi
     for (let i = 0; i < N; i++) {
       const l = new MMA.Luta(L('misto', 'A'), L('misto', 'B'), { rng: MMA.criarRng(i + 3), rodadas: 3, estrategiaA: id });
       l.simularCompleta();
-      t += campo === 'stam' ? l.f[0].stam : l.estatisticas[lado === undefined ? 0 : lado][campo];
+      t += campo === 'stam' ? l.rodadas[l.rodadas.length - 1].stamFim[0] : l.estatisticas[lado === undefined ? 0 : lado][campo]; // folego sentido no fim do ultimo round (antes da recuperacao)
     }
     return t / N;
   };

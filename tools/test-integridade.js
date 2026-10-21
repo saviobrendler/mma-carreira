@@ -19,7 +19,11 @@ function teste(nome, fn) {
   }
 }
 
-const nova = (extra) => MMA.novaCarreira(Object.assign({ nome: 'Teste Integridade', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+const nova = (extra) => {
+  const c = MMA.novaCarreira(Object.assign({ nome: 'Teste Integridade', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+  c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  return c;
+};
 
 // Faz o camp inteiro (sempre a primeira opcao valida) e devolve se chegou ao dia da luta.
 function fazerCamp(c, rng) {
@@ -46,14 +50,19 @@ function lutarAgora(c, rng, estrategia) {
 
 function proximaLuta(c, rng) {
   let g = 0;
-  while (!c.agendada && g++ < 60) {
-    if (c.lesao) { MMA.descansar(c, rng); continue; }
-    if (!c.ofertas.length) { MMA.descansar(c, rng); continue; }
+  while (g++ < 120) {
+    if (c.imprevisto) { MMA.resolverImprevisto(c, rng() < 0.5 ? 'lutar' : 'adiar', rng); continue; }
+    if (c.agendada) {
+      fazerCamp(c, rng);
+      if (c.imprevisto || !c.agendada) continue; // troca/cancelamento/lesao de ultima hora: segue o fluxo
+      return true;
+    }
+    if (c.lesao || !c.ofertas.length) { MMA.descansar(c, rng); continue; }
     const of = c.ofertas.find((o) => o.titulo) || c.ofertas[Math.floor(rng() * c.ofertas.length)];
     const r = MMA.aceitarOferta(c, of.id, rng);
     if (!r.ok) MMA.descansar(c, rng);
   }
-  return !!c.agendada && fazerCamp(c, rng);
+  return false;
 }
 
 // O que precisa ser verdade sobre uma carreira depois de qualquer luta.
@@ -140,6 +149,7 @@ teste('carreiras longas (60 carreiras, 3 eras): cartel, sequencia, ranking, cint
     const periodo = ['atual', 'auge', 'eras'][k % 3];
     const div = periodo === 'eras' ? 'peso_aberto' : MMA.ORDEM_DIVISOES[k % 8];
     const c = nova({ periodo: periodo, divisaoId: div, rng: MMA.criarRng(100 + k) });
+    c.semImprevistos = false; // aqui a semana da luta tem imprevistos de verdade
     if (k % 2) Object.keys(c.atributos).forEach((a) => { c.atributos[a] = Math.min(99, c.atributos[a] + 22); c.tetos[a] = 99; });
     const rng = MMA.criarRng(500 + k);
     for (let i = 0; i < 18; i++) {

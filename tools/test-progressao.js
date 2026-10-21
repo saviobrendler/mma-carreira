@@ -18,7 +18,11 @@ function teste(nome, fn) {
 }
 
 const lutador = (estilo, nome) => ({ nome, estilo, atributos: Object.assign({}, MMA.PERFIS[estilo]) });
-const nova = (extra) => MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+const nova = (extra) => {
+  const c = MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+  c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  return c;
+};
 
 function passarEtapa(c, rng) {
   const et = MMA.etapaAtual(c);

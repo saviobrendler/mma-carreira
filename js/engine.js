@@ -244,9 +244,27 @@
     return Object.assign({ texto: texto, tipo: tipo || 'normal' }, extra || {});
   }
 
-  const TEXTOS_SOCO = ['acerta um jab limpo', 'conecta um direto', 'encaixa um cruzado', 'acerta um gancho', 'castiga com uma sequência'];
-  const TEXTOS_CHUTE = ['acerta um low kick', 'acerta um chute no corpo', 'acerta um chute alto'];
-  const TEXTOS_JOELHO = ['acerta um joelho'];
+  const TEXTOS_SOCO = ['acerta um jab limpo', 'conecta um direto', 'encaixa um cruzado', 'acerta um gancho', 'castiga com uma sequência', 'abre com o jab e emenda o direto', 'acerta um uppercut', 'conecta um soco no corpo', 'encaixa um cruzado de direita', 'acerta um direto de esquerda'];
+  const TEXTOS_CHUTE = ['acerta um low kick', 'acerta um chute no corpo', 'acerta um chute alto', 'castiga a coxa com um low kick', 'acerta um chute frontal', 'solta um chute rodado'];
+  const TEXTOS_JOELHO = ['acerta um joelho', 'conecta uma joelhada no clinch', 'acerta um joelho no corpo'];
+  const TEXTOS_ERRO = [
+    '{a} lança o golpe no vazio, {d} se defende.',
+    '{d} esquiva e {a} acerta só o ar.',
+    '{a} tenta o ataque, mas {d} bloqueia.',
+    '{d} lê o golpe de {a} e sai da frente.',
+    '{a} erra o tempo e {d} se afasta.',
+  ];
+  const PREFIXOS_GRADE = ['encosta {d} na grade e ', 'prende {d} contra a grade e ', 'avança sobre {d} e '];
+  // Nocaute: o texto diz o golpe que decidiu.
+  const TEXTOS_KO = {
+    soco: ['Nocaute! O soco de {a} encontra o queixo de {d}, que desaba na lona.', 'Nocaute! {d} leva um soco limpo e cai sem reação.', 'Nocaute! A sequência de {a} termina com {d} no chão e o árbitro encerra a luta.'],
+    chute: ['Nocaute! O chute de {a} acerta em cheio e {d} cai apagado.', 'Nocaute! {d} não aguenta o chute de {a} e vai ao chão.'],
+    joelho: ['Nocaute! A joelhada de {a} derruba {d} sem defesa.', 'Nocaute! O joelho de {a} acerta o alvo e {d} desaba.'],
+    chao: ['Nocaute! Os golpes de {a} por cima encerram a luta: o árbitro se joga e salva {d}.', 'Nocaute! {a} castiga {d} no chão até o árbitro parar o combate.'],
+    contra: ['Nocaute! {a} contra-ataca no momento certo e {d} cai.'],
+  };
+  const sortear = (lista, r) => lista[Math.floor(r() * lista.length)];
+  const preencher = (modelo, a, d) => modelo.replace(/\{a\}/g, a).replace(/\{d\}/g, d);
 
   // Escolha de tatica em pe: olha o proprio ponto forte e a fraqueza do rival (um wrestler contra quem
   // defende mal a queda insiste nela; contra quem defende bem, volta para a trocacao).
@@ -618,7 +636,8 @@
         est0.acertos++;
         if (fator < 1) est0.acertosChao++;
         else est0.acertosPe++;
-        push(`${f[a].nome} ${texto}`, valor > 6.4 ? 'destaque' : 'normal', Object.assign({ ator: a, alvo: d, valor: valor, forte: valor > 6.4 }, extra || {}));
+        const prefixo = kind === 'pressionar' && fator >= 1 && r() < 0.35 ? preencher(sortear(PREFIXOS_GRADE, r), f[a].nome, f[d].nome) : '';
+        push(prefixo ? prefixo + texto : `${f[a].nome} ${texto}`, valor > 6.4 ? 'destaque' : 'normal', Object.assign({ ator: a, alvo: d, valor: valor, forte: valor > 6.4 }, extra || {}));
         // Corte no rosto: golpes fortes abrem cortes que podem parar a luta.
         if (valor > 6.4 && f[d].corte < 2 && r() < 0.16 * (this.tem(d, 'resiliente') ? 0.5 : 1)) {
           f[d].corte++;
@@ -629,7 +648,8 @@
         const pKO = clamp(((valor - queixoDe(d) / 12) / 10) * castigo + (this.tem(a, 'nocauteador') ? 0.02 : 0) + (this.tem(a, 'hab_ko') ? 0.04 : 0), 0, 0.4);
         if (r() < pKO) {
           rd.ko = d;
-          push(`Nocaute! ${f[d].nome} vai ao chão.`, 'destaque', { ator: a, alvo: d, tipo2: 'ko' });
+          const familia = extra && extra.contra ? 'contra' : fator < 1 ? 'chao' : (extra && extra.arma) || 'soco';
+          push(preencher(sortear(TEXTOS_KO[familia] || TEXTOS_KO.soco, r), f[a].nome, f[d].nome), 'destaque', { ator: a, alvo: d, tipo2: 'ko', arma: familia });
         }
       };
       const gasto = (lado, custo, chave) => {
@@ -743,7 +763,7 @@
           golpear(a, d, 1, ea.dano * (sig ? 1.9 : 1), texto, { tipo2: 'golpe', arma: arma, assinatura: !!sig }, ka);
         } else {
           this.estatisticas[a].tentativas++;
-          push(`${f[a].nome} erra${sig ? ' ' + sig.nome.toLowerCase() : ''}, ${f[d].nome} se defende.`, 'normal', { ator: a, alvo: d, tipo2: 'erro' });
+          push(sig ? `${f[a].nome} erra ${sig.nome.toLowerCase()}, ${f[d].nome} se defende.` : preencher(sortear(TEXTOS_ERRO, r), f[a].nome, f[d].nome), 'normal', { ator: a, alvo: d, tipo2: 'erro' });
           if (sig) rd.exp[a] = 1;
           // Contra-ataque: quem esta em cautela (ou e contra-atacador) pune o erro.
           const pContra = (kd === 'cautela' ? 0.25 : kd === 'contra' ? 0.45 : 0.05) + (this.tem(d, 'contra_ataque') ? 0.2 : 0);
@@ -967,8 +987,14 @@
   // A unica barra de recurso e a energia. O circuito (IA contra IA) roda a cada 4 semanas.
 
   const SEMANAS_CIRCUITO = 4;
+  const BOLSA_CAMPEAO = 1.15; // lutas sem titulo do campeao pagam mais
+  const BOLSA_EX_CAMPEAO = 1.5;
+  const BOLSA_SUPERLUTA = 2.4;
+  const SEMANAS_ENTRE_SUPERLUTAS = 16;
   const MIN_PREPARO = 2; // semanas minimas entre aceitar e lutar
   const REPETE_TITULO = 8; // semanas entre duas lutas de titulo do mesmo campeao
+  const TOP_DESAFIANTE = 5; // posicao maxima no ranking (sem contar o campeao) para disputar o cinturao
+  const VITORIAS_PARA_TITULO = 2; // vitorias seguidas exigidas para disputar o cinturao
   const ENERGIA_SEMANA = 15; // energia que volta sozinha a cada semana
   const ENERGIA_MIN_TREINO = 30; // abaixo disso nao da para treinar
 
@@ -1006,6 +1032,7 @@
     const potencial = 78 + Math.floor(rng() * 14); // 78 a 91
     const c = {
       versao: 2,
+      exCampeoes: {}, forma: {}, registroIA: {}, novatos: {}, aposentadosIA: {}, imprensa: [], seguidores: 800, imprevisto: null, ultimoImprevisto: null,
       nome: opcoes.nome || 'Sem nome',
       apelido: opcoes.apelido ? String(opcoes.apelido).slice(0, 24) : null,
       primeiroNome: opcoes.primeiroNome || null,
@@ -1098,9 +1125,13 @@
     return p && p[divId] ? p[divId] : null;
   }
 
-  function lutadoresDaDivisao(periodo, divId) {
+  function lutadoresDaDivisao(periodo, divId, carreira) {
     const d = divisaoDados(periodo, divId);
-    return d ? d.lutadores : [];
+    const base = d ? d.lutadores : [];
+    if (!carreira) return base;
+    const aposentados = carreira.aposentadosIA || {};
+    const novatos = (carreira.novatos && carreira.novatos[chaveDivisao(periodo, divId)]) || [];
+    return base.concat(novatos).filter((l) => !aposentados[l.nome]);
   }
 
   function pontosDe(carreira, periodo, divId, lutador) {
@@ -1112,7 +1143,7 @@
   function ranking(carreira, periodo, divId) {
     periodo = periodo || carreira.periodo;
     divId = divId || carreira.divisaoId;
-    const lista = lutadoresDaDivisao(periodo, divId).map((l) => ({
+    const lista = lutadoresDaDivisao(periodo, divId, carreira).map((l) => ({
       nome: l.nome,
       estilo: l.estilo,
       lenda: l.lenda,
@@ -1147,6 +1178,39 @@
     return idx < 0 ? null : idx + 1;
   }
 
+  // Posicao "de ranking" como no UFC: o campeao fica fora da lista (posicao 0) e o #1 e o primeiro desafiante.
+  // Internamente a lista tem o campeao na frente; so a apresentacao e as regras do titulo usam esta contagem.
+  function posRank(periodo, pos) {
+    if (pos === null || pos === undefined) return null;
+    return periodo === 'eras' ? pos : pos - 1;
+  }
+
+  function rankDoJogador(carreira) {
+    return posRank(carreira.periodo, posicaoDoJogador(carreira));
+  }
+
+  // Texto da posicao: "Campeão", "#3" ou "—".
+  function rotuloRank(periodo, pos) {
+    const r = posRank(periodo, pos);
+    if (r === null) return '—';
+    if (periodo !== 'eras' && r <= 0) return 'Campeão';
+    return '#' + r;
+  }
+
+  // Passa o cinturao para quem venceu e guarda o campeao anterior (base das revanches e das notícias).
+  function trocarCampeao(c, chave, novo) {
+    const antigo = c.campeoes[chave];
+    if (antigo && antigo !== novo) {
+      if (!c.exCampeoes) c.exCampeoes = {};
+      const lista = (c.exCampeoes[chave] || []).filter((n) => n !== antigo && n !== novo);
+      lista.unshift(antigo);
+      c.exCampeoes[chave] = lista.slice(0, 4);
+      if (!c.campeaoDesde) c.campeaoDesde = {};
+      c.campeaoDesde[chave] = c.semana;
+    }
+    c.campeoes[chave] = novo;
+  }
+
   // Congela quem e o campeao de cada divisao (sem isso o campeao mudaria junto com os pontos).
   function fixarCampeoes(carreira) {
     if (carreira.periodo === 'eras') return;
@@ -1177,11 +1241,95 @@
   function podeDesafiarTitulo(carreira) {
     if (carreira.periodo === 'eras') return { ok: false, motivo: 'Não há cinturão na era antiga.' };
     if (carreira.lesao) return { ok: false, motivo: 'Lesionado: recupere-se antes de lutar.' };
-    const pos = posicaoDoJogador(carreira);
+    const pos = rankDoJogador(carreira);
     if (carreira.campeao) return { ok: true, motivo: 'Defesa de título.' };
-    if (!pos || pos > 5) return { ok: false, motivo: 'Precisa estar no top 5 da divisão.' };
-    if (carreira.sequencia < 2) return { ok: false, motivo: 'Precisa de 2 vitórias seguidas.' };
+    if (!pos || pos > TOP_DESAFIANTE) return { ok: false, motivo: 'Precisa estar no top ' + TOP_DESAFIANTE + ' da divisão.' };
+    if (carreira.sequencia < VITORIAS_PARA_TITULO) return { ok: false, motivo: 'Precisa de ' + VITORIAS_PARA_TITULO + ' vitórias seguidas.' };
     return { ok: true, motivo: 'Desafio ao campeão.' };
+  }
+
+  // Em linguagem simples: em que pe esta o cinturao, o que falta e quando a proxima chance aparece.
+  function situacaoTitulo(c) {
+    const chave = chaveDivisao(c.periodo, c.divisaoId);
+    const cat = (divisaoDados(c.periodo, c.divisaoId) || {}).nome || c.divisaoId;
+    if (c.periodo === 'eras') {
+      return { tipo: 'eras', titulo: 'Sem cinturão nesta era', resumo: 'Na Era das Lendas não existe título: o que vale é vencer, subir no ranking e entrar nos torneios de uma noite.', passos: [], semanasParaDefesa: null, campeao: null, desafiante: null, regra: 'Vencer sobe você no ranking de peso aberto.' };
+    }
+    const campeao = campeaoAtual(c);
+    const lista = ranking(c);
+    if (c.campeao) {
+      const desafiante = lista.find((x) => !x.jogador) || null;
+      const desde = c.ultimaTituloSemana || 0;
+      const falta = Math.max(0, desde + REPETE_TITULO - c.semana);
+      const defesa = !c.ultimaTituloSemana || falta <= 0;
+      const d = c.defesas || 0;
+      return {
+        tipo: 'campeao',
+        titulo: 'Você é o campeão dos ' + cat,
+        resumo: defesa
+          ? 'Sua defesa de título está liberada: ' + (desafiante ? desafiante.nome + ' é o desafiante número 1.' : 'escolha o desafiante.')
+          : 'Seu próximo desafio ao título será liberado em ' + falta + (falta === 1 ? ' semana' : ' semanas') + '. Até lá, estas lutas mantêm você ativo, ganham fama e bolsa, e não colocam o cinturão em risco.',
+        passos: [
+          { rotulo: 'Intervalo entre defesas (' + REPETE_TITULO + ' semanas)', feito: defesa, texto: defesa ? 'Cumprido' : 'Faltam ' + falta + (falta === 1 ? ' semana' : ' semanas') },
+        ],
+        semanasParaDefesa: defesa ? 0 : falta,
+        campeao: c.nome,
+        desafiante: desafiante ? desafiante.nome : null,
+        defesas: d,
+        regra: 'O campeão defende o cinturão contra o desafiante número 1 a cada ' + REPETE_TITULO + ' semanas no mínimo. Entre uma defesa e outra pode fazer lutas de 3 rounds sem o título em jogo, superlutas e revanches contra ex-campeões.',
+      };
+    }
+    const rk = rankDoJogador(c);
+    const seq = c.sequencia || 0;
+    const topOk = rk !== null && rk >= 1 && rk <= TOP_DESAFIANTE;
+    const seqOk = seq >= VITORIAS_PARA_TITULO;
+    const pode = podeDesafiarTitulo(c);
+    const passos = [
+      { rotulo: 'Top ' + TOP_DESAFIANTE + ' da categoria', feito: topOk, texto: topOk ? 'Você é o #' + rk : 'Você é o #' + (rk === null ? '?' : rk) + ': faltam ' + (rk === null ? '?' : rk - TOP_DESAFIANTE) + (rk - TOP_DESAFIANTE === 1 ? ' posição' : ' posições') },
+      { rotulo: VITORIAS_PARA_TITULO + ' vitórias seguidas', feito: seqOk, texto: seqOk ? 'Cumprido (' + seq + ' seguidas)' : seq + ' de ' + VITORIAS_PARA_TITULO },
+    ];
+    let resumo;
+    if (pode.ok) resumo = 'Você já pode disputar o cinturão: ' + campeao + ' é o campeão. A luta de título aparece entre as ofertas, com 5 rounds.';
+    else {
+      const faltas = [];
+      if (!topOk) faltas.push('subir para o top ' + TOP_DESAFIANTE);
+      if (!seqOk) faltas.push('emendar ' + (VITORIAS_PARA_TITULO - seq) + (VITORIAS_PARA_TITULO - seq === 1 ? ' vitória' : ' vitórias') + ' seguida' + (VITORIAS_PARA_TITULO - seq === 1 ? '' : 's'));
+      resumo = 'Para disputar o cinturão de ' + campeao + ' você precisa ' + faltas.join(' e ') + '. Enquanto isso, as lutas abaixo constroem esse caminho.';
+    }
+    return { tipo: pode.ok ? 'pode' : 'caminho', titulo: pode.ok ? 'Você pode disputar o cinturão' : 'O caminho até o cinturão', resumo: resumo, passos: passos, semanasParaDefesa: null, campeao: campeao, desafiante: null, regra: 'Para desafiar o campeão: top ' + TOP_DESAFIANTE + ' da categoria e ' + VITORIAS_PARA_TITULO + ' vitórias seguidas. Derrota zera a sequência.' };
+  }
+
+  // O papel de uma oferta na carreira, com a explicacao em uma frase ("por que esta luta existe").
+  function papelOferta(c, o) {
+    const rounds = o.titulo || o.superluta ? 5 : 3;
+    const chave = chaveDivisao(c.periodo, c.divisaoId);
+    const rk = posRank(c.periodo, o.rank);
+    const meu = rankDoJogador(c);
+    let papel;
+    let rotulo;
+    let texto;
+    if (o.titulo && c.campeao) { papel = 'defesa'; rotulo = 'Defesa de título'; texto = 'O cinturão está em jogo contra o desafiante número 1. 5 rounds.'; }
+    else if (o.titulo) { papel = 'titulo'; rotulo = 'Disputa de cinturão'; texto = 'Sua chance contra o campeão. Vencer faz de você o novo campeão. 5 rounds.'; }
+    else if (o.superluta) { papel = 'superluta'; rotulo = 'Superluta'; texto = 'Campeão contra campeão de outra categoria. Sem título em jogo, 5 rounds, bolsa e fama muito maiores.'; }
+    else if (o.exCampeao) { papel = 'ex_campeao'; rotulo = 'Revanche com ex-campeão'; texto = 'Um ex-campeão da categoria quer a volta por cima. Bolsa e fama maiores que o normal. 3 rounds, sem título.'; }
+    else if (o.bonus) { papel = 'relampago'; rotulo = 'Luta-relâmpago'; texto = 'Luta em 2 semanas, com bolsa 60% maior, mas sem tempo para um camp completo.'; }
+    else if (o.rival) { papel = 'revanche'; rotulo = (c.rivais && c.rivais[o.op.nome] && c.rivais[o.op.nome].motivo === 'revanche') ? 'Revanche' : 'Rivalidade'; texto = 'Rival com história contra você: vencer rende fama extra e esfria a disputa.'; }
+    else if (c.campeao) {
+      const s = situacaoTitulo(c);
+      papel = 'ritmo'; rotulo = 'Luta para manter o ritmo';
+      texto = 'Sem o cinturão em jogo. ' + (s.semanasParaDefesa > 0 ? 'Mantém você ativo até a defesa ser liberada em ' + s.semanasParaDefesa + (s.semanasParaDefesa === 1 ? ' semana.' : ' semanas.') : 'Rende bolsa e fama de campeão.') + ' 3 rounds.';
+    } else if (c.periodo === 'eras') {
+      papel = rk !== null && meu !== null && rk < meu ? 'subir' : 'manter'; rotulo = papel === 'subir' ? 'Para subir no ranking' : 'Para se manter ativo';
+      texto = papel === 'subir' ? 'Adversário melhor colocado: vencer sobe você no ranking.' : 'Adversário abaixo de você: vitória esperada, ganho menor de pontos.';
+    } else if (rk !== null && meu !== null && rk >= 1 && rk <= TOP_DESAFIANTE && (c.sequencia || 0) < VITORIAS_PARA_TITULO) {
+      papel = 'candidato'; rotulo = 'Caminho para o título'; texto = 'Você está no top ' + TOP_DESAFIANTE + ': mais ' + (VITORIAS_PARA_TITULO - (c.sequencia || 0)) + ' vitória(s) seguida(s) e a luta de cinturão aparece.';
+    } else if (rk !== null && meu !== null && rk < meu) {
+      papel = 'subir'; rotulo = 'Para subir no ranking'; texto = 'Adversário melhor colocado (' + rotuloRank(c.periodo, o.rank) + '): vencer sobe você na fila do cinturão.';
+    } else {
+      papel = 'manter'; rotulo = 'Para se manter ativo'; texto = 'Adversário abaixo de você: vitória esperada, ganho menor de pontos, mas mantém a sequência.';
+    }
+    void chave;
+    return { papel: papel, rotulo: rotulo, texto: texto, rounds: rounds };
   }
 
   function oponentes(carreira) {
@@ -1206,7 +1354,7 @@
   // ---- Calendario e semanas ----
 
   function diaDeLuta(c) {
-    if (!c.agendada) return false;
+    if (!c.agendada || c.imprevisto) return false;
     if (c.camp) return campConcluido(c);
     return c.semana >= c.agendada.semanaLuta;
   }
@@ -1372,6 +1520,22 @@
         bolsa: Math.round((calcularBolsa(c, bonusOp, false, hb) * 1.6) / 10) * 10,
       });
     }
+    if (c.campeao) c.ofertas.forEach((o) => { if (!o.titulo) o.bolsa = Math.round((o.bolsa * BOLSA_CAMPEAO) / 10) * 10; });
+    const chaveDiv = chaveDivisao(c.periodo, c.divisaoId);
+    if (c.campeao && c.periodo !== 'eras') {
+      // revanche com ex-campeao da categoria
+      const nomesEx = (c.exCampeoes && c.exCampeoes[chaveDiv]) || [];
+      const exRow = lista.find((x) => !x.jogador && nomesEx.indexOf(x.nome) >= 0 && (!alvoTitulo || x.nome !== alvoTitulo.nome));
+      if (exRow && r() < 0.6) {
+        const ja = c.ofertas.find((o) => o.op.nome === exRow.nome && !o.bonus);
+        const bolsaEx = Math.round((calcularBolsa(c, exRow, false, 0) * BOLSA_CAMPEAO * BOLSA_EX_CAMPEAO) / 10) * 10;
+        if (ja) { ja.exCampeao = true; ja.bolsa = Math.max(ja.bolsa, bolsaEx); }
+        else c.ofertas.push({ id: 'o' + c.semana + '-x', op: snapshotOponente(exRow), titulo: false, exCampeao: true, rival: 0, rank: lista.findIndex((x) => x.nome === exRow.nome) + 1, semanasAte: 5, bolsa: bolsaEx });
+      }
+      // superluta contra o campeao da categoria vizinha
+      const sl = proporSuperluta(c, r);
+      if (sl) c.ofertas.push(sl);
+    }
     if (alvoTitulo) {
       c.ofertas.unshift({
         id: 'o' + c.semana + '-t',
@@ -1383,7 +1547,35 @@
         bolsa: calcularBolsa(c, alvoTitulo, true, c.rivais && c.rivais[alvoTitulo.nome] ? c.rivais[alvoTitulo.nome].heat : 0),
       });
     }
+    // limite da mesa: tira as lutas comuns do fim se as especiais encheram a lista
+    while (c.ofertas.length > 5) {
+      const i = c.ofertas.map((o, k) => ({ o, k })).reverse().find((x) => !x.o.titulo && !x.o.superluta && !x.o.exCampeao && !x.o.bonus);
+      if (!i) break;
+      c.ofertas.splice(i.k, 1);
+    }
+    c.ofertas.forEach((o) => {
+      const p = papelOferta(c, o);
+      o.papel = p.papel;
+      o.rounds = p.rounds;
+    });
     return c.ofertas;
+  }
+
+  // Superluta: o campeao enfrenta o campeao da categoria vizinha, sem titulo em jogo (so quem ja e campeao e conhecido).
+  function proporSuperluta(c, r) {
+    if (c.periodo === 'eras' || !c.campeao || nivelFama(c).nivel < 2) return null;
+    if (c.semana - (c.ultimaSuperluta || -99) < SEMANAS_ENTRE_SUPERLUTAS) return null;
+    if (r() > 0.5) return null;
+    const i = ORDEM_DIVISOES.indexOf(c.divisaoId);
+    const vizinhas = [ORDEM_DIVISOES[i + 1], ORDEM_DIVISOES[i - 1]].filter(Boolean);
+    for (let k = 0; k < vizinhas.length; k++) {
+      const nome = campeaoAtual(c, c.periodo, vizinhas[k]);
+      const row = nome ? ranking(c, c.periodo, vizinhas[k]).find((x) => x.nome === nome) : null;
+      if (row) {
+        return { id: 'o' + c.semana + '-s', op: snapshotOponente(row), titulo: false, superluta: true, divisaoOp: vizinhas[k], rival: 0, rank: 1, semanasAte: 8, rounds: 5, bolsa: Math.round((calcularBolsa(c, row, true, 0) * BOLSA_SUPERLUTA) / 10) * 10 };
+      }
+    }
+    return null;
   }
 
   // Aceita uma oferta: a luta fica marcada para daqui a N semanas e as outras ofertas somem.
@@ -1425,6 +1617,12 @@
     const periodo = c.periodo;
     c.circuitoN = (c.circuitoN || 0) + 1;
     fixarCampeoes(c);
+    renovarElenco(c, r);
+    // rivais quentes provocam nas redes
+    Object.keys(c.rivais || {}).forEach((nome) => {
+      const rv = c.rivais[nome];
+      if (rv.heat >= 2 && r() < 0.3 && !c.agendada) postar(c, 'rede', nome + ' provoca você nas redes: "' + PROVOCACOES[Math.floor(r() * PROVOCACOES.length)] + '"', { nome: nome });
+    });
     const noticias = [];
     Object.keys((raiz.DADOS && raiz.DADOS[periodo]) || {}).forEach((divId) => {
       const chave = chaveDivisao(periodo, divId);
@@ -1462,7 +1660,11 @@
         const pp = mapa[p.nome] !== undefined ? mapa[p.nome] : p.pontos;
         mapa[v.nome] = clamp(pv + (titulo ? 12 : 10), 20, 400);
         mapa[p.nome] = clamp(pp - 10, 20, 400);
-        if (titulo) c.campeoes[chave] = v.nome;
+        registrarResultadoIA(c, v, p, res, titulo);
+        if (titulo) {
+          trocarCampeao(c, chave, v.nome);
+          if (v.nome !== campeaoIA.nome) postar(c, 'manchete', v.nome + ' é o novo campeão dos ' + (divisaoDados(periodo, divId) || {}).nome + ' ao vencer ' + p.nome + '.', { nome: v.nome });
+        }
         const div = divisaoDados(periodo, divId);
         if (titulo || divId === c.divisaoId) {
           const fim = res.metodo === 'Nocaute' || res.metodo === 'Finalização' ? ' por ' + res.metodo.toLowerCase() : '';
@@ -1639,7 +1841,7 @@
       { nome: oponente.nome, atributos: ele },
       {
         penalidadeA: penalidade,
-        rodadas: titulo ? 5 : 3,
+        rodadas: (carreira.agendada && carreira.agendada.rounds) || (titulo ? 5 : 3),
         rng: rng,
         tracosA: (carreira.tracos || []).concat(habFlags(carreira)),
         desbloqueiosA: desbloqueios(carreira),
@@ -1744,6 +1946,9 @@
       if (heat) fama += 12 * heat;
       fama += 8 * prov;
       if (agend && agend.bonus) fama += 10;
+      if (agend && agend.superluta) { fama += 30; carreira.superlutas = (carreira.superlutas || 0) + 1; }
+      else if (agend && agend.exCampeao) fama += 12;
+      else if (eraCampeao && !titulo) fama += 6; // luta de manutencao do campeao
       if (finalizou) carreira.finalizacoes = (carreira.finalizacoes || 0) + 1;
     } else if (empatou) {
       carreira.recorde.e++;
@@ -1758,7 +1963,7 @@
       mapa[oponente.nome] = pontosOp + 5;
       carreira.xp += 25;
       bolsa = Math.round(bolsaBase * 0.4);
-      fama = -6 - (eraCampeao && titulo ? 20 : 0) - 10 * prov;
+      fama = -6 - (eraCampeao && titulo ? 20 : 0) - 10 * prov - (agend && agend.superluta ? 8 : 0);
     }
     bolsa = ajusteMetaBolsa(carreira, bolsa, titulo, finalizou, venceu);
     carreira.dinheiro += bolsa;
@@ -1773,6 +1978,7 @@
       criarRivalidade(carreira, oponente.nome, 'revanche', 1);
       rivalidade = heat ? 'A rivalidade com ' + oponente.nome + ' ficou mais quente.' : oponente.nome + ' agora é um rival: peça a revanche.';
     }
+    if (agend && agend.superluta) carreira.ultimaSuperluta = carreira.semana;
     carreira.posLutaPendente = empatou ? null : { oponente: oponente.nome, venceu: venceu, titulo: !!titulo };
 
     if (venceu) carreira.pontosDisponiveis = (carreira.pontosDisponiveis || 0) + 1;
@@ -1784,13 +1990,13 @@
       if (venceu) {
         defendeu = eraCampeao;
         carreira.defesas = eraCampeao ? (carreira.defesas || 0) + 1 : 0;
-        carreira.campeoes[chave] = carreira.nome;
+        trocarCampeao(carreira, chave, carreira.nome);
         carreira.campeao = true;
         if (!carreira.titulosPor) carreira.titulosPor = {};
         if (!carreira.titulosPor[chave]) carreira.pontosHab = (carreira.pontosHab || 0) + 1; // 1o cinturao de cada categoria
         carreira.titulosPor[chave] = true;
       } else if (carreira.campeao) {
-        carreira.campeoes[chave] = oponente.nome;
+        trocarCampeao(carreira, chave, oponente.nome);
         carreira.campeao = false;
         carreira.defesas = 0;
       }
@@ -1827,6 +2033,8 @@
       rivalidade: heat > 0,
       premio: premioNoite ? premioNoite.titulo : null,
       evento: evento ? evento.nome : null,
+      papel: agend ? agend.papel || null : null,
+      rounds: luta.rodadasTotais,
       data: evento ? evento.data : null,
       lesao: lesaoNova ? lesaoNova.nome : null,
       bolsa: bolsa,
@@ -1854,6 +2062,7 @@
     carreira.ultimaLutaSemana = carreira.semana;
     virarSemana(carreira, r);
     if (lesaoNova) aplicarLesao(carreira, lesaoNova);
+    imprensaDaLuta(carreira, oponente, res, { venceu: venceu, empatou: empatou, titulo: !!titulo, defendeu: defendeu, finalizou: finalizou, agend: agend, perdeuCinto: !venceu && !empatou && !!titulo && eraCampeao });
     const meta = verificarMeta(carreira);
     return {
       venceu: venceu, empatou: empatou, lesionou: lesionou, bolsa: bolsa, defendeu: defendeu,
@@ -1864,6 +2073,40 @@
       posAntes: posAntes, posDepois: posicaoDoJogador(carreira),
       gancho: ganchos(carreira), proxima: proximaOferta(carreira),
     };
+  }
+
+  // Imprensa e redes depois de uma luta do jogador: manchete, reacao dos fas e variacao de seguidores.
+  function imprensaDaLuta(c, op, res, x) {
+    const eu = sobrenome(c.nome);
+    const ele = sobrenome(op.nome);
+    const cat = c.periodo === 'eras' ? 'peso aberto' : ((divisaoDados(c.periodo, c.divisaoId) || {}).nome || '').toLowerCase();
+    const metodo = String(res.metodo).toLowerCase();
+    const prefixo = x.agend && x.agend.superluta ? 'Superluta: ' : '';
+    let manchete;
+    if (x.titulo && x.venceu && !x.defendeu) manchete = 'NOVO CAMPEÃO: ' + eu + ' conquista o cinturão dos ' + cat + ' ao vencer ' + op.nome + '.';
+    else if (x.titulo && x.venceu) manchete = eu + ' defende o cinturão pela ' + (c.defesas || 1) + 'ª vez' + (x.finalizou ? ' com ' + metodo + ' no round ' + res.round : '') + '.';
+    else if (x.perdeuCinto) manchete = ele + ' tira o cinturão de ' + eu + ' por ' + metodo + '.';
+    else if (x.venceu && x.finalizou) manchete = prefixo + eu + (res.metodo === 'Nocaute' ? ' nocauteia ' : ' finaliza ') + ele + ' no round ' + res.round + '.';
+    else if (x.venceu) manchete = prefixo + eu + ' supera ' + ele + ' na decisão.';
+    else if (x.empatou) manchete = prefixo + eu + ' e ' + ele + ' empatam em luta equilibrada.';
+    else manchete = prefixo + ele + ' vence ' + eu + ' por ' + metodo + (x.finalizou ? ' no round ' + res.round : '') + '.';
+    postar(c, 'manchete', manchete, { titulo: !!x.titulo, resultado: x.venceu ? 'V' : x.empatou ? 'E' : 'D' });
+    const nivel = nivelFama(c).nivel;
+    let delta;
+    if (x.venceu) delta = Math.round((300 + 120 * nivel + (x.finalizou ? 400 : 0) + (x.titulo ? 1500 : 0)) * (x.agend && x.agend.superluta ? 2 : 1));
+    else if (x.empatou) delta = 60;
+    else delta = -Math.round(150 + 60 * nivel + (x.perdeuCinto ? 600 : 0));
+    const antes = Number.isFinite(c.seguidores) ? c.seguidores : 800;
+    c.seguidores = Math.max(0, antes + delta);
+    const k = (n) => (Math.abs(n) >= 1000 ? (Math.abs(n) / 1000).toFixed(1).replace('.', ',') + ' mil' : String(Math.abs(n)));
+    const reacao = x.venceu
+      ? (x.finalizou ? 'Os fãs não falam de outra coisa: o ' + (res.metodo === 'Nocaute' ? 'nocaute' : 'final') + ' de ' + eu + ' virou clipe.' : 'Fãs elogiam a performance de ' + eu + ' e pedem um adversário maior.')
+      : x.empatou ? 'Fãs se dividem: muitos acham que ' + eu + ' fez o suficiente.'
+        : 'Fãs cobram resposta: "' + eu + ' precisa de uma reação rápida."';
+    postar(c, 'rede', reacao + ' (' + (delta >= 0 ? '+' : '−') + k(delta) + ' seguidores)', {});
+    // rivalidade esquentando vira assunto
+    const heat = c.rivais && c.rivais[op.nome] ? c.rivais[op.nome].heat : 0;
+    if (heat >= 2 && !x.venceu) postar(c, 'rede', op.nome + ' comemora a vitória e provoca: "Foi só o começo."', { nome: op.nome });
   }
 
   // Bonus de 15% da bolsa por vitoria antes do limite (nocaute/finalizacao).
@@ -2085,7 +2328,7 @@
     if (n < 4) {
       const lista = [E('plano', 1)];
       if (n >= 2) lista.push(E('scouting', 1));
-      if (n >= 3) lista.push(E('corte', 1));
+      if (n >= 3) { lista.push(E('corte', 1)); lista.push(E('pesagem', 0)); }
       lista.push(E('coletiva', 0));
       return lista;
     }
@@ -2104,7 +2347,7 @@
         resto -= w;
       }
     }
-    lista.push(E('corte', 1), E('coletiva', 0));
+    lista.push(E('corte', 1), E('pesagem', 0), E('coletiva', 0));
     return lista;
   }
 
@@ -2247,6 +2490,14 @@
         { id: 'agressivo', titulo: 'Corte de peso agressivo', descr: '+3 em força e +2 em queixo na luta, mas começa com menos fôlego (' + Math.max(4, 12 - 3 * nutri) + ' a menos).', custo: 0, risco: 'Fôlego menor na luta', ok: true },
       ];
     }
+    if (et.tipo === 'pesagem') {
+      const alvo = c.agendada ? c.agendada.op.nome : 'o rival';
+      return [
+        { id: 'encarar', titulo: 'Encarar o rival', descr: 'Olho no olho, sem piscar. Fama +4. Se você levar a melhor no duelo de olhares, ganha +2 de QI na luta.', custo: 0, risco: 'Sem risco', recomendado: false, ok: true },
+        { id: 'cumprimentar', titulo: 'Cumprimentar ' + alvo, descr: 'Aperto de mão e respeito. Fama +2 e mais calma para o dia da luta: +2 de fôlego.', custo: 0, risco: 'Sem risco', recomendado: true, ok: true },
+        { id: 'ignorar', titulo: 'Ignorar o jogo mental', descr: 'Foco total na luta, sem dar espaço ao rival. +2 de defesa na luta.', custo: 0, risco: 'Sem risco', ok: true },
+      ];
+    }
     if (et.tipo === 'coletiva') {
       const alvo = c.agendada ? c.agendada.op.nome : 'o rival';
       return [
@@ -2258,6 +2509,44 @@
     return [];
   }
 
+  // Apresentacao da luta, como o locutor faria na entrada do octogono (texto puro, sem logica de jogo).
+  function apresentacaoLuta(c, op, titulo) {
+    const ev = c.agendada && c.agendada.evento;
+    const meuCard = ev ? ev.card.find((l) => l.jogador) : null;
+    const rounds = (c.agendada && c.agendada.rounds) || (titulo ? 5 : 3);
+    const cat = c.periodo === 'eras' ? 'peso aberto' : ((divisaoDados(c.periodo, c.divisaoId) || {}).nome || '').toLowerCase();
+    const pes = c.camp && c.camp.efeitos && c.camp.efeitos.pesagem;
+    const k = op.lutador && op.lutador.cartel;
+    const cartelOp = k && k.vitorias != null ? k.vitorias + '-' + k.derrotas : null;
+    const cartelMeu = c.recorde.v + '-' + c.recorde.d + '-' + c.recorde.e;
+    const eu = {
+      nome: c.nome, apelido: c.apelido || null, origem: [c.cidade, c.pais].filter(Boolean).join(', ') || null,
+      cartel: cartelMeu, peso: pes && pes.kg ? pes.kg : null, estilo: ESTILOS[c.estilo] || '',
+    };
+    const dados = op.lutador || {};
+    const ele = {
+      nome: op.nome, apelido: dados.apelido || null, origem: dados.nacionalidade || null,
+      cartel: cartelOp, peso: null, estilo: ESTILOS[op.estilo] || '',
+    };
+    // canto vermelho: o campeao; na falta dele, o melhor colocado
+    const euCampeao = !!c.campeao;
+    const eleCampeao = !!titulo && !c.campeao;
+    const euVermelho = euCampeao || (!eleCampeao && (rankDoJogador(c) || 99) <= ((c.agendada && posRank(c.periodo, c.agendada.rank)) || 99));
+    const vermelho = euVermelho ? eu : ele;
+    const azul = euVermelho ? ele : eu;
+    const quem = (x) => x.nome + (x.apelido ? ', "' + x.apelido + '"' : '');
+    const origemTxt = (x) => (x.origem ? x.origem + ', ' : '');
+    const linhas = [];
+    linhas.push(ev ? 'Esta é a ' + (meuCard && meuCard.bloco === 'Luta principal' ? 'luta principal' : String(meuCard ? meuCard.bloco : 'luta').toLowerCase()) + ' do ' + ev.nome + ', em ' + ev.local + '.' : 'Uma noite de luta.');
+    linhas.push((titulo ? (c.campeao ? 'Defesa de título' : 'Disputa de cinturão') + ' da categoria ' + cat : 'Luta da categoria ' + cat) + ', em ' + rounds + ' rounds de cinco minutos.');
+    const campeaoTxt = (x) => ((x === eu && c.campeao) || (x !== eu && titulo && !c.campeao) ? ', o campeão' : '');
+    linhas.push('No canto vermelho, ' + quem(vermelho) + campeaoTxt(vermelho) + ', ' + origemTxt(vermelho) + 'cartel de ' + (vermelho.cartel || 'não informado') + '!');
+    linhas.push('No canto azul, ' + quem(azul) + campeaoTxt(azul) + ', ' + origemTxt(azul) + 'cartel de ' + (azul.cartel || 'não informado') + '!');
+    if (pes && pes.kg) linhas.push(pes.resultado === 'estourou' ? 'Na pesagem, ' + c.nome + ' estourou o peso em ' + String(pes.kg).replace('.', ',') + ' kg.' : 'Na pesagem, ' + c.nome + ' bateu o peso com ' + String(pes.kg).replace('.', ',') + ' kg.');
+    if (c.camp && c.camp.efeitos && c.camp.efeitos.guerreiro) linhas.push(c.nome + ' entra no octógono lesionado, e a torcida sabe disso.');
+    return { linhas: linhas, vermelho: vermelho.nome, azul: azul.nome, rounds: rounds };
+  }
+
   function bloqueioCamp(c) {
     if (c.aposentado) return 'Carreira encerrada.';
     if (c.lutaAtiva) return 'Termine a luta em andamento primeiro.';
@@ -2266,12 +2555,134 @@
     return null;
   }
 
-  function concluirCamp(c) {
+  function concluirCamp(c, r) {
     if (c.lesao) {
       c.camp.efeitos.lesionado = true;
       aviso(c, 'Você chegou lesionado (' + c.lesao.nome + '). Pode lutar, mas com desvantagem.');
     }
     aviso(c, 'Camp concluído. Dia da luta!');
+    if (r) sortearImprevisto(c, r);
+  }
+
+  // ---- Semana da luta: a balanca e os imprevistos ----
+
+  // Resultado da pesagem. O corte seguro quase sempre bate o peso; o agressivo arrisca estourar a balanca.
+  function rolarPesagem(c, agressivo, r) {
+    const limite = (divisaoDados(c.periodo, c.divisaoId) || {}).limiteKg;
+    if (!limite) return { resultado: 'sem', kg: null, limite: null, multa: 0, texto: 'Na Era das Lendas não há pesagem: peso aberto.' };
+    const nutri = nivelAcademia(c, 'nutri');
+    const pFalha = (agressivo ? 0.2 : 0.03) - 0.04 * nutri;
+    const arred = (v) => Math.round(v * 10) / 10;
+    const fmt = (v) => String(arred(v).toFixed(1)).replace('.', ',');
+    if (r() < Math.max(0.005, pFalha)) {
+      const kg = arred(limite + 0.3 + r() * 1.1);
+      const multa = Math.round((c.agendada.bolsa * 0.2) / 10) * 10;
+      c.agendada.bolsa = Math.max(0, c.agendada.bolsa - multa);
+      c.camp.efeitos.stamBonus -= 8;
+      ganharFama(c, -5);
+      return { resultado: 'estourou', kg: kg, limite: limite, multa: multa, texto: 'Pesagem: ' + fmt(kg) + ' kg para o limite de ' + fmt(limite) + ' kg. Você estourou o peso: multa de 20% da bolsa ($' + multa.toLocaleString('pt-BR') + '), fama −5 e você chega desidratado (−8 de fôlego).' };
+    }
+    const kg = arred(limite - r() * (agressivo ? 0.2 : 0.6));
+    return { resultado: kg >= limite - 0.15 ? 'no_limite' : 'folga', kg: kg, limite: limite, multa: 0, texto: 'Pesagem: ' + fmt(kg) + ' kg para o limite de ' + fmt(limite) + ' kg. Peso batido.' };
+  }
+
+  const IMPREVISTO_CHANCE = 0.11;
+
+  // Na ultima semana pode acontecer de tudo: troca de adversario, luta cancelada ou lesao de ultima hora.
+  function sortearImprevisto(c, r) {
+    if (!c.agendada || c.imprevisto || c.semImprevistos) return null; // semImprevistos: so para testes deterministas
+    if (r() >= IMPREVISTO_CHANCE) return null;
+    const titulo = !!c.agendada.titulo;
+    const x = r();
+    const tipo = x < 0.4 && !titulo ? 'substituicao' : x < 0.75 ? 'lesao' : 'cancelamento';
+    if (tipo === 'substituicao') {
+      const jaNoCard = (n) => c.agendada.evento.card.some((l) => !l.jogador && (l.a.nome === n || l.b.nome === n));
+      const pool = oponentes(c).filter((o) => o.nome !== c.agendada.op.nome && !jaNoCard(o.nome));
+      if (!pool.length) return imprevistoLesao(c, r);
+      const novo = pool[Math.floor(r() * pool.length)];
+      const velho = c.agendada.op.nome;
+      const lista = ranking(c);
+      const bolsaVelha = c.agendada.bolsa;
+      const refVelha = calcularBolsa(c, c.agendada.op, false, 0) || 1;
+      c.agendada.op = snapshotOponente(novo);
+      c.agendada.rank = lista.findIndex((x2) => x2.nome === novo.nome) + 1;
+      c.agendada.plano = gerarPlano(novo.lutador.atributos, r);
+      c.agendada.bolsa = Math.round((bolsaVelha * calcularBolsa(c, novo, false, 0)) / refVelha / 10) * 10 || bolsaVelha;
+      c.camp.efeitos.scout = false;
+      c.camp.efeitos.provocacao = 0;
+      const meu = c.agendada.evento.card.find((l) => l.jogador);
+      if (meu) meu.b = { nome: novo.nome, div: c.divisaoId };
+      if (c.agendada.evento.card[0] === meu) c.agendada.evento.subtitulo = sobrenome(meu.a.nome) + ' vs ' + sobrenome(meu.b.nome);
+      c.agendada.papel = papelOferta(c, c.agendada).papel;
+      c.ultimoImprevisto = { tipo: 'substituicao', titulo: 'Troca de adversário', texto: velho + ' saiu do card por lesão. Seu novo adversário é ' + novo.nome + '. O estudo que você fez não vale mais: o plano dele é desconhecido.' };
+      aviso(c, c.ultimoImprevisto.texto);
+      c.camp.historico.push({ tipo: 'imprevisto', titulo: c.ultimoImprevisto.titulo, linhas: [c.ultimoImprevisto.texto] });
+      return c.ultimoImprevisto;
+    }
+    if (tipo === 'cancelamento') {
+      const compensa = Math.round((c.agendada.bolsa * 0.25) / 10) * 10;
+      const nome = c.agendada.op.nome;
+      c.dinheiro += compensa;
+      cancelarLuta(c, 'adversário lesionado');
+      c.energia = Math.min(100, c.energia + 10);
+      c.ofertas = [];
+      gerarOfertas(c, r);
+      c.ultimoImprevisto = { tipo: 'cancelamento', titulo: 'Luta cancelada', texto: nome + ' se lesionou e o evento foi cancelado para você. A organização pagou $' + compensa.toLocaleString('pt-BR') + ' pelo camp.' + (c.ofertas.length ? ' Novas ofertas já estão na mesa.' : ' As ofertas voltam quando você se recuperar.') };
+      return c.ultimoImprevisto;
+    }
+    return imprevistoLesao(c, r);
+  }
+
+  // Lesao de ultima hora: o jogador decide entre lutar machucado e pedir adiamento.
+  function imprevistoLesao(c, r) {
+    const les = sortearLesao(r);
+    c.imprevisto = {
+      tipo: 'lesao',
+      titulo: 'Lesão na última semana',
+      texto: 'Na véspera do evento você sentiu algo: ' + les.nome.toLowerCase() + '. O médico libera, mas com ressalvas. O que você faz?',
+      lesao: { nome: les.nome, semanas: Math.min(3, les.semanas) },
+      opcoes: [
+        { id: 'lutar', rotulo: 'Lutar assim mesmo', resumo: '−3 em todos os atributos e começa com menos fôlego. Se vencer assim, fama +8.' },
+        { id: 'adiar', rotulo: 'Pedir adiamento', resumo: 'A luta sai por 4 semanas, com um camp curto novo. 20% de chance de o adversário não esperar e a luta cair.' },
+      ],
+    };
+    c.ultimoImprevisto = null;
+    return c.imprevisto;
+  }
+
+  function resolverImprevisto(c, id, rng) {
+    const r = rng || Math.random;
+    const im = c.imprevisto;
+    if (!im) return { ok: false, motivo: 'Nenhum imprevisto pendente.' };
+    const op = im.opcoes.find((o) => o.id === id);
+    if (!op) return { ok: false, motivo: 'Opção inválida.' };
+    c.imprevisto = null;
+    if (id === 'lutar') {
+      c.camp.efeitos.lesionado = true;
+      c.camp.efeitos.guerreiro = true;
+      const texto = 'Você decidiu lutar com ' + im.lesao.nome.toLowerCase() + '. Vai com desvantagem, mas a torcida vai respeitar.';
+      c.ultimoImprevisto = { tipo: 'lesao_lutar', titulo: 'Lutando machucado', texto: texto };
+      aviso(c, texto);
+      return { ok: true, resultado: 'lutar', texto: texto };
+    }
+    // adiamento
+    if (r() < 0.2) {
+      const nome = c.agendada.op.nome;
+      cancelarLuta(c, 'adiamento recusado');
+      c.ofertas = [];
+      aplicarLesao(c, { nome: im.lesao.nome, semanas: im.lesao.semanas });
+      c.ultimoImprevisto = { tipo: 'cancelamento', titulo: 'Adiamento recusado', texto: nome + ' não quis esperar e a luta caiu. Você se recupera de ' + im.lesao.nome.toLowerCase() + ' e as ofertas voltam depois.' };
+      return { ok: true, resultado: 'cancelada', texto: c.ultimoImprevisto.texto };
+    }
+    c.agendada.semanaLuta = c.semana + 4;
+    c.agendada.evento = gerarEvento(c, c.agendada, c.agendada.semanaLuta, r);
+    c.camp = novoCamp(4);
+    entrarEtapa(c, r);
+    c.lesao = null;
+    const texto = 'Luta adiada: nova data ' + dataTexto(c.agendada.evento.data, true) + ' (' + c.agendada.evento.nome + '). Você se recupera durante um camp curto.';
+    c.ultimoImprevisto = { tipo: 'adiada', titulo: 'Luta adiada', texto: texto };
+    aviso(c, texto);
+    return { ok: true, resultado: 'adiada', texto: texto };
   }
 
   // Entra na proxima etapa: o evento do camp sorteia o que aconteceu na semana.
@@ -2285,7 +2696,7 @@
     c.camp.historico.push({ tipo: et.tipo, titulo: titulo, linhas: linhas });
     c.camp.i += 1;
     entrarEtapa(c, r);
-    if (campConcluido(c)) concluirCamp(c);
+    if (campConcluido(c)) concluirCamp(c, r);
   }
 
   // Aplica a decisao do jogador na etapa atual e deixa o tempo da etapa passar.
@@ -2356,8 +2767,24 @@
         somaAttr('queixo', 2);
         ef.stamBonus -= Math.max(4, 12 - 3 * nivelAcademia(c, 'nutri'));
         linhas.push('Corte agressivo: +3 de força e +2 de queixo, com menos fôlego na luta.');
+      }
+      const pes = rolarPesagem(c, op.id === 'agressivo', r);
+      ef.pesagem = pes;
+      linhas.push(pes.texto);
+    } else if (et.tipo === 'pesagem') {
+      const alvo = c.agendada.op.nome;
+      if (op.id === 'encarar') {
+        const g = ganharFama(c, 4);
+        const venceu = r() < 0.5 + (c.atributos.qi - c.agendada.op.lutador.atributos.qi) / 200;
+        if (venceu) { somaAttr('qi', 2); linhas.push('Você manteve o olhar e ' + alvo + ' desviou primeiro. Fama +' + g + ', +2 de QI na luta.'); }
+        else linhas.push(alvo + ' sustentou o olhar e saiu sorrindo. Fama +' + g + '.');
+      } else if (op.id === 'cumprimentar') {
+        const g = ganharFama(c, 2);
+        ef.stamBonus += 2;
+        linhas.push('Aperto de mão com ' + alvo + '. Fama +' + g + ', mais calma para a luta (+2 de fôlego).');
       } else {
-        linhas.push('Você bateu o peso sem problemas.');
+        somaAttr('defesa', 2);
+        linhas.push('Você ignorou o jogo mental e foi para o hotel. +2 de defesa na luta.');
       }
     } else if (et.tipo === 'coletiva') {
       const alvo = c.agendada.op.nome;
@@ -2566,8 +2993,8 @@
         texto = feito ? 'Você é o #1!' : 'chegue ao #1 do ranking (você: #' + (pos || '?') + ')';
       } else {
         feito = !!c.campeao || (c.titulos || 0) > 0;
-        progresso = feito ? 1 : pos && pos <= 5 ? 0.5 + 0.2 * Math.min(2, c.sequencia) : 0.5 * frac(total - (pos || total), Math.max(1, total - 5));
-        texto = feito ? 'Cinturão conquistado!' : 'conquiste o cinturão (você: #' + (pos || '?') + ')';
+        progresso = feito ? 1 : pos && rankDoJogador(c) <= TOP_DESAFIANTE ? 0.5 + 0.2 * Math.min(2, c.sequencia) : 0.5 * frac(total - (pos || total), Math.max(1, total - 6));
+        texto = feito ? 'Cinturão conquistado!' : 'conquiste o cinturão (você: ' + rotuloRank(c.periodo, pos) + ')';
       }
     } else if (id === 'duplo') {
       const n = Object.keys(c.titulosPor || {}).length;
@@ -2702,14 +3129,14 @@
       const acima = lista[idx - 1];
       if (acima.pontos > c.pontos) {
         const gap = Math.round(acima.pontos - c.pontos) + 1;
-        add(gap <= 30 ? 9 : gap <= 60 ? 8 : 4, 'ranking', 'Faltam ' + gap + ' pts para o #' + idx + ' (' + acima.nome + ')');
+        add(gap <= 30 ? 9 : gap <= 60 ? 8 : 4, 'ranking', 'Faltam ' + gap + ' pts para ' + (rotuloRank(c.periodo, idx) === 'Campeão' ? 'o campeão' : 'o ' + rotuloRank(c.periodo, idx)) + ' (' + acima.nome + ')');
       }
     }
     if (c.periodo !== 'eras') {
       const pode = podeDesafiarTitulo(c);
       if (!c.campeao && pode.ok) add(9.5, 'titulo', 'Você já pode desafiar o campeão ' + campeaoAtual(c));
       else if (c.campeao) add(5.5, 'titulo', 'Defenda o cinturão: ' + (c.defesas || 0) + ' defesa(s) até aqui');
-      else if (idx >= 0 && idx < 5 && c.sequencia < 2) add(8.5, 'titulo', 'Mais ' + (2 - c.sequencia) + ' vitória(s) seguida(s) e você disputa o cinturão');
+      else if (idx >= 0 && rankDoJogador(c) <= TOP_DESAFIANTE && c.sequencia < VITORIAS_PARA_TITULO) add(8.5, 'titulo', 'Mais ' + (VITORIAS_PARA_TITULO - c.sequencia) + ' vitória(s) seguida(s) e você disputa o cinturão');
     }
     const n = nivelDoXP(c.xp);
     const faltaXP = 40 * n * n - c.xp;
@@ -2775,8 +3202,206 @@
     return String(nome).split(' ').slice(-1)[0];
   }
 
-  function lutadorPorNome(periodo, divId, nome) {
-    return lutadoresDaDivisao(periodo, divId).find((l) => l.nome === nome) || null;
+  // Lutador (real ou prospecto) pelo nome, em qualquer categoria da era da carreira.
+  function buscarLutador(c, nome) {
+    const a = acharLutadorIA(c, nome);
+    return a ? a.lutador : null;
+  }
+
+  function lutadorPorNome(periodo, divId, nome, carreira) {
+    return lutadoresDaDivisao(periodo, divId, carreira).find((l) => l.nome === nome) || null;
+  }
+
+  // ---- Mundo vivo: forma recente, aposentadorias, novatos, historias e imprensa ----
+
+  const NACIONALIDADES = {
+    'Brasil': { n: ['Thiago', 'Caio', 'Rafael', 'Bruno', 'Murilo', 'Diego', 'Vitor', 'Lucas'], s: ['Barbosa', 'Moreira', 'Teixeira', 'Campos', 'Queiroz', 'Nogueira', 'Pacheco', 'Lacerda'] },
+    'Estados Unidos': { n: ['Tyler', 'Jordan', 'Cody', 'Marcus', 'Dylan', 'Trevor', 'Austin', 'Cole'], s: ['Hayes', 'Brooks', 'Mercer', 'Dalton', 'Whitaker', 'Booker', 'Calloway', 'Reyes'] },
+    'Rússia': { n: ['Artem', 'Ruslan', 'Timur', 'Kirill', 'Maxim', 'Anton', 'Denis', 'Ilya'], s: ['Volkov', 'Sokolov', 'Kuznetsov', 'Orlov', 'Lebedev', 'Morozov', 'Zaitsev', 'Baranov'] },
+    'México': { n: ['Emiliano', 'Joaquín', 'Rodrigo', 'Santiago', 'Mateo', 'Alonso', 'Fabián', 'Ramiro'], s: ['Salazar', 'Cervantes', 'Valdez', 'Ibarra', 'Olvera', 'Rangel', 'Montes', 'Cisneros'] },
+    'Reino Unido': { n: ['Callum', 'Harvey', 'Rhys', 'Finlay', 'Connor', 'Declan', 'Owen', 'Jamie'], s: ['Whitmore', 'Hartley', 'Prescott', 'Gallagher', 'Ashworth', 'Kinsella', 'Marlow', 'Sutton'] },
+    'Cazaquistão': { n: ['Dauren', 'Nursultan', 'Bekzat', 'Aibek', 'Yerlan', 'Marat', 'Zhanibek', 'Talgat'], s: ['Abenov', 'Sadykov', 'Karimov', 'Tuleev', 'Omarov', 'Zhakipov', 'Seitkali', 'Nurgaliev'] },
+    'Geórgia': { n: ['Giorgi', 'Levan', 'Nika', 'Davit', 'Zurab', 'Irakli', 'Beka', 'Lasha'], s: ['Beridze', 'Kapanadze', 'Gelashvili', 'Maisuradze', 'Tsiklauri', 'Chkheidze', 'Lomidze', 'Gogichaishvili'] },
+    'Japão': { n: ['Haruto', 'Ren', 'Sota', 'Kaito', 'Yuma', 'Ryota', 'Daiki', 'Kenta'], s: ['Takahashi', 'Matsuda', 'Fujimoto', 'Ishikawa', 'Hasegawa', 'Okamoto', 'Mizuno', 'Arakawa'] },
+    'Austrália': { n: ['Lachlan', 'Mitchell', 'Hamish', 'Riley', 'Jarrod', 'Beau', 'Cooper', 'Flynn'], s: ['McAllister', 'Fitzgerald', 'Thornton', 'Doherty', 'Pritchard', 'Kavanagh', 'Sinclair', 'Tolliver'] },
+    'França': { n: ['Mathis', 'Hugo', 'Théo', 'Baptiste', 'Quentin', 'Axel', 'Lucien', 'Yanis'], s: ['Lefèvre', 'Marchand', 'Delmas', 'Rousseau', 'Fontaine', 'Garnier', 'Blanchard', 'Perrin'] },
+  };
+  const PROVOCACOES = ['Quando a gente se encontrar de novo, não vai ter sorte.', 'Todo mundo viu o que aconteceu. Quero a revanche.', 'Você fugiu da luta e eu sei por quê.', 'Continue treinando. Eu continuo esperando.'];
+  const APELIDOS_NOVATOS = ['O Pesadelo', 'Relâmpago', 'Lobo', 'Cirurgião', 'Martelo', 'Sombra', 'Predador', 'Furacão', 'Gelo', 'Tigre', 'Cobra', 'Bala'];
+
+  function anoDaCarreira(c) {
+    return ANO_PERIODO[c.periodo] + Math.floor((c.semana - 1) / 52);
+  }
+
+  function idadeDoLutador(c, l) {
+    return l && l.nascimento_ano ? anoDaCarreira(c) - l.nascimento_ano : null;
+  }
+
+  function postar(c, tipo, texto, extra) {
+    if (!Array.isArray(c.imprensa)) c.imprensa = [];
+    c.imprensa.unshift(Object.assign({ semana: c.semana, tipo: tipo, texto: texto }, extra || {}));
+    if (c.imprensa.length > 40) c.imprensa.length = 40;
+  }
+
+  // Cartel mostrado de um lutador do computador: o da base de dados mais o que aconteceu no jogo.
+  function cartelIA(c, l) {
+    const k = (l && l.cartel) || {};
+    const reg = (c.registroIA && c.registroIA[l.nome]) || { v: 0, d: 0 };
+    const v = (k.vitorias != null ? k.vitorias : 0) + reg.v;
+    const d = (k.derrotas != null ? k.derrotas : 0) + reg.d;
+    return { v: v, d: d, texto: k.vitorias != null || reg.v || reg.d ? v + '-' + d : '' };
+  }
+
+  function registrarResultadoIA(c, v, p, res, titulo) {
+    if (!c.registroIA) c.registroIA = {};
+    if (!c.forma) c.forma = {};
+    [[v, 'v', 'V', p], [p, 'd', 'D', v]].forEach(([x, k, letra, outro]) => {
+      const reg = c.registroIA[x.nome] || (c.registroIA[x.nome] = { v: 0, d: 0 });
+      reg[k]++;
+      const lista = c.forma[x.nome] || (c.forma[x.nome] = []);
+      lista.unshift({ r: letra, op: outro.nome, metodo: res.metodo, semana: c.semana, titulo: !!titulo });
+      if (lista.length > 6) lista.length = 6;
+    });
+  }
+
+  function formaDe(c, nome) {
+    const lista = (c.forma && c.forma[nome]) || [];
+    return lista.slice(0, 5).map((x) => x.r);
+  }
+
+  function acharLutadorIA(c, nome) {
+    const divs = Object.keys((raiz.DADOS && raiz.DADOS[c.periodo]) || {});
+    for (let i = 0; i < divs.length; i++) {
+      const l = lutadoresDaDivisao(c.periodo, divs[i], c).find((x) => x.nome === nome);
+      if (l) return { lutador: l, divisao: divs[i] };
+    }
+    for (const k in (c.novatos || {})) {
+      const l = c.novatos[k].find((x) => x.nome === nome);
+      if (l) return { lutador: l, divisao: k.split('|')[1] };
+    }
+    return null;
+  }
+
+  // A historia de um adversario em ate 4 frases: forma, estilo de vitoria, idade, titulo e o que ja houve com voce.
+  function historiaLutador(c, nome) {
+    const out = [];
+    const achado = acharLutadorIA(c, nome);
+    if (!achado) return out;
+    const l = achado.lutador;
+    const lista = (c.forma && c.forma[nome]) || [];
+    if (lista.length) {
+      let n = 0;
+      while (n < lista.length && lista[n].r === lista[0].r) n++;
+      const finais = lista.slice(0, n).filter((x) => /Nocaute|Finaliza/.test(x.metodo)).length;
+      if (n >= 2 && lista[0].r === 'V') out.push('Vem de ' + n + ' vitórias seguidas' + (finais ? ' (' + finais + ' antes do limite)' : '') + '.');
+      else if (n >= 2) out.push('Perdeu as últimas ' + n + ' lutas.');
+      else if (lista[0].r === 'V') out.push('Venceu a última luta, contra ' + lista[0].op + '.');
+      else out.push('Perdeu a última luta para ' + lista[0].op + '.');
+    }
+    const k = l.cartel;
+    if (k && k.vitorias) {
+      const pk = Math.round(((k.vitorias_ko || 0) / k.vitorias) * 100);
+      const ps = Math.round(((k.vitorias_sub || 0) / k.vitorias) * 100);
+      if (pk >= 55) out.push('Vitórias por nocaute em ' + pk + '% dos casos: perigoso em pé.');
+      else if (ps >= 40) out.push('Finaliza em ' + ps + '% das vitórias: perigoso no chão.');
+    }
+    const idade = idadeDoLutador(c, l);
+    if (l.novato) out.push('Prospecto de ' + idade + ' anos que entrou no circuito na semana ' + l.desde + '.');
+    else if (idade !== null && idade >= 36) out.push('Veterano de ' + idade + ' anos.');
+    else if (idade !== null && idade <= 23) out.push('Jovem promessa de ' + idade + ' anos.');
+    const chave = chaveDivisao(c.periodo, achado.divisao);
+    if (c.periodo !== 'eras' && c.campeoes && c.campeoes[chave] === nome) out.push('Campeão da categoria.');
+    else if (c.exCampeoes && (c.exCampeoes[chave] || []).indexOf(nome) >= 0) out.push('Ex-campeão da categoria.');
+    const ja = (c.historico || []).filter((h) => h.oponente === nome);
+    if (ja.length) {
+      const u = ja[ja.length - 1];
+      out.push('Você já o enfrentou: ' + (u.resultado === 'Vitória' ? 'vitória' : u.resultado === 'Derrota' ? 'derrota' : 'empate') + ' por ' + String(u.metodo).toLowerCase() + '.');
+    }
+    return out.slice(0, 4);
+  }
+
+  function nomeNovoUnico(c, r) {
+    const nacs = Object.keys(NACIONALIDADES);
+    for (let k = 0; k < 40; k++) {
+      const nac = nacs[Math.floor(r() * nacs.length)];
+      const nome = NACIONALIDADES[nac].n[Math.floor(r() * 8)] + ' ' + NACIONALIDADES[nac].s[Math.floor(r() * 8)];
+      if (!acharLutadorIA(c, nome) && nome !== c.nome) return { nome: nome, nac: nac };
+    }
+    return null;
+  }
+
+  // Um prospecto estreia na categoria: jovem, bom, sem fotos, com teto de evolucao.
+  function gerarNovato(c, divId, r) {
+    const id = nomeNovoUnico(c, r);
+    if (!id) return null;
+    const estilos = ['striking', 'luta_livre', 'grappling', 'misto'];
+    const estilo = estilos[Math.floor(r() * 4)];
+    const base = PERFIS[estilo];
+    const atributos = {};
+    ATRIBUTOS.forEach((k) => { atributos[k] = clamp(Math.round(base[k] - 12 + r() * 8), 35, 78); });
+    const idade = 19 + Math.floor(r() * 5);
+    const l = {
+      nome: id.nome, estilo: estilo, lenda: false, novato: true, desde: c.semana,
+      apelido: r() < 0.5 ? APELIDOS_NOVATOS[Math.floor(r() * APELIDOS_NOVATOS.length)] : null,
+      nacionalidade: id.nac, nascimento_ano: anoDaCarreira(c) - idade, atributos: atributos,
+      potencial: 78 + Math.floor(r() * 13), cartel: { vitorias: 4 + Math.floor(r() * 5), derrotas: Math.floor(r() * 2) }, provisoria: true,
+    };
+    const chave = chaveDivisao(c.periodo, divId);
+    if (!c.novatos) c.novatos = {};
+    (c.novatos[chave] || (c.novatos[chave] = [])).push(l);
+    return l;
+  }
+
+  function crescerNovatos(c, r) {
+    Object.keys(c.novatos || {}).forEach((k) => {
+      c.novatos[k].forEach((l) => {
+        if (idadeDoLutador(c, l) > 29) return;
+        for (let i = 0; i < 2; i++) {
+          const a = ATRIBUTOS[Math.floor(r() * ATRIBUTOS.length)];
+          if (l.atributos[a] < l.potencial && r() < 0.55) l.atributos[a] += 1;
+        }
+      });
+    });
+  }
+
+  // A cada circuito: veteranos se aposentam, prospectos chegam e crescem.
+  function renovarElenco(c, r) {
+    if (c.periodo === 'eras') return;
+    if (!c.aposentadosIA) c.aposentadosIA = {};
+    crescerNovatos(c, r);
+    const emCard = new Set(nomesDoCard(c));
+    if (c.agendada) emCard.add(c.agendada.op.nome);
+    Object.keys((raiz.DADOS && raiz.DADOS[c.periodo]) || {}).forEach((divId) => {
+      const chave = chaveDivisao(c.periodo, divId);
+      const ativos = ranking(c, c.periodo, divId).filter((x) => !x.jogador);
+      const campeao = c.campeoes[chave];
+      if (ativos.length > 14) {
+        ativos.forEach((x) => {
+          const idade = idadeDoLutador(c, x.lutador);
+          if (idade === null || idade < 37 || emCard.has(x.nome)) return; // quem esta num card marcado nao se aposenta antes da luta
+          const seq = ((c.forma && c.forma[x.nome]) || []).slice(0, 3).filter((f) => f.r === 'D').length;
+          let p = idade >= 41 ? 0.14 : idade >= 40 ? 0.09 : idade >= 38 ? 0.05 : 0.025;
+          p += seq >= 2 ? 0.05 : 0;
+          if (x.nome === campeao) p *= 0.5;
+          if (r() >= p) return;
+          c.aposentadosIA[x.nome] = { semana: c.semana, idade: idade, divisao: divId };
+          const cat = (divisaoDados(c.periodo, divId) || {}).nome || divId;
+          postar(c, 'noticia', x.nome + ' anuncia a aposentadoria aos ' + idade + ' anos (' + cat + ').', { nome: x.nome });
+          if (x.nome === campeao) {
+            const novo = ranking(c, c.periodo, divId).find((y) => !y.jogador && y.nome !== x.nome);
+            if (novo) {
+              c.campeoes[chave] = novo.nome;
+              postar(c, 'manchete', 'Cinturão dos ' + cat + ' vago com a aposentadoria de ' + x.nome + ': ' + novo.nome + ' assume como campeão.', { nome: novo.nome });
+            }
+          }
+        });
+      }
+      const novatos = (c.novatos && c.novatos[chave]) || [];
+      if (novatos.length < 6 && r() < 0.18) {
+        const n = gerarNovato(c, divId, r);
+        if (n) postar(c, 'noticia', 'Prospecto ' + n.nome + ' (' + idadeDoLutador(c, n) + ' anos, ' + n.nacionalidade + ') estreia no ranking dos ' + (((divisaoDados(c.periodo, divId) || {}).nome) || divId) + '.', { nome: n.nome });
+      }
+    });
   }
 
   // Resolve uma luta entre dois lutadores do computador (mesmas regras de qualquer luta) e atualiza pontos e cinturao.
@@ -2795,7 +3420,8 @@
     const pontosDe = (x) => (mapa[x.nome] !== undefined ? mapa[x.nome] : x.pontos !== undefined ? x.pontos : rating(x.lutador || x) * 2);
     mapa[v.nome] = clamp(pontosDe(v) + (titulo ? 12 : 10), 20, 400);
     mapa[p.nome] = clamp(pontosDe(p) - 10, 20, 400);
-    if (titulo) c.campeoes[chave] = v.nome;
+    registrarResultadoIA(c, v, p, res, titulo);
+    if (titulo) trocarCampeao(c, chave, v.nome);
     return { vencedor: v.nome, perdedor: p.nome, metodo: res.metodo, round: res.round, tempo: res.tempo, titulo: !!titulo };
   }
 
@@ -2852,8 +3478,8 @@
     const total = periodo === 'eras' ? 4 : periodo === 'auge' ? 7 : 8;
     const outras = outrasLutasDoCard(c, ocupados, total - 1, numerado, r);
     const pos = posicaoDoJogador(c) || 10;
-    const meu = { a: { nome: c.nome, div: c.divisaoId, jogador: true }, b: { nome: of.op.nome, div: c.divisaoId }, titulo: !!of.titulo, rounds: of.titulo ? 5 : 3, jogador: true, rank: [pos, of.rank || 10] };
-    const valor = (l) => (l.jogador ? (l.titulo ? 2000 : 0) + 40 - (pos + (of.rank || 10)) / 2 + 6 : (l.titulo ? 1000 : 0) + 40 - (l.rank[0] + l.rank[1]) / 2);
+    const meu = { a: { nome: c.nome, div: c.divisaoId, jogador: true }, b: { nome: of.op.nome, div: of.divisaoOp || c.divisaoId }, titulo: !!of.titulo, superluta: !!of.superluta, rounds: of.rounds || (of.titulo ? 5 : 3), jogador: true, rank: [pos, of.rank || 10] };
+    const valor = (l) => (l.jogador ? (l.titulo ? 2000 : l.superluta ? 1800 : 0) + 40 - (pos + (of.rank || 10)) / 2 + 6 : (l.titulo ? 1000 : 0) + 40 - (l.rank[0] + l.rank[1]) / 2);
     const card = outras.concat([meu]).sort((x, y) => valor(y) - valor(x));
     card.forEach((l, i) => {
       l.id = i === 0 ? 'principal' : 'l' + i;
@@ -2879,8 +3505,8 @@
     const periodo = c.periodo;
     ev.card.forEach((l) => {
       if (l.jogador) return;
-      const a = lutadorPorNome(periodo, l.a.div, l.a.nome);
-      const b = lutadorPorNome(periodo, l.b.div, l.b.nome);
+      const a = lutadorPorNome(periodo, l.a.div, l.a.nome, c);
+      const b = lutadorPorNome(periodo, l.b.div, l.b.nome, c);
       if (!a || !b) return;
       const linhaA = ranking(c, periodo, l.a.div).find((x) => x.nome === a.nome) || a;
       const linhaB = ranking(c, periodo, l.b.div).find((x) => x.nome === b.nome) || b;
@@ -3121,6 +3747,14 @@
       if (!Number.isFinite(c.tetos[k]) || c.tetos[k] < c.atributos[k]) c.tetos[k] = clamp(Math.max(c.potencial, c.atributos[k] + 6), 1, 99);
     });
     if (!c.campeoes) c.campeoes = {};
+    if (!c.exCampeoes) c.exCampeoes = {};
+    if (!c.forma) c.forma = {};
+    if (!c.registroIA) c.registroIA = {};
+    if (!c.novatos) c.novatos = {};
+    if (!c.aposentadosIA) c.aposentadosIA = {};
+    if (!Array.isArray(c.imprensa)) c.imprensa = [];
+    if (c.imprevisto === undefined) c.imprevisto = null;
+    if (c.ultimoImprevisto === undefined) c.ultimoImprevisto = null;
     fixarCampeoes(c);
     if (!Array.isArray(c.ofertas)) c.ofertas = [];
     if (c.agendada === undefined) c.agendada = null;
@@ -3251,6 +3885,15 @@
     etapaAtual: etapaAtual,
     opcoesEtapa: opcoesEtapa,
     decidirCamp: decidirCamp,
+    cartelIA: cartelIA,
+    formaDe: formaDe,
+    historiaLutador: historiaLutador,
+    buscarLutador: buscarLutador,
+    idadeDoLutador: idadeDoLutador,
+    postarImprensa: postar,
+    resolverImprevisto: resolverImprevisto,
+    apresentacaoLuta: apresentacaoLuta,
+    IMPREVISTO_CHANCE: IMPREVISTO_CHANCE,
     campConcluido: campConcluido,
     gerarEtapas: gerarEtapas,
     listaRecomendacao: listaRecomendacao,
@@ -3281,6 +3924,13 @@
     migrarCarreira: migrarCarreira,
     ranking: ranking,
     posicaoDoJogador: posicaoDoJogador,
+    posRank: posRank,
+    rankDoJogador: rankDoJogador,
+    rotuloRank: rotuloRank,
+    situacaoTitulo: situacaoTitulo,
+    papelOferta: papelOferta,
+    TOP_DESAFIANTE: TOP_DESAFIANTE,
+    VITORIAS_PARA_TITULO: VITORIAS_PARA_TITULO,
     campeaoAtual: campeaoAtual,
     podeDesafiarTitulo: podeDesafiarTitulo,
     oponentes: oponentes,

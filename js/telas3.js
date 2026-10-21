@@ -31,11 +31,11 @@
     const e = UI.esc;
     const est = UI.MMA.ESTILOS[x.estilo] || '';
     return `<button class="r-linha${x.jogador ? ' eu' : ''}${campeao ? ' campeao' : ''}" data-acao="ver-lutador" data-nome="${e(x.nome)}" data-div="${e(divId)}">
-      <span class="r-pos">${campeao ? 'C' : pos}</span>
+      <span class="r-pos">${campeao ? 'C' : UI.MMA.posRank(UI.carreira.periodo, pos)}</span>
       ${U().foto(UI, x.nome, 'mini')}
       <span class="r-nome"><b>${e(x.nome)}</b><small>${inf.apelido ? '“' + e(inf.apelido) + '”' : ''}${inf.apelido && inf.nac ? ' · ' : ''}${e(inf.nac)}</small></span>
       <span class="r-estilo">${e(est)}</span>
-      <span class="r-cartel">${e(inf.cartel || '—')}</span>
+      <span class="r-cartel">${e(inf.cartel || '—')}${inf.forma && inf.forma.length ? `<span class="forma mini">${inf.forma.slice(0, 3).map((x) => `<i class="${x === 'V' ? 'v' : 'd'}">${x}</i>`).join('')}</span>` : ''}</span>
       <span class="r-status">${statusDe(UI, x, noCard)}</span>
       <span class="r-pts"><b>${Math.round(x.pontos)}</b><small>pts</small></span>
       ${UI.icone('chevronDir', 16)}
@@ -55,7 +55,7 @@
     let lista = todos;
     if (filtro === 'lendas') lista = lista.filter((x) => x.lenda);
     const ehMinha = divId === c.divisaoId;
-    const pos = (x) => todos.indexOf(x) + 1;
+    const pos = (x) => todos.indexOf(x) + 1; // posicao interna (campeao = 1); o rotulo vem de rotuloRank
     const mostrar = filtro === 'lendas' ? lista : lista.slice(0, 16);
     const euFora = ehMinha && filtro !== 'lendas' && !mostrar.some((x) => x.jogador) ? lista.find((x) => x.jogador) : null;
     const campeao = filtro === 'lendas' ? null : mostrar[0];
@@ -76,7 +76,7 @@
       <div class="abas-div" role="tablist">${abas}</div>
       <div class="rank-layout">
         <section class="rank-lista">
-          <div class="rank-filtro"><button class="${filtro === 'geral' ? 'ativa' : ''}" data-acao="rank-filtro" data-valor="geral">Todos</button><button class="${filtro === 'lendas' ? 'ativa' : ''}" data-acao="rank-filtro" data-valor="lendas">Lendas</button>${ehMinha && minhaPos ? `<span class="rank-minha">Você: ${c.campeao ? 'campeão' : '#' + minhaPos}</span>` : ''}</div>
+          <div class="rank-filtro"><button class="${filtro === 'geral' ? 'ativa' : ''}" data-acao="rank-filtro" data-valor="geral">Todos</button><button class="${filtro === 'lendas' ? 'ativa' : ''}" data-acao="rank-filtro" data-valor="lendas">Lendas</button>${ehMinha && minhaPos ? `<span class="rank-minha">Você: ${M.rotuloRank(c.periodo, minhaPos).toLowerCase() === 'campeão' ? 'campeão' : M.rotuloRank(c.periodo, minhaPos)}</span>` : ''}</div>
           ${heroC}
           <div class="r-grade">${linhas || '<p class="vazio">Ninguém para mostrar.</p>'}</div>
         </section>
@@ -121,12 +121,13 @@
     const idade = eMeu ? M.idadeAtual(c) : idadeDe(UI, l);
     const attr = eMeu ? c.atributos : M.ajustarIdade(l.atributos, idade || 28);
     const k = l && l.cartel ? l.cartel : null;
+    const historia = eMeu ? [] : M.historiaLutador(c, row.nome);
     const oferta = (c.ofertas || []).find((o) => o.op.nome === row.nome);
     const campeaoDaDivisao = c.periodo !== 'eras' && M.campeaoAtual(c, c.periodo, divId) === row.nome;
     const noCard = c.agendada && c.agendada.evento ? c.agendada.evento.card.some((x) => x.a.nome === row.nome || x.b.nome === row.nome) : false;
     const situacao = [];
     if (campeaoDaDivisao) situacao.push('Campeão da categoria');
-    else situacao.push('#' + pos + ' do ranking');
+    else situacao.push(M.rotuloRank(c.periodo, pos) + ' do ranking');
     if (c.agendada && c.agendada.op.nome === row.nome) situacao.push('Seu próximo adversário');
     else if (noCard) situacao.push('Luta no seu evento');
     if (c.rivais && c.rivais[row.nome]) situacao.push('Rival (' + (c.rivais[row.nome].motivo === 'revanche' ? 'revanche pendente' : 'provocações') + ')');
@@ -139,12 +140,13 @@
       <section class="perfil-hero${campeaoDaDivisao ? ' campeao' : ''}">
         <div class="ph-foto">${U().foto(UI, row.nome, 'hero')}</div>
         <div class="ph-corpo">
-          <div class="hl-topo">${campeaoDaDivisao ? '<span class="selo-ouro">Campeão</span>' : `<span class="org">#${pos}</span>`}<span>${e(UI.nomeDivisao(c.periodo, divId))}</span>${row.lenda ? '<span class="selo-lenda">Lenda</span>' : ''}</div>
+          <div class="hl-topo">${campeaoDaDivisao ? '<span class="selo-ouro">Campeão</span>' : `<span class="org">${e(M.rotuloRank(c.periodo, pos))}</span>`}<span>${e(UI.nomeDivisao(c.periodo, divId))}</span>${row.lenda ? '<span class="selo-lenda">Lenda</span>' : ''}</div>
           <h1 class="hl-nome"><span>${e(partes.length > 1 ? partes[0] : '')}</span><b>${e(partes.length > 1 ? partes.slice(1).join(' ') : partes[0])}</b></h1>
           ${inf.apelido ? `<p class="hl-apelido">“${e(inf.apelido)}”</p>` : ''}
           <ul class="hl-meta"><li>${e(inf.nac || 'Origem desconhecida')}</li>${idade ? `<li>${idade} anos</li>` : ''}<li>${e(M.ESTILOS[row.estilo] || '')}</li>${l && l.altura_cm ? `<li>${l.altura_cm} cm${l.alcance_cm ? ' · alcance ' + l.alcance_cm : ''}</li>` : ''}</ul>
           <div class="hl-numeros"><div><small>Cartel</small><b>${e(inf.cartel || '—')}</b></div><div><small>Overall</small><b>${Math.round(M.ratingExato({ atributos: attr }))}</b></div><div><small>Pontos</small><b>${Math.round(row.pontos)}</b></div></div>
           <p class="hl-status ok">${e(situacao.join(' · '))}</p>
+          ${historia.length ? `<ul class="hl-historia">${historia.map((h) => `<li>${e(h)}</li>`).join('')}</ul>` : ''}${inf.forma && inf.forma.length ? `<div class="forma"><span>Forma recente</span>${inf.forma.map((x) => `<i class="${x === 'V' ? 'v' : 'd'}">${x}</i>`).join('')}</div>` : ''}
           <div class="ph-acoes">${oferta ? UI.btn({ texto: 'Aceitar luta · $' + oferta.bolsa.toLocaleString('pt-BR'), acao: 'aceitar-oferta', data: { id: oferta.id, volta: 'proxima' }, tipo: 'primary', trailing: 'seta' }) : ''}${UI.btn({ texto: 'Voltar ao ranking', acao: 'ir', data: { tela: 'ranking' } })}</div>
         </div>
       </section>

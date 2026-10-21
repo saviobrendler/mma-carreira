@@ -18,13 +18,13 @@
       return { nome: nome, foto: c.foto || null, apelido: c.apelido || null, nac: c.pais || '', cartel: cartel(c.recorde), estilo: UI.MMA.ESTILOS[c.estilo] || '', jogador: true };
     }
     const l = UI.dados(nome);
-    const k = l && l.cartel ? l.cartel : null;
     return {
       nome: nome,
       foto: UI.fotoSrc(nome),
       apelido: l && l.apelido ? l.apelido : null,
       nac: l && l.nacionalidade ? l.nacionalidade : '',
-      cartel: k && k.vitorias != null ? `${k.vitorias}-${k.derrotas}` : '',
+      cartel: l ? UI.MMA.cartelIA(c, l).texto : '',
+      forma: l ? UI.MMA.formaDe(c, nome) : [],
       estilo: l ? UI.MMA.ESTILOS[l.estilo] || '' : '',
       lutador: l || null,
     };
@@ -72,7 +72,7 @@
         <b>${e(nome.split(' ').slice(-1)[0])}</b>
         <small>${e(nome.split(' ').slice(0, -1).join(' '))}</small>
         ${i.apelido ? `<em>“${e(i.apelido)}”</em>` : ''}
-        <span class="cl-sub">${[i.cartel, rank ? '#' + rank : ''].filter(Boolean).join(' · ')}</span>
+        <span class="cl-sub">${[i.cartel, rank !== null && rank !== undefined ? UI.MMA.rotuloRank(UI.carreira.periodo, rank) : ''].filter(Boolean).join(' · ')}</span>
       </figcaption>
     </figure>`;
   }
@@ -92,11 +92,11 @@
         <div class="cl-quando"><b>${e(UI.MMA.dataTexto(ev.data, true))}</b><small>${e(ev.local)}</small></div>
       </header>
       <div class="cl-confronto">
-        ${lado(UI, c.nome, c.campeao ? 0 : pos, 'eu')}
+        ${lado(UI, c.nome, pos, 'eu')}
         <div class="cl-vs">
           ${a.titulo ? '<span class="selo-ouro">Cinturão</span>' : `<span class="cl-bloco">${e((ev.card.find((l) => l.jogador) || {}).bloco || '')}</span>`}
           <b>VS</b>
-          <small>${a.titulo ? 5 : 3} rounds · ${e(cat)}</small>
+          <small>${a.rounds || (a.titulo ? 5 : 3)} rounds · ${e(cat)}</small>
         </div>
         ${lado(UI, a.op.nome, a.rank, 'ele')}
       </div>
@@ -134,7 +134,7 @@
         </ul>
         <div class="hl-numeros">
           <div><small>Cartel</small><b>${cartel(c.recorde)}</b></div>
-          <div><small>Ranking</small><b>${c.campeao ? 'Campeão' : pos ? '#' + pos : '—'}</b></div>
+          <div><small>Ranking</small><b>${e(M.rotuloRank(c.periodo, pos))}</b></div>
           <div><small>Fama</small><b>${e(f.nome)}</b></div>
         </div>
         <p class="hl-status ${status.cls}">${e(status.txt)}</p>
@@ -175,7 +175,7 @@
     const tile = (tela, ico, rot, valor, sub, extra) => `<button class="tile${extra ? ' ' + extra : ''}" data-acao="ir" data-tela="${tela}"><span class="tile-ico">${UI.icone(ico, 22)}</span><span class="tile-rot">${rot}</span><b>${valor}</b><small>${sub}</small></button>`;
     const energia = Math.round(c.energia);
     return `<section class="tiles">
-      ${tile('treino', 'peso', 'Treinamento', camp ? (et ? 'Etapa ' + (c.camp.i + 1) + ' de ' + c.camp.etapas.length : 'Camp concluído') : 'Energia ' + energia, camp ? (et ? UI.etapaNome(et.tipo) : 'Hora da luta') : c.lesao ? 'Recupere-se' : 'Sem camp ativo', camp && et ? 'foco' : '')}
+      ${tile('treino', 'peso', 'Treinamento', camp ? (c.imprevisto ? 'Imprevisto!' : et ? 'Etapa ' + (c.camp.i + 1) + ' de ' + c.camp.etapas.length : 'Camp concluído') : 'Energia ' + energia, camp ? (et ? UI.etapaNome(et.tipo) : 'Hora da luta') : c.lesao ? 'Recupere-se' : 'Sem camp ativo', camp && et ? 'foco' : '')}
       ${tile('habilidades', 'arvore', 'Evolução', pend ? pend + ' ' + UI.plural(pend, 'escolha', 'escolhas') : 'Em dia', pend ? 'Pontos e vagas esperando' : 'Nada pendente', pend ? 'foco' : '')}
       ${tile('academia', 'dinheiro', 'Dinheiro', '$' + c.dinheiro.toLocaleString('pt-BR'), 'Academia e estrutura')}
       <button class="tile historico" data-acao="ir" data-tela="legado"><span class="tile-ico">${UI.icone('historico', 22)}</span><span class="tile-rot">Últimas lutas</span>
@@ -184,15 +184,29 @@
     </section>`;
   }
 
+  // Imprensa e redes: manchetes, noticias do mundo e reacoes dos fas, com o numero de seguidores.
+  T.imprensa = function (UI) {
+    const c = UI.carreira;
+    const itens = (c.imprensa || []).slice(0, 6);
+    if (!itens.length && !c.seguidores) return '';
+    const e = UI.esc;
+    const rot = { manchete: 'Manchete', rede: 'Redes', noticia: 'Circuito' };
+    const lista = itens.map((i) => `<li class="im-${i.tipo}"><span class="im-tipo">${e(rot[i.tipo] || 'Notícia')}</span><p>${e(i.texto)}</p><small>Sem. ${i.semana}</small></li>`).join('');
+    const seg = c.seguidores ? `<div class="im-seg"><b>${c.seguidores.toLocaleString('pt-BR')}</b><small>seguidores</small></div>` : '';
+    return `<section class="imprensa"><header><h3>Imprensa e redes</h3>${seg}</header><ul>${lista || '<li class="vazio">Nada ainda. As manchetes começam quando você luta.</li>'}</ul></section>`;
+  };
+
   T.hub = function (UI) {
     const c = UI.carreira;
     const g = UI.MMA.ganchos(c).filter((x) => x.tipo !== 'meta' && x.tipo !== 'habilidade' && x.tipo !== 'pontos' && x.tipo !== 'traco')[0];
-    return `<div class="central">
+    return `${window.TELAS.avisoImprevisto(UI)}<div class="central">
         ${painelHero(UI)}
         ${painelProximo(UI)}
       </div>
+      ${c.aposentado ? '' : window.TELAS.situacao(UI, true)}
       ${g && !c.aposentado ? `<p class="passo"><span>${UI.icone('seta', 16)}</span>${UI.esc(g.texto)}</p>` : ''}
       ${tiles(UI)}
+      ${T.imprensa(UI)}
       ${UI.blocoEvento ? UI.blocoEvento() : ''}`;
   };
 
