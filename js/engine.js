@@ -71,6 +71,13 @@
   const PONTOS_CRIACAO = 12;
   const CUSTO_LUTA = 35; // energia gasta em cada luta
   const ENERGIA_MIN_LUTA = 30; // energia minima para aceitar uma luta
+  // Nocaute: chance relativa 0,4 em quem esta inteiro, ate 2,6 com 80 de dano acumulado (calibrado por simulacao:
+  // ~24% das lutas terminam em nocaute e so ~19% deles acontecem com menos de 10% de dano acumulado).
+  const KO_BASE = 0.4;
+  const KO_ACUMULADO = 2.2;
+  const KO_DANO_REF = 80; // dano (de 160) em que o acumulado pesa por inteiro
+  const LIM_10_8 = 26; // vantagem do round (dano + controle + quedas + ritmo) a partir da qual o juiz da 10-8
+  const LIM_ROUND_PARELHO = 0.3; // abaixo disso o juiz da 10-10
 
   // Contadores de uma luta (por lutador) e acumulados da carreira.
   const ESTAT_VAZIA = { tentativas: 0, acertos: 0, acertosPe: 0, acertosChao: 0, quedasTent: 0, quedasOk: 0, subTent: 0, subOk: 0, chaoTempo: 0 };
@@ -617,7 +624,9 @@
           f[d].corte++;
           push(`Corte! ${f[d].nome} sangra no rosto.`, 'destaque', { ator: a, alvo: d, tipo2: 'corte' });
         }
-        const pKO = clamp((valor - queixoDe(d) / 12) / 10 + (this.tem(a, 'nocauteador') ? 0.02 : 0) + (this.tem(a, 'hab_ko') ? 0.04 : 0), 0, 0.4);
+        // O nocaute pede dano acumulado: um golpe isolado em quem esta inteiro quase nunca apaga (flash KO raro).
+        const castigo = KO_BASE + KO_ACUMULADO * Math.min(1, (f[d].dano - valor) / KO_DANO_REF);
+        const pKO = clamp(((valor - queixoDe(d) / 12) / 10) * castigo + (this.tem(a, 'nocauteador') ? 0.02 : 0) + (this.tem(a, 'hab_ko') ? 0.04 : 0), 0, 0.4);
         if (r() < pKO) {
           rd.ko = d;
           push(`Nocaute! ${f[d].nome} vai ao chão.`, 'destaque', { ator: a, alvo: d, tipo2: 'ko' });
@@ -828,9 +837,12 @@
         const ameacas = (estRound[0].subTent - estRound[1].subTent) * 0.35;
         const ritmo = (estRound[0].acertos - estRound[1].acertos) * 0.25;
         const diff = dano[0] - dano[1] + (ctrl[0] - ctrl[1]) * 1.5 + quedas + ameacas + ritmo + (r() - 0.5) * 0.6;
-        const card = (d) => (d > 0 ? [10, d > 6 ? 8 : 9] : [d < -6 ? 8 : 9, 10]);
-        rodada.placar = card(diff);
-        rodada.juizes = [0, 1, 2].map(() => card(diff + (r() - 0.5) * 4.6));
+        // 10-8 so para dominio claro e sustentado (cerca de 3% dos rounds); 10-10 so para round realmente parelho.
+        const card = (d) => (Math.abs(d) < LIM_ROUND_PARELHO ? [10, 10] : d > 0 ? [10, d > LIM_10_8 ? 8 : 9] : [d < -LIM_10_8 ? 8 : 9, 10]);
+        const vistos = [0, 1, 2].map(() => diff + (r() - 0.5) * 4.6);
+        rodada.juizes = vistos.map(card);
+        // o cartao do round e o do juiz do meio: a maioria dos juizes concorda com ele
+        rodada.placar = card(vistos.slice().sort((x, y) => x - y)[1]);
         rodada.juizes.forEach((c, j) => {
           this.cartoes[j][0] += c[0];
           this.cartoes[j][1] += c[1];

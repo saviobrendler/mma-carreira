@@ -108,11 +108,9 @@
   let oponente = null;
   let titulo = false;
   let luta = null;
-  let efeitoPendente = null;
   let ultimaLuta = null;
   let detalhesLuta = false;
-  let rankDiv = null;
-  let rankFiltro = 'geral';
+  const estado = { rankDiv: null, rankFiltro: 'geral', lutadorSel: null }; // selecao do ranking e do perfil do lutador
   let menuUsuario = false;
   let barrasAnteriores = {}; // valores das barras animadas na ultima tela
   let semanaExibida = null; // semana mostrada no hub (para animar a virada)
@@ -159,11 +157,13 @@
     return nome.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join('');
   }
 
-  // Fotos reais (Wikimedia Commons, licenca aberta), indexadas pelo nome do lutador.
+  // Lutadores reais indexados pelo nome (dados e fotos). A foto vem de fotos/, com credito quando houver.
   const FOTOS = {};
+  const POR_NOME = {};
   Object.values(window.DADOS).forEach((periodo) => {
     Object.values(periodo).forEach((div) => {
       div.lutadores.forEach((l) => {
+        if (!POR_NOME[l.nome]) POR_NOME[l.nome] = l;
         if (l.foto) FOTOS[l.nome] = l;
       });
     });
@@ -200,7 +200,7 @@
       const s = JSON.parse(localStorage.getItem(CHAVE) || 'null');
       // Saves antigos podem nao ter atributos criados depois (ex.: BJJ). A migracao
       // completa o que falta para o overall nunca virar NaN.
-      return s && s.versao === 1 ? MMA.migrarCarreira(s) : null;
+      return s && (s.versao === 1 || s.versao === 2) ? MMA.migrarCarreira(s) : null;
     } catch (e) {
       return null;
     }
@@ -344,20 +344,20 @@
   // ---------------------------------------------------------------------------
 
   function render() {
+    const T = window.TELAS;
     const telas = {
-      inicio: telaInicio, era: telaEra, criar: telaCriar, hub: telaHub, academia: telaAcademia, tracos: telaTracos,
-      luta: telaLuta, resultado: telaResultado, ranking: telaRanking,
+      inicio: telaInicio, era: telaEra, criar: telaCriar, academia: telaAcademia, tracos: telaTracos,
+      hub: () => T.hub(UI), proxima: () => T.proxima(UI), treino: () => T.treino(UI), ranking: () => T.ranking(UI), lutador: () => T.lutador(UI), legado: () => T.legado(UI),
+      luta: telaLuta, resultado: telaResultado,
       perfil: telaPerfil, habilidades: telaHabilidades, categoria: telaCategoria, distribuir: telaDistribuir, aposentadoria: telaAposentadoria, hall: telaHall,
     };
+    // Sem carreira so existem as telas de entrada; com carreira, as da central.
+    if (!carreira && ['hub', 'proxima', 'treino', 'ranking', 'lutador', 'legado', 'luta', 'resultado', 'perfil', 'habilidades', 'categoria', 'distribuir', 'academia', 'tracos', 'aposentadoria'].includes(tela)) tela = 'inicio';
     const fn = telas[tela] || telaInicio;
     const mesmaTela = ultimaTelaRenderizada === tela;
     ultimaTelaRenderizada = tela;
-    app.innerHTML = `<div class="tela${mesmaTela ? ' sem-anim' : ''}" data-tela="${tela}">${fn()}</div>` + (efeitoPendente ? `<div class="nocaute" aria-hidden="true"><span>${esc(efeitoPendente)}</span></div>` : '');
-    if (efeitoPendente) {
-      document.body.classList.add('tremor');
-      setTimeout(() => document.body.classList.remove('tremor'), 700);
-    }
-    efeitoPendente = null;
+    app.innerHTML = `<div class="tela${mesmaTela ? ' sem-anim' : ''}" data-tela="${tela}">${fn()}</div>`;
+    document.body.dataset.era = carreira && tela !== 'inicio' && tela !== 'era' && tela !== 'criar' ? carreira.periodo : (rascunho && rascunho.periodo) || '';
     if (tela === 'luta' && luta && document.getElementById('arena-mount')) montarLuta();
     else LutaUI.desmontar();
     semanaExibida = carreira ? carreira.semana : null;
@@ -393,24 +393,36 @@
       usuarioEl.innerHTML = '';
       return;
     }
-    const itens = [['hub', 'Carreira', 'luta'], ['perfil', 'Estatísticas', 'barras'], ['ranking', 'Ranking', 'trofeu'], ['inicio', 'Menu', 'menu']];
-    nav.innerHTML = itens.map(([t, rot, ic]) => {
-      const ativo = tela === t || (t === 'hub' && ['categoria', 'distribuir', 'resultado', 'academia', 'tracos', 'habilidades'].includes(tela));
-      return `<button class="aba" data-acao="ir" data-tela="${t}" aria-pressed="${ativo}">${icone(ic, 22)}<span>${rot}</span></button>`;
-    }).join('');
+    const itens = [['hub', 'Carreira', 'perfil'], ['proxima', 'Próxima luta', 'luta'], ['treino', 'Treinamento', 'peso'], ['ranking', 'Ranking', 'trofeu'], ['legado', 'Legado', 'cinturao']];
+    // Telas secundarias ficam sob a aba de onde se chega a elas.
+    const pai = { lutador: 'ranking', resultado: 'hub', perfil: 'hub', habilidades: 'hub', distribuir: 'hub', academia: 'treino', tracos: 'hub', categoria: 'hub', aposentadoria: 'legado' };
+    const atual = pai[tela] || tela;
     const c = carreira;
+    const pend = (c.pontosDisponiveis || 0) + (c.pontosHab || 0) + MMA.tracosPendentes(c) + MMA.assinaturasPendentes(c);
+    nav.innerHTML = itens.map(([t, rot, ic]) => {
+      const ativo = atual === t;
+      const aviso = t === 'hub' && pend > 0 ? '<em class="aba-n" aria-hidden="true"></em>' : t === 'proxima' && !c.agendada && !c.lesao && !c.lutaAtiva && (c.ofertas || []).length ? '<em class="aba-n" aria-hidden="true"></em>' : t === 'treino' && c.agendada && MMA.etapaAtual(c) ? '<em class="aba-n" aria-hidden="true"></em>' : '';
+      return `<button class="aba" data-acao="ir" data-tela="${t}" aria-current="${ativo ? 'page' : 'false'}" aria-pressed="${ativo}">${icone(ic, 22)}<span>${rot}</span>${aviso}</button>`;
+    }).join('');
+    const podeCat = c.periodo !== 'eras' && !c.agendada && !c.lesao && !c.lutaAtiva && !c.evento && !c.aposentado;
+    const apos = MMA.podeAposentar(c);
+    const item = (t, ic, rot, extra) => `<button role="menuitem" data-acao="ir" data-tela="${t}">${icone(ic, 16)} ${rot}${extra || ''}</button>`;
     usuarioEl.innerHTML = `
-      <button class="user-btn" data-acao="menu-usuario" aria-expanded="${menuUsuario}" aria-haspopup="menu">
+      <button class="user-btn" data-acao="menu-usuario" aria-expanded="${menuUsuario}" aria-haspopup="menu" aria-label="Menu do lutador">
         ${avatar(c.nome, 'xs')}
         <span class="user-txt"><b>${esc(c.nome)}</b><small>${MMA.ESTILOS[c.estilo]} · Overall ${Math.round(MMA.ratingExato(c))}</small></span>
         ${icone('chevronBaixo', 16)}
       </button>
       ${menuUsuario ? `<div class="user-menu" role="menu">
-        <button role="menuitem" data-acao="ir" data-tela="perfil">${icone('barras', 16)} Estatísticas</button>
-        <button role="menuitem" data-acao="ir" data-tela="habilidades">${icone('arvore', 16)} Habilidades</button>
-        <button role="menuitem" data-acao="ir" data-tela="distribuir">${icone('mais', 16)} Distribuir pontos</button>
-        <button role="menuitem" data-acao="ir" data-tela="hall">${icone('trofeu', 16)} Hall da fama</button>
-        <button role="menuitem" data-acao="ir" data-tela="inicio">${icone('setaEsq', 16)} Menu inicial</button>
+        ${item('perfil', 'barras', 'Estatísticas')}
+        ${item('habilidades', 'arvore', 'Habilidades', (c.pontosHab || 0) > 0 ? `<em class="menu-n">${c.pontosHab}</em>` : '')}
+        ${item('tracos', 'cima', 'Traços e golpes', MMA.tracosPendentes(c) + MMA.assinaturasPendentes(c) > 0 ? `<em class="menu-n">${MMA.tracosPendentes(c) + MMA.assinaturasPendentes(c)}</em>` : '')}
+        ${item('distribuir', 'mais', 'Distribuir pontos', (c.pontosDisponiveis || 0) > 0 ? `<em class="menu-n">${c.pontosDisponiveis}</em>` : '')}
+        ${item('academia', 'dinheiro', 'Academia')}
+        ${podeCat ? item('categoria', 'balanca', 'Mudar categoria') : ''}
+        ${item('hall', 'trofeu', 'Hall da fama')}
+        ${apos.ok ? '<button role="menuitem" data-acao="aposentar">' + icone('cinturao', 16) + ' Pendurar as luvas</button>' : ''}
+        ${item('inicio', 'setaEsq', 'Menu inicial')}
       </div>` : ''}`;
   }
 
@@ -575,7 +587,7 @@
     const diff = MMA.rating(c) - op.rating;
     const chance = diff >= 4 ? { rotulo: 'Você é favorito', cls: 'ok', cor: 'ok' }
       : diff <= -4 ? { rotulo: 'Ele é favorito', cls: 'red', cor: 'red' }
-        : { rotulo: 'Luta equilibrada', cls: 'gold', cor: 'gold' };
+        : { rotulo: 'Luta equilibrada', cls: 'gray', cor: 'gray' };
     const a = op.lutador.atributos;
     const plano = a.wrestling + a.grappling * 0.5 > a.striking + a.velocidade * 0.3 ? 'Deve buscar a queda' : 'Deve trocar em pé';
     const forte = MMA.ATRIBUTOS.reduce((m, k) => (a[k] > a[m] ? k : m), 'forca');
@@ -597,14 +609,14 @@
     const novo = btn({ texto: carreira ? 'Começar nova carreira' : 'Começar carreira', acao: 'ir', data: { tela: 'era' }, tipo: carreira ? 'secondary' : 'primary', trailing: carreira ? '' : 'seta' });
     const hall = btn({ texto: 'Hall da fama', acao: 'ir', data: { tela: 'hall' }, tipo: 'ghost', icone: 'trofeu' });
     const apagar = carreira ? btn({ texto: 'Apagar carreira salva', acao: 'apagar', tipo: 'ghost' }) : '';
-    return `<section class="capa">
+    return `<section class="capa"><div class="capa-texto">
       <div class="kicker entra" style="--i:0">MMA Carreira · Beta</div>
       <h1 class="entra" style="--i:1">Chegue ao <span>cinturão</span></h1>
       <p class="entra" style="--i:2">Crie seu lutador do zero, treine o striking, o BJJ e a luta de chão, enfrente lendas de três eras e defenda o título. Cada luta é decidida round a round, e cada escolha pesa.</p>
       <div class="capa-botoes entra" style="--i:3">${continuar}${novo}</div>
       <div class="capa-botoes entra" style="--i:4">${hall}${apagar}</div>
       <p class="nota-beta">Beta de uso pessoal. Os atributos dos lutadores reais vêm de estatísticas públicas da Wikipédia, com fórmula provisória.</p>
-    </section>`;
+    </div><figure class="capa-foto entra" style="--i:2"><img src="fotos/cinturao-1.webp" alt="Campeão com o cinturão"></figure></section>`;
   }
 
   function contarLutadores(periodo) {
@@ -686,6 +698,7 @@
             <div class="campo"><label for="nome">Nome</label><input id="nome" type="text" maxlength="20" autocomplete="off" value="${esc(rascunho.nome)}" placeholder="Ex.: Rafael"></div>
             <div class="campo"><label for="sobrenome">Sobrenome</label><input id="sobrenome" type="text" maxlength="24" autocomplete="off" value="${esc(rascunho.sobrenome)}" placeholder="Ex.: Duarte"></div>
           </div>
+          <div class="campo"><label for="apelido">Apelido (opcional)</label><input id="apelido" type="text" maxlength="24" autocomplete="off" value="${esc(rascunho.apelido || '')}" placeholder="Ex.: O Trovão"></div>
           <div class="campo-duplo">
             <div class="campo"><label for="pais">País</label><select id="pais">${opcoesPais}</select></div>
             <div class="campo"><label for="cidade">Cidade</label><input id="cidade" type="text" maxlength="40" autocomplete="off" value="${esc(rascunho.cidade)}" placeholder="Ex.: Recife"></div>
@@ -720,19 +733,11 @@
   // Dashboard de carreira
   // ---------------------------------------------------------------------------
 
-  // Dica de primeira vez. Some para sempre depois do "Entendi" (fica no save).
-  function dica(id, titulo, texto) {
-    if (!carreira || (carreira.dicasVistas || {})[id]) return '';
-    return `<aside class="dica-ctx entra"><span class="dica-ico">${icone('lupa', 22)}</span><div><b>${titulo}</b><p>${texto}</p></div>${btn({ texto: 'Entendi', acao: 'dica-ok', data: { id } })}</aside>`;
-  }
 
   function plural(n, um, varios) {
     return n === 1 ? um : varios;
   }
 
-  function semanasAte(c) {
-    return c.agendada ? Math.max(0, c.agendada.semanaLuta - c.semana) : null;
-  }
 
   // Barra de XP de um atributo (usada na tela de distribuir pontos).
   function barraXp(c, attr) {
@@ -765,11 +770,6 @@
     return painel({ titulo: 'Rivalidades', icone: 'luta', meta: 'quanto mais quente, mais fama e bolsa', cls: 'entra', i, corpo: `<ul class="lista-rivais">${linhas}</ul>` });
   }
 
-  function linhaObjetivo(c) {
-    const o = MMA.objetivoAtual(c);
-    const p = Math.round(o.progresso * 100);
-    return `<section class="objetivo-linha calmo entra" style="--i:1"><div><span class="kicker gold">Objetivo</span><b>${esc(o.titulo)}</b></div><div class="obj-barra">${barra(p, 'ok')}<small>${p}%</small></div></section>`;
-  }
 
   // Barra que anima do valor anterior para o novo (a tela e redesenhada a cada acao).
   function barraAnim(valor, tipo, chave) {
@@ -779,72 +779,15 @@
     return `<div class="bar ${tipo || ''}"><i style="width:${pct(ini)}%" data-para="${pct(valor)}"></i></div>`;
   }
 
-  // Ultima novidade do circuito sobre um lutador (resultado recente dele), se houver.
-  function novidadeDe(c, nome) {
-    const n = (c.noticias || []).find((x) => x.texto.includes(nome));
-    return n ? `Circuito (sem. ${n.semana}): ${n.texto}` : '';
+
+  // Foto do lutador com o recorte padrao do jogo (sem filtro). O segundo argumento e mantido por compatibilidade.
+  function fotoDuo(nome) {
+    return window.TELAS_UTIL.foto(UI, nome, 'alta');
   }
 
-  // ---- Identidade visual: fotos em duotone e cartazes de luta ----
 
-  function fotoDuo(nome, tom) {
-    const src = fotoSrc(nome);
-    return `<div class="duo duo-${tom}">${src ? `<img src="${esc(src)}" alt="" loading="lazy">` : `<span class="duo-ini">${esc(iniciais(nome))}</span>`}</div>`;
-  }
 
-  function pontosHeat(n) {
-    return `<span class="pontos-heat" title="Rivalidade ${n} de 3">${[1, 2, 3].map((k) => `<u class="${k <= n ? 'on' : ''}"></u>`).join('')}</span>`;
-  }
 
-  // Fama (nivel + barra) e rival principal, numa faixa so.
-  function faixaFama(c) {
-    const f = MMA.nivelFama(c);
-    const r = MMA.rivalPrincipal(c);
-    return `<section class="faixa-fama entra" style="--i:1">
-      <div class="ff-nivel"><span>Fama</span><b>${f.nome}</b></div>
-      <div class="ff-barra">${barraAnim(f.progresso * 100, 'azul', 'fama')}<small>${f.prox !== null ? `${f.pts} / ${f.prox} para ${f.proxNome}` : 'Nível máximo'}</small></div>
-      <div class="ff-grana"><span>Ganhos</span><b>$${c.dinheiro.toLocaleString('pt-BR')}</b></div>
-      ${r ? `<div class="ff-rival heat-${r.heat}"><span>Rival</span><b>${esc(r.nome)}</b>${pontosHeat(r.heat)}</div>` : ''}
-    </section>`;
-  }
-
-  // Avisos de escolhas pendentes: traco, assinatura e pontos.
-  function bannerEscolhas(c) {
-    if (c.aposentado) return '';
-    const itens = [];
-    const t = MMA.tracosPendentes(c);
-    const a = MMA.assinaturasPendentes(c);
-    if (t > 0) itens.push({ ico: 'cima', titulo: t > 1 ? `${t} traços novos para escolher` : 'Novo traço para escolher', sub: 'A fama abriu uma vaga: ele muda como você luta.', acao: 'tracos', texto: 'Escolher' });
-    if (a > 0) itens.push({ ico: 'alvo', titulo: 'Novo golpe de assinatura', sub: 'Um golpe especial, uma vez por round, na luta.', acao: 'tracos', texto: 'Escolher' });
-    const ph = c.pontosHab || 0;
-    if (ph > 0) itens.push({ ico: 'arvore', titulo: ph > 1 ? `${ph} pontos de habilidade` : 'Ponto de habilidade para gastar', sub: 'Táticas novas, golpes e estilos híbridos. Cada escolha fecha um caminho.', acao: 'habilidades', texto: 'Escolher' });
-    const n = c.pontosDisponiveis || 0;
-    if (n > 0) itens.push({ ico: 'mais', titulo: `${n} ${plural(n, 'ponto', 'pontos')} para distribuir`, sub: 'Cada ponto sobe um atributo em +1.', acao: 'distribuir', texto: 'Distribuir' });
-    return itens.map((x) => `<section class="banner-pontos entra"><span class="bp-ico">${icone(x.ico, 22)}</span><div><b>${x.titulo}</b><small>${x.sub}</small></div>${btn({ texto: x.texto, acao: 'ir', data: { tela: x.acao }, tipo: 'primary' })}</section>`).join('');
-  }
-
-  // Cartaz da luta marcada (ou do dia da luta): as duas fotos, bolsa e o que esperar.
-  function cartazLuta(c) {
-    const a = c.agendada;
-    const f = fichaAdversario(a.op, c);
-    const risco = MMA.riscoLuta(c, a.op);
-    const dia = MMA.diaDeLuta(c);
-    const heat = c.rivais && c.rivais[a.op.nome] ? c.rivais[a.op.nome].heat : 0;
-    const nov = novidadeDe(c, a.op.nome);
-    const leitura = c.camp && c.camp.efeitos && c.camp.efeitos.scout ? `<div class="cartaz-leitura">${icone('lupa', 16)}<span>${esc(a.plano.texto)}</span></div>` : '';
-    return `<section class="cartaz ${dia ? 'dia' : ''} entra" style="--i:2">
-      <div class="cartaz-topo">${a.titulo ? '<span class="tag-ouro">Cinturão</span>' : ''}${heat ? `<span class="tag-fogo">Rivalidade ${pontosHeat(heat)}</span>` : ''}${a.bonus ? '<span class="tag-raio">Luta-relâmpago</span>' : ''}<span class="tag-data">${dia ? 'HOJE' : `Semana ${a.semanaLuta}`}</span></div>
-      <div class="cartaz-fotos">${fotoDuo(c.nome, 'a')}<div class="cartaz-vs">VS</div>${fotoDuo(a.op.nome, 'b')}</div>
-      <div class="cartaz-nomes">
-        <div><b>${esc(c.nome)}</b><small>${c.recorde.v}-${c.recorde.d}-${c.recorde.e}</small></div>
-        <div><b>${esc(a.op.nome)}</b><small>#${a.rank} · ${MMA.ESTILOS[a.op.estilo] || ''} · Overall ${a.op.rating}</small></div>
-      </div>
-      <div class="cartaz-faixa"><span>Bolsa <b>$${a.bolsa.toLocaleString('pt-BR')}</b></span>${badge(f.chance.rotulo, f.chance.cls)}</div>
-      <small class="risco ${risco.nivel}">${esc(risco.texto)}</small>
-      ${leitura}${nov ? `<small class="novidade">${esc(nov)}</small>` : ''}
-      ${dia ? `<div class="cartaz-cta">${btn({ texto: 'Subir no octógono', acao: 'lutar-agora', tipo: 'primary', icone: 'luta', trailing: 'seta', cls: 'grande pulsa' })}</div>` : ''}
-    </section>`;
-  }
 
   const ETAPA_UI = {
     plano: { nome: 'Treino', icone: 'peso', titulo: 'Plano de treino', sub: 'Onde você põe o esforço antes da luta.' },
@@ -854,89 +797,10 @@
     coletiva: { nome: 'Coletiva', icone: 'pessoas', titulo: 'Coletiva de imprensa', sub: 'Como você trata o rival diante das câmeras?' },
   };
 
-  function linhaCamp(c) {
-    const camp = c.camp;
-    const itens = camp.etapas.map((e, i) => {
-      const u = ETAPA_UI[e.tipo];
-      const cls = i < camp.i ? 'feita' : i === camp.i ? 'atual' : '';
-      return `<li class="${cls}"><span class="cl-ico">${i < camp.i ? icone('check', 16) : icone(u.icone, 16)}</span><b>${u.nome}</b><small>${e.semanas ? e.semanas + ' ' + plural(e.semanas, 'sem.', 'sem.') : 'pré-luta'}</small></li>`;
-    }).join('');
-    const fim = `<li class="luta ${MMA.campConcluido(c) ? 'atual' : ''}"><span class="cl-ico">${icone('luta', 16)}</span><b>Luta</b><small>sem. ${c.agendada.semanaLuta}</small></li>`;
-    return `<ol class="camp-linha">${itens}${fim}</ol>`;
-  }
 
-  function cardCampOp(o) {
-    const chips = [
-      o.custo > 0 ? `<span class="chip neg">−${o.custo} energia</span>` : o.custo < 0 ? `<span class="chip pos">+${-o.custo} energia</span>` : '',
-      o.risco ? `<span class="chip">${esc(o.risco)}</span>` : '',
-    ].join('');
-    return `<button class="camp-op ${o.recomendado ? 'rec' : ''}" data-acao="camp-decidir" data-id="${esc(o.id)}"${o.ok === false ? ' disabled' : ''}>
-      ${o.recomendado ? '<span class="rec-tag">★ sugerido</span>' : ''}
-      <b>${esc(o.titulo)}</b><p>${esc(o.descr)}</p>${o.motivo ? `<small class="motivo-op">${esc(o.motivo)}</small>` : ''}
-      <div class="chips-op">${chips}</div>${o.ok === false ? `<em class="razao">${esc(o.razao)}</em>` : ''}</button>`;
-  }
 
-  // O camp: uma decisao por etapa. O tempo passa sozinho entre elas.
-  function painelCamp(c) {
-    const et = MMA.etapaAtual(c);
-    const energiaTipo = c.energia < 30 ? 'vida' : c.energia < 60 ? 'aviso' : 'ok';
-    const topo = `<div class="camp-topo">${linhaCamp(c)}<div class="energia-linha"><span>Energia</span>${barraAnim(c.energia, energiaTipo, 'energia')}<b>${Math.round(c.energia)}</b></div></div>`;
-    if (!et) return '';
-    const u = ETAPA_UI[et.tipo];
-    const ult = c.camp.historico[c.camp.historico.length - 1];
-    const anterior = ult && ult.linhas && ult.linhas.length ? `<section class="resumo-semana"><b>${esc(ult.titulo)}</b><ul>${ult.linhas.map((l) => `<li>${esc(l)}</li>`).join('')}</ul></section>` : '';
-    if (et.tipo === 'evento') {
-      return painel({ cls: 'camp entra', i: 3, titulo: 'Camp de treino', icone: 'calendario', meta: `${c.camp.i + 1} de ${c.camp.etapas.length}`, corpo: `${topo}${anterior}${blocoEvento()}` });
-    }
-    const ops = MMA.opcoesEtapa(c);
-    return painel({
-      cls: 'camp foco entra', i: 3, titulo: `${u.titulo}`, icone: u.icone, meta: et.semanas ? `${et.semanas} ${plural(et.semanas, 'semana', 'semanas')} · etapa ${c.camp.i + 1} de ${c.camp.etapas.length}` : `última etapa · ${c.camp.i + 1} de ${c.camp.etapas.length}`,
-      corpo: `${topo}${anterior}${u.sub ? `<p class="sub">${u.sub}</p>` : ''}<div class="camp-ops n${ops.length}">${ops.map(cardCampOp).join('')}</div>`,
-    });
-  }
 
-  // Oferta de luta como cartaz: foto do rival em duotone, bolsa, data e risco.
-  function cartazOferta(o, c, i) {
-    const op = o.op;
-    const f = fichaAdversario(op, c);
-    const risco = MMA.riscoLuta(c, op);
-    const pos = MMA.posicaoDoJogador(c);
-    const semanas = Math.max(MMA.MIN_PREPARO, o.semanasAte);
-    const sobe = !o.titulo && pos && o.rank < pos;
-    const nov = novidadeDe(c, op.nome);
-    const tags = [o.titulo ? '<span class="tag-ouro">Cinturão</span>' : '', o.bonus ? '<span class="tag-raio">Luta-relâmpago · bolsa maior</span>' : '', o.rival ? `<span class="tag-fogo">Rivalidade ${pontosHeat(o.rival)}</span>` : '', sobe ? '<span class="tag-sobe">Sobe no ranking</span>' : '', op.lenda ? '<span class="tag-lenda">Lenda</span>' : ''].join('');
-    return `<article class="oferta-cartaz ${o.titulo ? 'titulo' : ''} ${o.rival ? 'rival' : ''} ${o.bonus ? 'bonus' : ''} cor-${f.chance.cor} entra" style="--i:${i}">
-      <div class="oc-foto">${fotoDuo(op.nome, 'b')}<span class="oc-rank">#${o.rank}</span></div>
-      <div class="oc-corpo">
-        <div class="oc-tags">${tags}</div>
-        <h3>${esc(op.nome)}</h3>
-        <div class="oc-meta">${MMA.ESTILOS[op.estilo] || op.estilo} · Overall ${op.rating} · ${badge(f.chance.rotulo, f.chance.cls)}</div>
-        <small class="risco ${risco.nivel}">${esc(risco.texto)}</small>
-        ${nov ? `<small class="novidade">${esc(nov)}</small>` : ''}
-        <div class="oc-rodape"><div class="oc-dado"><small>Luta em</small><b>${semanas} sem.</b></div><div class="oc-dado"><small>Bolsa</small><b>$${o.bolsa.toLocaleString('pt-BR')}</b></div>${btn({ texto: 'Aceitar', acao: 'aceitar-oferta', data: { id: o.id }, tipo: 'primary', icone: 'luta' })}</div>
-      </div>
-    </article>`;
-  }
 
-  // O palco do hub: a luta (cartaz + camp), a recuperacao ou as ofertas.
-  function palcoHub(c) {
-    if (c.aposentado) return painel({ cls: 'entra', i: 2, corpo: '<p class="sub">Carreira encerrada. Sua história está no hall da fama.</p>' });
-    if (c.lutaAtiva) {
-      return painel({ cls: 'foco entra', i: 2, titulo: 'Luta em andamento', icone: 'luta', corpo: `<p class="sub">Você ainda não terminou a luta contra <b>${esc(c.lutaAtiva.op.nome)}</b>.</p><div class="acoes-linha">${btn({ texto: 'Retomar luta', acao: 'retomar', tipo: 'primary', icone: 'luta', trailing: 'seta', cls: 'pulsa' })}</div>` });
-    }
-    if (c.agendada) {
-      const dia = MMA.diaDeLuta(c);
-      return `${cartazLuta(c)}${dia ? '' : painelCamp(c)}`;
-    }
-    if (c.lesao) {
-      return painel({ cls: 'entra alerta', i: 2, titulo: 'Em recuperação', icone: 'lua', corpo: `<p class="sub">${esc(c.lesao.nome)}: faltam <b>${c.lesao.semanas}</b> ${plural(c.lesao.semanas, 'semana', 'semanas')}. Sem ofertas até curar.${MMA.nivelAcademia(c, 'fisio') ? ' Sua fisioterapia acelera a cura.' : ' A academia de fisioterapia acelera a cura.'}</p><div class="acoes-linha">${btn({ texto: 'Recuperar uma semana', acao: 'descansar', icone: 'lua', tipo: 'primary' })}</div>` });
-    }
-    const ofs = c.ofertas || [];
-    return painel({
-      cls: 'foco entra', i: 2, titulo: 'Escolha sua próxima luta', icone: 'luta', meta: 'ao aceitar começa o camp de treino',
-      corpo: `<div class="lista-cartazes">${ofs.map((o, i) => cartazOferta(o, c, i)).join('') || '<p class="vazio">Nenhuma oferta agora.</p>'}</div>${ofs.length ? '' : `<div class="acoes-linha">${btn({ texto: 'Esperar uma semana', acao: 'descansar', icone: 'lua' })}</div>`}`,
-    });
-  }
 
   // ---------------------------------------------------------------------------
   // Meta, ganchos ("so mais uma"), recompensas e habilidades
@@ -946,22 +810,6 @@
   const ICONE_RECOMPENSA = { performance: 'raio', luta_noite: 'estrela', patrocinio: 'dinheiro', viral: 'pessoas', relampago: 'raio', mentor: 'estrela', meta: 'trofeu' };
   const ICONE_GANCHO = { rival: 'luta', bonus: 'raio', ranking: 'cima', titulo: 'cinturao', nivel: 'estrela', fama: 'pessoas', habilidade: 'arvore', pontos: 'mais', traco: 'alvo', meta: 'alvo' };
 
-  // Faixa do hub: a meta de carreira e as coisas que estao perto de acontecer.
-  function faixaProgresso(c) {
-    if (c.aposentado) return '';
-    const m = MMA.metaProgresso(c);
-    const g = MMA.ganchos(c).filter((x) => x.tipo !== 'meta').slice(0, 3);
-    const meta = m
-      ? `<div class="fp-meta"><span class="fp-rot">Meta de carreira</span><b>${esc(m.nome)}</b>${barraAnim(m.progresso * 100, 'aviso', 'meta')}<small>${esc(m.texto)}</small></div>`
-      : `<div class="fp-meta vazia"><span class="fp-rot">Meta de carreira</span><b>Sem meta</b><small>Um objetivo dá um bônus e cobra um preço.</small><button class="fp-link" data-acao="ir" data-tela="habilidades">Escolher meta</button></div>`;
-    const lista = g.map((x) => {
-      const ico = icone(ICONE_GANCHO[x.tipo] || 'alvo', 16);
-      return x.acao
-        ? `<li class="t-${x.tipo}"><button data-acao="ir" data-tela="${x.acao}">${ico}<span>${esc(x.texto)}</span>${icone('chevronDir', 14)}</button></li>`
-        : `<li class="t-${x.tipo}"><div>${ico}<span>${esc(x.texto)}</span></div></li>`;
-    }).join('');
-    return `<section class="faixa-prog entra" style="--i:1">${meta}<div class="fp-perto"><span class="fp-rot">Perto de acontecer</span><ul>${lista || '<li class="vazio"><div><span>Lute para abrir novos objetivos.</span></div></li>'}</ul></div></section>`;
-  }
 
   // Recompensas da noite (bonus de desempenho, drops raros e meta cumprida).
   function painelRecompensas(u) {
@@ -1064,58 +912,31 @@
       <div class="acoes-linha">${btn({ texto: 'Voltar', acao: 'ir', data: { tela: 'hub' }, icone: 'setaEsq' })}</div>`;
   }
 
-  // Subida de nivel pendente (de luta, camp ou evento) e os sons das recompensas raras da luta.
+  // Subida de nivel pendente (de luta, camp ou evento): aparece depois que a tela atual foi lida.
   let celebrando = false;
   function celebrarPendentes() {
     const c = carreira;
     if (!c || tela === 'luta' || celebrando) return;
-    const u = tela === 'resultado' && ultimaLuta && !ultimaLuta.celebrado ? ultimaLuta : null;
-    if (u) u.celebrado = true;
-    const rs = u ? (u.recompensas || []).concat(u.meta ? [{ raridade: 'épico' }] : []) : [];
-    const tocarRaros = () => {
-      rs.forEach((r, i) => setTimeout(() => { if (window.Som) Som.raro(r.raridade === 'lendário' || r.raridade === 'épico' ? 2 : 1); }, 350 + i * 420));
-    };
     const nivel = c.celebrarNivel;
     if (nivel && window.Celebra) {
       c.celebrarNivel = null;
       salvar();
       celebrando = true;
       setTimeout(() => {
-        Celebra.nivel(nivel).then(() => { celebrando = false; tocarRaros(); });
+        Celebra.nivel(nivel).then(() => { celebrando = false; });
       }, tela === 'resultado' ? 900 : 350);
-    } else if (rs.length) {
-      setTimeout(tocarRaros, 700);
     }
   }
 
-  function telaHub() {
-    const c = carreira;
-    const apos = MMA.podeAposentar(c);
-    const podeCat = c.periodo !== 'eras' && !c.agendada && !c.lesao && !c.lutaAtiva && !c.evento && !c.aposentado;
-    const chip = (ico, texto, tela, extra) => `<button class="chip-acao ${extra || ''}" data-acao="ir" data-tela="${tela}">${icone(ico, 18)}<span>${texto}</span>${icone('chevronDir', 16)}</button>`;
-    const chips = [
-      chip('dinheiro', 'Academia', 'academia'),
-      chip('trofeu', 'Ranking', 'ranking'),
-      chip('barras', 'Estatísticas', 'perfil'),
-      `<button class="chip-acao${(c.pontosHab || 0) > 0 ? ' destaque' : ''}" data-acao="ir" data-tela="habilidades">${icone('arvore', 18)}<span>Habilidades</span>${(c.pontosHab || 0) > 0 ? `<em class="chip-n">${c.pontosHab}</em>` : ''}${icone('chevronDir', 16)}</button>`,
-      chip('cima', 'Traços e golpes', 'tracos'),
-      podeCat ? chip('balanca', 'Mudar categoria', 'categoria') : '',
-      apos.ok ? `<button class="chip-acao" data-acao="aposentar">${icone('cinturao', 18)}<span>Pendurar as luvas</span>${icone('chevronDir', 16)}</button>` : '',
-    ].join('');
-    return `${faixaLutador(c, true)}
-      ${faixaFama(c)}
-      ${faixaProgresso(c)}
-      ${bannerEscolhas(c)}
-      ${dica('hub', 'Como funciona', 'Aceite uma luta e faça o <b>camp de treino</b>: poucas decisões (treino, scouting, peso, coletiva) e o tempo passa sozinho. Lutar rende bolsa e fama; a bolsa paga a academia.')}
-      ${palcoHub(c)}
-      <div class="outras-acoes">${chips}</div>`;
-  }
 
   // ---------------------------------------------------------------------------
   // Combate
   // ---------------------------------------------------------------------------
 
-  // Quem perdeu por nocaute termina a luta sem vida.
+  function telaHub() {
+    return window.TELAS.hub(UI);
+  }
+
   function telaLuta() {
     if (!luta) return telaHub();
     return '<div id="arena-mount" class="arena-mount"></div>';
@@ -1125,22 +946,31 @@
   function montarLuta() {
     const c = carreira;
     const k = oponente.lutador && oponente.lutador.cartel;
+    const ev = c.agendada && c.agendada.evento;
+    const meuCard = ev ? ev.card.find((l) => l.jogador) : null;
+    const cmp = MMA.comparacao(c, oponente);
+    const dadosB = POR_NOME[oponente.nome];
     LutaUI.montar(document.getElementById('arena-mount'), {
       MMA: MMA,
       luta: luta,
       titulo: titulo,
       nomeA: c.nome,
       nomeB: oponente.nome,
+      apelidoA: c.apelido || null,
+      apelidoB: dadosB && dadosB.apelido ? dadosB.apelido : null,
       subA: `${categoriaAtual(c)} · ${c.recorde.v}-${c.recorde.d}-${c.recorde.e}`,
       subB: `${categoriaAtual(c)}${k && k.vitorias != null && k.derrotas != null ? ` · ${k.vitorias}-${k.derrotas}` : ''}`,
       fotoA: fotoSrc(c.nome),
       fotoB: fotoSrc(oponente.nome),
       corIniA: corDoNome(c.nome), corIniB: corDoNome(oponente.nome),
-      tutorialVisto: c.tutorialLuta,
+      eventoNome: ev ? ev.nome + (ev.subtitulo ? ' · ' + ev.subtitulo : '') : 'Noite de luta',
+      bloco: meuCard ? meuCard.bloco : '',
+      sugestao: cmp.sugestao.id,
+      sugestaoMotivo: cmp.sugestao.motivo,
       campeaoAntes: !!c.campeao,
       cinturoes: MMA.cinturoesSeVencer(c),
-      aoTutorial: () => { c.tutorialLuta = true; salvar(); },
       aoSalvar: () => { c.lutaAtiva.luta = luta.toJSON(); salvar(); },
+      aoConcluir: () => acao('concluir', {}),
     });
   }
 
@@ -1160,16 +990,41 @@
   }
 
   function tabelaEstatLuta(u) {
-    const linha = (rot, a, b) => `<div class="est-linha"><b>${a}</b><span>${rot}</span><b>${b}</b></div>`;
+    const linha = (rot, a, b, melhor) => `<div class="est-linha${melhor === 1 ? ' a' : melhor === -1 ? ' b' : ''}"><b>${a}</b><span>${rot}</span><b>${b}</b></div>`;
     const [ea, eb] = u.est;
     const apr = (e) => (e.tentativas ? Math.round((e.acertos / e.tentativas) * 100) : 0);
-    return `<div class="est-comparacao"><div class="est-linha cab"><b>${esc(u.nomeA)}</b><span>Estatísticas da luta</span><b>${esc(u.nomeB)}</b></div>
-      ${linha('Golpes acertados / tentados', `${ea.acertos}/${ea.tentativas} (${apr(ea)}%)`, `${eb.acertos}/${eb.tentativas} (${apr(eb)}%)`)}
-      ${linha('Quedas', `${ea.quedasOk}/${ea.quedasTent}`, `${eb.quedasOk}/${eb.quedasTent}`)}
-      ${linha('Finalizações', `${ea.subOk}/${ea.subTent}`, `${eb.subOk}/${eb.subTent}`)}
-      ${linha('Controle por cima (trocas)', ea.chaoTempo, eb.chaoTempo)}
-    </div>
-    <div class="rounds-detalhe">${u.rodadas.map((rd) => `<div class="round-bloco"><h4><span>Round ${rd.num}</span><span>${rd.placar[0]} – ${rd.placar[1]}</span></h4><ol>${rd.eventos.map((e) => `<li class="${e.tipo === 'destaque' ? 'destaque' : ''}">${esc(e.texto)}</li>`).join('')}</ol></div>`).join('')}</div>`;
+    const cmp = (x, y) => (x === y ? 0 : x > y ? 1 : -1);
+    return `<div class="est-comparacao"><div class="est-linha cab"><b>${esc(u.nomeA.split(' ').slice(-1)[0])}</b><span>Estatísticas da luta</span><b>${esc(u.nomeB.split(' ').slice(-1)[0])}</b></div>
+      ${linha('Golpes significativos', `${ea.acertos}/${ea.tentativas} (${apr(ea)}%)`, `${eb.acertos}/${eb.tentativas} (${apr(eb)}%)`, cmp(ea.acertos, eb.acertos))}
+      ${linha('Quedas (feitas/tentadas)', `${ea.quedasOk}/${ea.quedasTent}`, `${eb.quedasOk}/${eb.quedasTent}`, cmp(ea.quedasOk, eb.quedasOk))}
+      ${linha('Finalizações (feitas/tentadas)', `${ea.subOk}/${ea.subTent}`, `${eb.subOk}/${eb.subTent}`, cmp(ea.subTent, eb.subTent))}
+      ${linha('Controle no chão (trocas)', ea.chaoTempo, eb.chaoTempo, cmp(ea.chaoTempo, eb.chaoTempo))}
+    </div>`;
+  }
+
+  function roundARound(u) {
+    return `<div class="rounds-detalhe">${u.rodadas.map((rd) => `<div class="round-bloco"><h4><span>Round ${rd.num}</span><span>${rd.placar[0]} – ${rd.placar[1]}</span></h4><ol>${rd.eventos.map((e) => `<li class="${e.tipo === 'destaque' ? 'destaque' : ''}">${esc(e.texto)}</li>`).join('')}</ol></div>`).join('')}</div>`;
+  }
+
+  // Cartoes dos juizes, um por linha de juiz com o total e quem eles deram.
+  function cartoesJuizes(u) {
+    if (!u.cartoes || !/^Decisão|Empate/.test(u.metodo)) return '';
+    return `<div class="juizes">${u.cartoes.map((k, i) => `<span class="${k[0] > k[1] ? 'a' : k[1] > k[0] ? 'b' : ''}"><small>Juiz ${i + 1}</small><b>${k[0]}–${k[1]}</b></span>`).join('')}</div>`;
+  }
+
+  // Resultado de cada luta do card (a do jogador e as simuladas).
+  function cardResultados(u) {
+    const ev = u.evento;
+    if (!ev || !ev.card) return '';
+    const linhas = ev.card.filter((l) => l.resultado).map((l) => {
+      const r = l.resultado;
+      const venc = r.vencedor;
+      const a = l.a.nome;
+      const b = l.b.nome;
+      return `<li class="${l.jogador ? 'meu' : ''}"><span class="rc-nomes"><b class="${venc === a ? 'v' : ''}">${esc(a)}</b><i>vs</i><b class="${venc === b ? 'v' : ''}">${esc(b)}</b></span><small>${esc(venc ? 'Vence ' + venc.split(' ').slice(-1)[0] : 'Empate')} · ${esc(r.metodo || '')}${r.titulo ? ' · Cinturão' : ''}</small></li>`;
+    }).join('');
+    if (!linhas) return '';
+    return painel({ cls: 'entra', i: 3, titulo: esc(ev.nome), icone: 'calendario', meta: esc(MMA.dataTexto(ev.data, true)), corpo: `<ul class="card-res">${linhas}</ul>` });
   }
 
   function telaResultado() {
@@ -1178,15 +1033,14 @@
     const c = carreira;
     const cls = u.venceu ? 'venceu' : u.empatou ? 'empate' : 'perdeu';
     const txt = u.venceu ? 'Vitória' : u.empatou ? 'Empate' : 'Derrota';
-    const quem = u.venceu ? u.nomeA : u.empatou ? null : u.nomeB;
     const fim = u.metodo === 'Nocaute' || u.metodo === 'Finalização';
-    const frase = quem ? `${esc(quem)} vence por ${esc(u.metodo.toLowerCase())}${u.detalhe ? ' (' + esc(u.detalhe) + ')' : ''}${fim ? ' no round ' + u.round : ''}` : 'Luta termina empatada';
+    const quem = u.venceu ? u.nomeA : u.empatou ? null : u.nomeB;
+    const sobrenome = (n) => n.split(' ').slice(-1)[0];
+    const metodoTxt = esc(u.metodo) + (u.detalhe ? ' (' + esc(u.detalhe) + ')' : '');
+    const quando = fim ? `Round ${u.round} · ${esc(u.tempo || '')}` : `${u.rodadasTotais} rounds`;
     const d = u.depois;
     const a = u.antes;
-    const sub = (rot, val) => `<div class="info-box"><small>${rot}</small><b>${val}</b></div>`;
-    const juizes = u.cartoes && /^Decisão|Empate/.test(u.metodo)
-      ? `<div class="juizes">${u.cartoes.map((k, i) => `<span><small>Juiz ${i + 1}</small><b>${k[0]}–${k[1]}</b></span>`).join('')}</div>` : '';
-    const f = MMA.nivelFama(c);
+    const stat = (rot, antes, depois, bom) => `<div class="cons"><small>${rot}</small><b>${antes === depois ? depois : `${antes} <i>→</i> ${depois}`}</b>${bom ? `<em class="${bom}"></em>` : ''}</div>`;
     const pos = c.posLutaPendente;
     const posLuta = pos ? painel({
       cls: 'pos-luta entra', i: 3, titulo: 'Depois da luta', icone: 'pessoas', meta: 'as câmeras estão ligadas',
@@ -1194,107 +1048,57 @@
         <button class="card-opcao" data-acao="pos-luta" data-tipo="respeito"><b>${pos.venceu ? 'Elogiar o rival' : 'Reconhecer a derrota'}</b><small>Fama ${pos.venceu ? '+6' : '+2'}. Sem rivalidade.</small></button>
         <button class="card-opcao" data-acao="pos-luta" data-tipo="quente"><b>${pos.venceu ? 'Provocar o rival' : 'Exigir a revanche'}</b><small>Fama ${pos.venceu ? '+14' : '+5'} e a rivalidade esquenta.</small></button></div>` }) : '';
     const campeaoNovo = u.titulo && u.venceu;
-    return `<section class="res-cartaz ${cls}${campeaoNovo ? ' campeao' : ''} entra">
-        <div class="res-topo">${u.titulo ? 'Luta pelo cinturão' : 'Resultado da luta'}</div>
-        <div class="res-fotos">${fotoDuo(u.nomeA, 'a')}<div class="res-meio"><h2>${txt}</h2><p>${frase}</p><div class="res-placar">${u.totais[0]} – ${u.totais[1]}</div></div>${fotoDuo(u.nomeB, 'b')}</div>
-        <div class="res-nomes"><b>${esc(u.nomeA)}</b><b>${esc(u.nomeB)}</b></div>
-        ${juizes}
-        <div class="ganhos quatro">
-          <div><span class="g-ico">XP</span><div><b data-conta="${d.xp - a.xp}">${sinal(d.xp - a.xp)}</b><small>Experiência</small></div></div>
-          <div><span class="g-ico">${icone('dinheiro', 20)}</span><div><b data-conta="${u.bolsa || 0}" data-pre="$">+$${(u.bolsa || 0).toLocaleString('pt-BR')}</b><small>Bolsa da luta</small></div></div>
-          <div><span class="g-ico">${icone('pessoas', 20)}</span><div><b data-conta="${u.fama || 0}">${sinal(u.fama || 0)}</b><small>Fama</small></div></div>
-          <div><span class="g-ico">${icone('trofeu', 20)}</span><div><b data-conta="${d.pontos - a.pontos}">${sinal(d.pontos - a.pontos)}</b><small>Pontos no ranking</small></div></div>
+    const f = MMA.nivelFama(c);
+
+    // Vitoria de titulo: a tela do campeao com a foto real do cinturao e a historia da conquista.
+    const L = campeaoNovo ? MMA.legado(c) : null;
+    const duplo = campeaoNovo && L.categoriasCampeao.length >= 2;
+    const historia = campeaoNovo
+      ? `${esc(u.nomeA)} ${u.defendeu ? 'defendeu o cinturão' : 'conquistou o cinturão'} da categoria ${esc(categoriaAtual(c))} ao vencer ${esc(u.nomeB)} por ${metodoTxt.toLowerCase()}${fim ? ` no round ${u.round}, aos ${esc(u.tempo || '')}` : ''}${u.evento ? `, no ${esc(u.evento.nome)}` : ''}. ${u.defendeu ? `É a ${c.defesas}ª defesa seguida.` : `Cartel agora: ${c.recorde.v}-${c.recorde.d}-${c.recorde.e}.`}`
+      : '';
+    const heroCampeao = campeaoNovo && window.Celebra
+      ? `<section class="res-campeao entra">${Celebra.fotoCinturao(duplo ? 2 : 1, `<div class="kicker">${u.defendeu ? 'Cinturão defendido' : 'Cinturão conquistado'}</div><h2 class="resultado-grande">${duplo ? 'Campeão em duas categorias' : u.defendeu ? 'Título defendido' : 'Novo campeão'}</h2>`)}<div class="rc-quem">${fotoDuo(u.nomeA)}<div><b>${esc(u.nomeA)}</b>${c.apelido ? `<small>“${esc(c.apelido)}”</small>` : ''}<span>${duplo ? esc(L.categoriasCampeao.join(' e ')) : esc(categoriaAtual(c))} · ${c.recorde.v}-${c.recorde.d}-${c.recorde.e}${c.defesas ? ` · ${c.defesas} ${plural(c.defesas, 'defesa', 'defesas')}` : ''}</span></div></div><p class="res-historia">${historia}</p></section>`
+      : '';
+
+    return `${heroCampeao}<section class="res-oficial ${cls}${campeaoNovo ? ' campeao' : ''} entra">
+        <div class="ro-topo"><span class="kicker">${u.titulo ? 'Luta pelo cinturão' : 'Resultado oficial'}</span>${u.evento ? `<span>${esc(u.evento.nome)} · ${esc(MMA.dataTexto(u.evento.data, true))}</span>` : ''}</div>
+        <div class="ro-duelo">
+          <figure class="ro-lado${u.venceu ? ' vencedor' : ''}">${fotoDuo(u.nomeA, 'a')}<figcaption><b>${esc(sobrenome(u.nomeA))}</b><small>${esc(u.cartelA)}</small>${u.venceu ? '<span class="ro-selo">Vencedor</span>' : ''}</figcaption></figure>
+          <div class="ro-meio"><h2>${txt}</h2><p class="ro-metodo">${quem ? esc(sobrenome(quem)) + ' vence por ' : 'Luta termina '}${metodoTxt.toLowerCase()}</p><p class="ro-quando">${quando}</p><div class="res-placar">${u.totais[0]} – ${u.totais[1]}</div></div>
+          <figure class="ro-lado${!u.venceu && !u.empatou ? ' vencedor' : ''}">${fotoDuo(u.nomeB, 'b')}<figcaption><b>${esc(sobrenome(u.nomeB))}</b><small>${esc(u.cartelB)}</small>${!u.venceu && !u.empatou ? '<span class="ro-selo">Vencedor</span>' : ''}</figcaption></figure>
+        </div>
+        ${cartoesJuizes(u)}
+      </section>
+      <div class="res-colunas">
+        ${painel({ cls: 'entra', i: 1, titulo: 'Estatísticas', icone: 'barras', corpo: tabelaEstatLuta(u) })}
+        ${painel({ cls: 'entra', i: 2, titulo: 'O que mudou', icone: 'historico', corpo: `<div class="consequencias">
+          ${stat('Cartel', `${a.recorde.v}-${a.recorde.d}-${a.recorde.e}`, `${d.recorde.v}-${d.recorde.d}-${d.recorde.e}`, u.venceu ? 'sobe' : u.empatou ? '' : 'desce')}
+          ${stat('Ranking', a.pos ? '#' + a.pos : '—', d.pos ? '#' + d.pos : '—', a.pos && d.pos && d.pos !== a.pos ? (d.pos < a.pos ? 'sobe' : 'desce') : '')}
+          ${stat('Pontos no ranking', a.pontos, d.pontos, d.pontos > a.pontos ? 'sobe' : d.pontos < a.pontos ? 'desce' : '')}
+          ${stat('Bolsa', '$0', '+$' + (u.bolsa || 0).toLocaleString('pt-BR'), '')}
+          ${stat('Fama', f.nome, u.fama ? sinal(u.fama) + ' pts' : 'sem mudança', u.fama > 0 ? 'sobe' : u.fama < 0 ? 'desce' : '')}
+          ${stat('Experiência', a.xp, d.xp, d.xp > a.xp ? 'sobe' : '')}
+          ${stat('Nível', a.nivel, d.nivel, d.nivel > a.nivel ? 'sobe' : '')}
+          ${stat('Energia', Math.round(a.energia), Math.round(d.energia), d.energia < a.energia ? 'desce' : '')}
+          ${(() => { const cond = u.lesao ? 'Lesão: ' + esc(u.lesao) : u.dano >= 60 ? 'Muito castigado' : u.dano >= 30 ? 'Castigado' : 'Sem lesões'; return stat('Condição física', cond, cond, u.lesao ? 'desce' : ''); })()}
         </div>
         <div class="res-extras">
           ${u.nivelFamaSubiu ? `<div class="res-destaque ouro">Sua fama subiu: agora você é <b>${f.nome}</b>.</div>` : ''}
           ${u.pontosHabGanhos > 0 ? `<div class="res-destaque azul">+${u.pontosHabGanhos} ${plural(u.pontosHabGanhos, 'ponto', 'pontos')} de habilidade <button class="fp-link" data-acao="ir" data-tela="habilidades">Gastar agora</button></div>` : ''}
+          ${d.pontosDist > a.pontosDist ? `<div class="res-destaque azul">+${d.pontosDist - a.pontosDist} ponto para distribuir <button class="fp-link" data-acao="ir" data-tela="distribuir">Distribuir</button></div>` : ''}
           ${u.rivalidade ? `<div class="res-destaque fogo">${esc(u.rivalidade)}</div>` : ''}
-          ${u.lesao ? `<div class="res-destaque alerta">Lesão: ${esc(u.lesao)}</div>` : ''}
-          ${u.titulo ? `<div class="res-destaque ouro">Cinturão: ${u.venceu ? (u.defendeu ? 'defendido' : 'conquistado') : 'não conquistado'}</div>` : ''}
-        </div>
-        <div class="resultado-info">
-          ${sub('Ranking', `${a.pos ? '#' + a.pos : '—'} → ${d.pos ? '#' + d.pos : '—'}`)}
-          ${sub('Nível', a.nivel === d.nivel ? `${d.nivel}` : `${a.nivel} → ${d.nivel}`)}
-          ${d.acima ? sub('Para subir 1 posição', d.acima + ' pts') : sub('Situação', 'Topo da categoria')}
-          ${d.pontosDist > a.pontosDist ? sub('Pontos para distribuir', '+' + (d.pontosDist - a.pontosDist)) : ''}
-        </div>
-      </section>
+          ${u.titulo && !u.venceu ? `<div class="res-destaque alerta">Cinturão: ${u.empatou ? 'mantido pelo campeão' : 'não conquistado'}</div>` : ''}
+        </div>` })}
+      </div>
       ${painelRecompensas(u)}
+      ${cardResultados(u)}
       ${posLuta}
       ${painelProximo(u, c)}
       <div class="resultado-botoes sozinho">
         ${btn({ texto: 'Ir para a carreira', acao: 'ir', data: { tela: 'hub' }, tipo: carreira.agendada || c.lesao || !MMA.proximaOferta(c) ? 'primary' : 'secondary', trailing: 'seta', cls: 'grande' })}
-        ${btn({ texto: detalhesLuta ? 'Ocultar detalhes da luta' : 'Ver detalhes da luta', acao: 'resultado-detalhes', icone: 'barras', cls: 'bloco', aria: `aria-expanded="${detalhesLuta}"` })}
+        ${btn({ texto: detalhesLuta ? 'Ocultar round a round' : 'Ver round a round', acao: 'resultado-detalhes', icone: 'barras', cls: 'bloco', aria: `aria-expanded="${detalhesLuta}"` })}
       </div>
-      ${detalhesLuta ? painel({ cls: 'entra', titulo: 'Detalhes da luta', icone: 'barras', corpo: `<div class="resumo-luta">${resumoLuta(u).map((r) => `<div class="linha-resumo ${r.destaque ? 'destaque' : ''}"><span class="rr">R${r.round}</span><span class="pt"></span><span class="tx">${esc(r.texto)}</span></div>`).join('')}</div>${tabelaEstatLuta(u)}` }) : ''}`;
-  }
-
-  // ---------------------------------------------------------------------------
-  // Ranking
-  // ---------------------------------------------------------------------------
-
-  function telaRanking() {
-    const c = carreira;
-    const divs = divisoesDoPeriodo(c.periodo);
-    const divId = rankDiv && divs.includes(rankDiv) ? rankDiv : c.divisaoId;
-    const completo = MMA.ranking(c, c.periodo, divId).map((x, i) => Object.assign({ pos: i + 1 }, x));
-    const campeao = MMA.campeaoAtual(c, c.periodo, divId);
-    let linhas = rankFiltro === 'lendas' ? completo.filter((x) => x.lenda) : completo.slice(0, 15);
-    const jogadorNoTop = linhas.some((x) => x.jogador);
-    const jogador = completo.find((x) => x.jogador);
-    if (rankFiltro !== 'lendas' && jogador && !jogadorNoTop) linhas = linhas.concat([jogador]);
-
-    const linhaHtml = (x, i) => {
-      const medalha = x.pos <= 3 ? `<span class="medalha m${x.pos}">${x.pos}</span>` : `<span class="pos-n">${x.pos}</span>`;
-      const badges = [x.nome === campeao ? badge('Campeão', 'gold') : '', x.lenda ? badge('Lenda', 'gold-borda') : '', x.jogador ? badge('Você', 'red') : ''].join('');
-      const cl = ['linha-rank', 'entra', x.jogador ? 'eu' : '', x.pos <= 3 && !x.jogador ? 'top' + x.pos : '', x.nome === campeao ? 'campeao' : ''].join(' ');
-      const iconeEstilo = x.estilo === 'striking' ? 'luva' : x.estilo === 'grappling' ? 'chao' : x.estilo === 'luta_livre' ? 'queda' : 'cinturao';
-      return `<div class="${cl}" style="--i:${Math.min(i, 14)}">
-        <div class="col-pos">${medalha}</div>
-        <div class="col-lutador">${avatar(x.nome, 'sm')}<div><b>${esc(x.nome)}</b> ${badges}</div></div>
-        <div class="col-estilo"><span class="estilo-ico">${icone(iconeEstilo, 18)}</span><div><b>${MMA.ESTILOS[x.estilo] || ''}</b><small>${ARQUETIPO[x.estilo] || ''}</small></div></div>
-        <div class="col-overall"><span class="ov-caixa">${x.rating}</span></div>
-        <div class="col-pontos"><b>${x.pontos}</b> <small>pts</small></div>
-      </div>`;
-    };
-
-    // Painel da posicao do jogador (so quando ele esta na categoria exibida).
-    let posicao = '';
-    if (jogador) {
-      const acima = jogador.pos > 1 ? completo[jogador.pos - 2] : null;
-      let texto;
-      let prog = 100;
-      if (!acima) {
-        texto = c.campeao ? 'Você é o campeão desta categoria.' : 'Você lidera o ranking.';
-      } else {
-        texto = `Faltam ${Math.max(1, acima.pontos - jogador.pontos + 1)} pontos para passar ${acima.nome} (#${acima.pos}).`;
-        prog = (jogador.pontos / (acima.pontos + 1)) * 100;
-      }
-      const campTxt = campeao && !c.campeao ? `<p class="mp-camp">Campeão da categoria: <b>${esc(campeao)}</b></p>` : '';
-      posicao = `<div class="minha-posicao entra"><div class="kicker">Sua posição atual</div><div class="mp-linha">${avatar(c.nome, 'md')}<div><b class="mp-pos">#${jogador.pos}</b><span class="mp-pts">${jogador.pontos} pts</span></div></div><p>${texto}</p>${barra(prog)}${campTxt}</div>`;
-    }
-
-    const idx = divs.indexOf(divId);
-    const seletor = `<div class="filtros-rank">
-      ${btn({ texto: '', acao: 'rank-nav', data: { dir: '-1' }, icone: 'chevronEsq', cls: 'quadrado', disabled: idx <= 0, aria: 'aria-label="Categoria anterior"' })}
-      <select id="rank-div" aria-label="Categoria">${divs.map((d) => `<option value="${d}"${d === divId ? ' selected' : ''}>${nomeDivisao(c.periodo, d)}</option>`).join('')}</select>
-      <div class="abas-rank">
-        <button data-acao="rank-filtro" data-valor="geral" aria-pressed="${rankFiltro === 'geral'}">Geral</button>
-        <button data-acao="rank-filtro" data-valor="lendas" aria-pressed="${rankFiltro === 'lendas'}">Lendas</button>
-      </div>
-      ${btn({ texto: '', acao: 'rank-nav', data: { dir: '1' }, icone: 'chevronDir', cls: 'quadrado', disabled: idx >= divs.length - 1, aria: 'aria-label="Próxima categoria"' })}
-    </div>`;
-    const nomeCat = divId === 'peso_aberto' ? 'Peso aberto' : nomeDivisao(c.periodo, divId);
-    return `<div class="ranking-topo">
-        <div>${cabecalhoTela(PERIODOS[c.periodo].nome, `Ranking · ${esc(nomeCat)}`, rankFiltro === 'lendas' ? 'Lendas desta categoria.' : 'Os 15 melhores da categoria. Você aparece destacado em vermelho.')}${seletor}</div>
-        ${posicao}
-      </div>
-      <section class="tabela-rank"><div class="rank-cab"><span>#</span><span>Lutador</span><span>Estilo / arquétipo</span><span>Overall</span><span>Pontos</span></div>
-        ${linhas.map(linhaHtml).join('') || '<p class="vazio">Nenhuma lenda nesta categoria.</p>'}
-      </section>
-      ${painelNoticias(c, 8)}
-      ${painelRivais(c, 9)}
-      <div class="acoes-linha">${btn({ texto: 'Voltar', acao: 'ir', data: { tela: 'hub' }, icone: 'setaEsq' })}</div>`;
+      ${detalhesLuta ? painel({ cls: 'entra', titulo: 'Round a round', icone: 'barras', corpo: `<div class="resumo-luta">${resumoLuta(u).map((r) => `<div class="linha-resumo ${r.destaque ? 'destaque' : ''}"><span class="rr">R${r.round}</span><span class="pt"></span><span class="tx">${esc(r.texto)}</span></div>`).join('')}</div>${roundARound(u)}` }) : ''}`;
   }
 
   // ---------------------------------------------------------------------------
@@ -1448,7 +1252,7 @@
     const rk = MMA.ranking(c);
     const ix = rk.findIndex((x) => x.jogador);
     const acima = ix > 0 ? Math.max(1, rk[ix - 1].pontos - c.pontos + 1) : 0;
-    return { acima: acima, xp: c.xp, dinheiro: c.dinheiro, pontos: c.pontos, nivel: MMA.nivelDoXP(c.xp), pontosDist: c.pontosDisponiveis || 0, pos: MMA.posicaoDoJogador(c) };
+    return { acima: acima, xp: c.xp, dinheiro: c.dinheiro, pontos: c.pontos, nivel: MMA.nivelDoXP(c.xp), pontosDist: c.pontosDisponiveis || 0, pos: MMA.posicaoDoJogador(c), recorde: Object.assign({}, c.recorde), energia: c.energia };
   }
 
   function acao(nome, d) {
@@ -1482,7 +1286,7 @@
         const completo = nome + ' ' + sobrenome;
         if (NOMES_REAIS.has(completo.toLowerCase())) return toast('Esse nome pertence a um lutador do jogo. Escolha outro.');
         carreira = MMA.novaCarreira({
-          nome: completo, primeiroNome: nome, sobrenome: sobrenome, pais: rascunho.pais, cidade: cidade, foto: rascunho.foto,
+          nome: completo, primeiroNome: nome, sobrenome: sobrenome, apelido: (rascunho.apelido || '').trim() || null, pais: rascunho.pais, cidade: cidade, foto: rascunho.foto,
           idade: rascunho.idade, modalidade: rascunho.modalidade, periodo: rascunho.periodo, divisaoId: rascunho.divisaoId, adiarPontos: true, traco: rascunho.traco, assinatura: rascunho.assinatura, meta: rascunho.meta,
         });
         salvar();
@@ -1505,15 +1309,27 @@
         if (!r.ok) return toast(r.motivo);
         carreira.resumo = null;
         salvar();
-        toast(`Luta marcada para a semana ${r.semanaLuta}. O camp de treino começou.`);
-        return render();
+        const ev = carreira.agendada && carreira.agendada.evento;
+        toast(`Luta marcada${ev ? ' para o ' + ev.nome : ''}: ${MMA.dataTexto(ev ? ev.data : null, true)}. O camp de treino começou.`);
+        return ir('proxima');
       }
+
+      case 'ver-lutador':
+        estado.lutadorSel = { nome: d.nome, div: d.div || null };
+        return ir('lutador');
+
+      case 'rank-div':
+        estado.rankDiv = d.valor;
+        return render();
 
       case 'camp-decidir': {
         const r = MMA.decidirCamp(carreira, d.id);
         if (!r.ok) return toast(r.motivo);
         salvar();
-        if (r.concluido) toast('Camp concluído. Dia da luta!');
+        if (r.concluido) {
+          toast('Camp concluído. Dia da luta!');
+          return ir('proxima');
+        }
         return render();
       }
 
@@ -1585,7 +1401,6 @@
         const r = MMA.aprender(carreira, d.id);
         if (!r.ok) return toast(r.motivo);
         salvar();
-        if (window.Som) Som.raro(2);
         toast('Habilidade aprendida: ' + r.hab.nome + (r.ganhos.length ? ' · ' + r.ganhos.join(', ') : '') + '.');
         return render();
       }
@@ -1596,7 +1411,7 @@
         carreira.resumo = null;
         salvar();
         toast('Luta marcada para a semana ' + r.semanaLuta + '. O camp de treino começou.');
-        return ir('hub');
+        return ir('proxima');
       }
 
       case 'traco-sel':
@@ -1613,11 +1428,6 @@
         if (!a || !MMA.diaDeLuta(carreira)) return toast('Ainda não é o dia da luta.');
         return iniciarLuta(a.op, a.titulo);
       }
-
-      case 'dica-ok':
-        MMA.marcarDica(carreira, d.id);
-        salvar();
-        return render();
 
       case 'distribuir': {
         const r = MMA.distribuirPonto(carreira, d.attr);
@@ -1660,10 +1470,14 @@
         const subA = `${categoriaAtual(carreira)} · ${carreira.recorde.v}-${carreira.recorde.d}-${carreira.recorde.e}`;
         const k = oponente.lutador && oponente.lutador.cartel;
         const subB = `${categoriaAtual(carreira)}${k && k.vitorias != null && k.derrotas != null ? ` · ${k.vitorias}-${k.derrotas}` : ''}`;
+        const kB = oponente.lutador && oponente.lutador.cartel;
+        const cartelB = kB && kB.vitorias != null && kB.derrotas != null ? `${kB.vitorias}-${kB.derrotas}` : '';
+        const cartelA = `${carreira.recorde.v}-${carreira.recorde.d}-${carreira.recorde.e}`;
         const r = MMA.aplicarLuta(carreira, oponente, luta, titulo);
         ultimaLuta = {
           nomeA: carreira.nome, nomeB: oponente.nome, estiloA: carreira.estilo, estiloB: oponente.estilo,
-          ratingA, ratingB: oponente.rating, subA, subB,
+          ratingA, ratingB: oponente.rating, subA, subB, cartelA, cartelB,
+          tempo: luta.resultado.tempo || r.tempo || null, evento: r.evento || null, dano: 100 - MMA.vidaPct(luta.f[0]),
           venceu: r.venceu, empatou: r.empatou, metodo: luta.resultado.metodo, round: luta.resultado.round,
           rodadasTotais: luta.rodadasTotais, totais: luta.totais.slice(), rodadas: luta.rodadas, f: luta.f, est: luta.estatisticas,
           titulo, antes, depois: fotografia(carreira), bolsa: r.bolsa, defendeu: r.defendeu,
@@ -1692,23 +1506,15 @@
         const r = MMA.mudarDivisao(carreira, d.div);
         if (!r.ok) return toast(r.motivo);
         salvar();
-        rankDiv = null;
+        estado.rankDiv = null;
         carreira.resumo = { titulo: 'Nova categoria', linhas: ['Ranking recomeçando do zero. Novas ofertas na mesa.'] };
         salvar();
         return ir('hub');
       }
 
       case 'rank-filtro':
-        rankFiltro = d.valor;
+        estado.rankFiltro = d.valor;
         return render();
-
-      case 'rank-nav': {
-        const divs = divisoesDoPeriodo(carreira.periodo);
-        const atual = divs.indexOf(rankDiv && divs.includes(rankDiv) ? rankDiv : carreira.divisaoId);
-        const novo = Math.max(0, Math.min(divs.length - 1, atual + Number(d.dir)));
-        rankDiv = divs[novo];
-        return render();
-      }
 
       case 'aposentar': {
         if (!confirm('Pendurar as luvas? A carreira será encerrada e a história vai para o hall da fama.')) return;
@@ -1738,7 +1544,7 @@
 
   document.addEventListener('input', (e) => {
     if (!rascunho) return;
-    const campos = { nome: 'nome', sobrenome: 'sobrenome', cidade: 'cidade' };
+    const campos = { nome: 'nome', sobrenome: 'sobrenome', cidade: 'cidade', apelido: 'apelido' };
     if (campos[e.target.id]) rascunho[campos[e.target.id]] = e.target.value;
     if (e.target.id === 'idade') {
       const v = Number(e.target.value);
@@ -1747,10 +1553,6 @@
   });
 
   document.addEventListener('change', (e) => {
-    if (e.target.id === 'rank-div') {
-      rankDiv = e.target.value;
-      render();
-    }
     if (rascunho && e.target.id === 'pais') rascunho.pais = e.target.value;
     if (rascunho && e.target.id === 'divisao') rascunho.divisaoId = e.target.value;
     if (rascunho && e.target.id === 'foto-input') {
@@ -1763,6 +1565,18 @@
       }).catch((erro) => toast(erro.message));
     }
   });
+
+  // Interface entregue as telas de js/telas*.js: so apresentacao, toda regra vem do motor.
+  const UI = {
+    MMA, esc, icone, btn, badge, plural, fotoSrc, corDoNome, nomeDivisao, divisoesDoPeriodo, barraAnim, blocoEvento, painelNoticias, painelRivais, estado, PERIODOS,
+    get carreira() { return carreira; },
+    dados: (nome) => POR_NOME[nome] || null,
+    credito: creditoFoto,
+    categoria: categoriaAtual,
+    etapaNome: (t) => ETAPA_UI[t].nome,
+    etapaTitulo: (t) => ETAPA_UI[t].titulo,
+    chance: (op) => fichaAdversario(op, carreira).chance,
+  };
 
   render();
 })();

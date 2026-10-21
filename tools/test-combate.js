@@ -37,7 +37,7 @@ function checar(luta, ctx) {
       assert.ok(e.subOk <= e.subTent, 'finalizacoes ok > tentativas ' + ctx);
       Object.values(e).forEach((v) => assert.ok(Number.isFinite(v) && v >= 0, 'estatistica invalida ' + ctx));
     });
-    if (rd.juizes) rd.juizes.forEach((c) => assert.ok([[10, 9], [10, 8], [9, 10], [8, 10]].some((x) => x[0] === c[0] && x[1] === c[1]), 'cartao invalido ' + c + ' ' + ctx));
+    if (rd.juizes) rd.juizes.forEach((c) => assert.ok([[10, 9], [10, 8], [9, 10], [8, 10], [10, 10]].some((x) => x[0] === c[0] && x[1] === c[1]), 'cartao invalido ' + c + ' ' + ctx));
   });
   const soma = [0, 1].map((k) => ['acertos', 'quedasOk', 'subOk'].map((c) => luta.estatisticas[k][c]));
   luta.rodadas.forEach((rd) => rd.est.forEach((e, k) => { void e; void k; }));
@@ -160,6 +160,32 @@ teste('wrestler e striker se equilibram: ninguem vence mais de 65% com overall p
     const p = v.v / v.n;
     assert.ok(p > 0.32 && p < 0.68, k + ': ' + (100 * p).toFixed(0) + '% (n=' + v.n + ')');
   });
+});
+
+teste('juizes coerentes: 10-8 e raro, 10-10 e raro, o cartao do round e o do juiz do meio e a soma fecha', () => {
+  const ests = ['striking', 'luta_livre', 'grappling', 'misto'];
+  let rounds = 0;
+  let dez8 = 0;
+  let dez10 = 0;
+  for (let i = 0; i < 400; i++) {
+    const l = new MMA.Luta(L(ests[i % 4], 'A'), L(ests[(i * 3 + 1) % 4], 'B'), { rng: MMA.criarRng(900 + i), rodadas: 3 });
+    l.simularCompleta({ estrategia: IDS[i % IDS.length] });
+    const soma = [[0, 0], [0, 0], [0, 0]];
+    l.rodadas.forEach((rd) => {
+      if (!rd.juizes) return;
+      rounds++;
+      if (rd.placar[0] === 8 || rd.placar[1] === 8) dez8++;
+      if (rd.placar[0] === rd.placar[1]) dez10++;
+      // o cartao oficial do round e o do juiz do meio: a maioria dos juizes nao discorda dele
+      const lado = (c) => Math.sign(c[0] - c[1]);
+      if (lado(rd.placar) !== 0) assert.ok(rd.juizes.filter((c) => lado(c) === lado(rd.placar)).length >= 2, 'maioria dos juizes contra o cartao do round');
+      rd.juizes.forEach((c, j) => { soma[j][0] += c[0]; soma[j][1] += c[1]; });
+    });
+    if (/^Decisão|Empate/.test(l.resultado.metodo)) assert.deepStrictEqual(l.cartoes, soma, 'cartoes finais nao fecham com os rounds');
+  }
+  assert.ok(rounds > 400, 'poucos rounds de decisao: ' + rounds);
+  assert.ok(dez8 / rounds < 0.09, '10-8 demais: ' + ((100 * dez8) / rounds).toFixed(1) + '%');
+  assert.ok(dez10 / rounds < 0.06, '10-10 demais: ' + ((100 * dez10) / rounds).toFixed(1) + '%');
 });
 
 console.log(falhas ? '\n' + falhas + ' teste(s) falharam.' : '\nTodos os testes de combate passaram.');

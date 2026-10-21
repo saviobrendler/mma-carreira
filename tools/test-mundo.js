@@ -18,8 +18,9 @@ function teste(nome, fn) {
 }
 
 const nova = (extra) => MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
+let semente = 700; // as ofertas aceitas usam semente fixa: o teste nao depende de sorte
 const aceitar = (c, i) => {
-  const r = MMA.aceitarOferta(c, c.ofertas[i || 0].id);
+  const r = MMA.aceitarOferta(c, c.ofertas[i || 0].id, MMA.criarRng(semente++));
   assert.strictEqual(r.ok, true, r.motivo);
   return r;
 };
@@ -284,6 +285,7 @@ teste('perder para alguem cria rivalidade (revanche); vencer o rival esfria e re
   c.semDrop = -100;
   aceitar(c);
   fazerCamp(c, MMA.criarRng(13));
+  c.rivais = {}; // o camp pode ter provocado o rival: o teste parte de zero
   const op = c.agendada.op;
   const luta = MMA.iniciarLutaAtiva(c, op, false, MMA.criarRng(14));
   luta.resultado = { vencedor: 1, metodo: 'Nocaute', round: 1 };
@@ -300,7 +302,7 @@ teste('perder para alguem cria rivalidade (revanche); vencer o rival esfria e re
   assert.ok(rivalOferta && rivalOferta.rival === 2, 'rival quente deve aparecer nas ofertas');
   const comum = c.ofertas.find((o) => o.op.nome !== op.nome);
   if (comum) assert.ok(rivalOferta.bolsa / (500 + rivalOferta.op.rating * 8) > comum.bolsa / (500 + comum.op.rating * 8));
-  MMA.aceitarOferta(c, rivalOferta.id);
+  MMA.aceitarOferta(c, rivalOferta.id, MMA.criarRng(21));
   fazerCamp(c, MMA.criarRng(18));
   c.rivais[op.nome].heat = 2; // eventos do camp podem ter mexido nisso
   const fama0 = c.fama;

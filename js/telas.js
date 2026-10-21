@@ -124,7 +124,7 @@
     return `<article class="hero-l${c.campeao ? ' campeao' : ''}">
       <div class="hl-foto">${foto(UI, c.nome, 'hero')}</div>
       <div class="hl-corpo">
-        <div class="hl-topo"><span class="org">UFC</span><span>${e(UI.categoria(c))}</span>${c.campeao ? '<span class="selo-ouro">Campeão</span>' : ''}</div>
+        <div class="hl-topo"><span class="org">UFC</span><span>${e(UI.categoria(c))}</span><span class="hl-era">${e(UI.PERIODOS[c.periodo].nome)}</span>${c.campeao ? '<span class="selo-ouro">Campeão</span>' : ''}</div>
         <h1 class="hl-nome">${nome}</h1>
         ${c.apelido ? `<p class="hl-apelido">“${e(c.apelido)}”</p>` : ''}
         <ul class="hl-meta">
