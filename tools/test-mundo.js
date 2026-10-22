@@ -20,6 +20,7 @@ function teste(nome, fn) {
 const nova = (extra) => {
   const c = MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
   c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  c.semFoco = true; // o camp dos testes comeca direto no plano de treino
   c.contrato.lutasRestantes = 9999; // contrato nao vence no meio dos testes
   return c;
 };
@@ -566,7 +567,9 @@ function resolverEventoBot(c, rng) {
     assert.ok(r0.ok, 'imprevisto nao resolveu');
   }
   if (!c.evento) return;
-  const r = MMA.resolverEvento(c, Math.floor(rng() * 2), rng);
+  const i0 = Math.floor(rng() * 2);
+  let r = MMA.resolverEvento(c, i0, rng);
+  if (!r.ok) r = MMA.resolverEvento(c, 1 - i0, rng); // sem dinheiro para uma opcao: tenta a outra
   assert.ok(r.ok, 'evento nao resolveu: ' + (r.motivo || ''));
 }
 
@@ -693,6 +696,9 @@ const resumo = (cs) => {
     dinheiro: Math.round(m((c) => c.dinheiro)),
     academia: m((c) => Object.values(c.academia).reduce((s, v) => s + v, 0)).toFixed(1),
     rivais: m((c) => Object.keys(c.rivais).length).toFixed(1),
+    vitoriaPct: (100 * cs.reduce((s, c) => s + c.recorde.v, 0) / Math.max(1, cs.reduce((s, c) => s + c.recorde.v + c.recorde.d + c.recorde.e, 0))).toFixed(0) + '%',
+    semanaTitulo: (() => { const x = cs.map((c) => (c.historico.find((h) => h.titulo && h.resultado === 'Vitória') || {}).semana).filter(Boolean); return x.length ? Math.round(x.reduce((a, b) => a + b, 0) / x.length) : null; })(),
+    defesas: m((c) => c.defesasTotal || 0).toFixed(1),
   };
 };
 

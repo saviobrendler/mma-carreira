@@ -45,6 +45,16 @@
     mma: { nome: 'MMA completo', estilo: 'misto', bonus: { qi: 3, resistencia: 2 }, descr: 'Sem especialidade: equilíbrio entre as fases.' },
   };
 
+  // Arquétipos: um jeito de ser lutador, com um ponto forte, um defeito, uma habilidade propria (traco gratis) e o impacto no potencial.
+  const ARQUETIPOS = {
+    nocauteador: { nome: 'Nocauteador', descr: 'Mãos pesadas e queixo frágil: vive do golpe que decide.', bonus: { forca: 4, striking: 3, queixo: -3 }, traco: 'nocauteador', potencial: 0 },
+    maquina: { nome: 'Máquina de cardio', descr: 'Cansa o rival nos rounds finais, mas é lento nos primeiros segundos.', bonus: { resistencia: 5, wrestling: 2, velocidade: -3 }, traco: 'cardio', potencial: 0 },
+    finalizador: { nome: 'Caçador de finalizações', descr: 'Perigoso no chão, mas pouco potente em pé.', bonus: { bjj: 5, grappling: 3, forca: -3 }, traco: 'mestre_finalizacao', potencial: 0 },
+    estrategista: { nome: 'Estrategista', descr: 'Lê o rival melhor que ninguém, mas não bate forte.', bonus: { qi: 5, defesa: 3, forca: -3 }, traco: 'contra_ataque', potencial: 0 },
+    tanque: { nome: 'Queixo de ferro', descr: 'Aguenta qualquer coisa, mas se move devagar.', bonus: { queixo: 5, resistencia: 2, velocidade: -3 }, traco: 'queixo_de_aco', potencial: 0 },
+    prodigio: { nome: 'Prodígio', descr: 'Começa cru, mas o teto de evolução é muito maior.', bonus: { striking: -3, wrestling: -3, bjj: -3, defesa: -3 }, traco: 'resiliente', potencial: 6 },
+  };
+
   const ESTRATEGIAS = {
     trocar: { nome: 'Trocar em pé', descr: 'Troca golpes em pé, sem buscar a queda.', striking: 1.15, custo: 1.2, derrubada: 0, dano: 1 },
     pressionar: { nome: 'Pressionar', descr: 'Ataque constante. Mais dano, mais desgaste.', striking: 1.1, custo: 1.5, derrubada: 0.1, dano: 1.1 },
@@ -173,6 +183,60 @@
       opcoes: [
         { rotulo: 'Responder à altura', resumo: '+10 de fama, rivalidade mais quente e -5 de energia', efeito: { fama: 10, heat: 1, energia: -5 } },
         { rotulo: 'Ignorar', resumo: '+5 de energia', efeito: { energia: 5 } },
+      ],
+    },
+    {
+      id: 'filho', vida: true,
+      titulo: 'Nasce o seu filho',
+      texto: 'Foi uma semana de emoção. A família pede atenção e você não dorme direito.',
+      opcoes: [
+        { rotulo: 'Ficar com a família', resumo: '+8 de fama (a torcida adora a notícia) e +15 de energia', efeito: { fama: 8, energia: 15 } },
+        { rotulo: 'Voltar logo aos treinos', resumo: '+12 XP e -15 de energia', efeito: { xp: 12, energia: -15 } },
+      ],
+    },
+    {
+      id: 'polemica', vida: true,
+      titulo: 'Polêmica nas redes',
+      texto: 'Uma declaração antiga sua voltou a circular e a internet dividiu. A assessoria pede uma resposta.',
+      opcoes: [
+        { rotulo: 'Pedir desculpas em público', resumo: '-$300, mas a poeira baixa: +5 de fama', efeito: { dinheiro: -300, fama: 5 } },
+        { rotulo: 'Ignorar e treinar', resumo: '+14 de fama pela atenção, com 20% de lesão por treinar nervoso', efeito: { fama: 14, riscoLesao: 0.2 } },
+      ],
+    },
+    {
+      id: 'escandalo', vida: true,
+      titulo: 'Escândalo com ex-treinador',
+      texto: 'Seu ex-treinador dá uma entrevista cheia de acusações. Todo mundo quer saber a sua versão.',
+      opcoes: [
+        { rotulo: 'Dar a sua versão', resumo: '+10 de fama e +5 pts de ranking, -10 de energia', efeito: { fama: 10, pontos: 5, energia: -10 } },
+        { rotulo: 'Não comentar', resumo: '+10 de energia e o assunto morre', efeito: { energia: 10 } },
+      ],
+    },
+    {
+      id: 'reality', vida: true,
+      titulo: 'Convite para um reality show',
+      texto: 'Uma emissora quer você em um reality de treinamento. Paga bem e dá visibilidade, mas consome a semana.',
+      opcoes: [
+        { rotulo: 'Aceitar', resumo: '+$1.200 e +16 de fama, -25 de energia', efeito: { dinheiro: 1200, fama: 16, energia: -25 } },
+        { rotulo: 'Recusar', resumo: '+10 XP de foco', efeito: { xp: 10 } },
+      ],
+    },
+    {
+      id: 'familia', vida: true,
+      titulo: 'Doença na família',
+      texto: 'Alguém muito próximo adoeceu e você precisa ajudar com as despesas e o tempo.',
+      opcoes: [
+        { rotulo: 'Ajudar com tudo', resumo: '-$500 e -20 de energia, mas a família fica firme', efeito: { dinheiro: -500, energia: -20 } },
+        { rotulo: 'Ajudar com o essencial', resumo: '-15 de energia, sem gastar dinheiro', efeito: { energia: -15 } },
+      ],
+    },
+    {
+      id: 'academia_rival', vida: true,
+      titulo: 'Rival aparece na sua academia',
+      texto: 'Um lutador da sua categoria entra na academia para provocar. Os colegas esperam a sua reação.',
+      opcoes: [
+        { rotulo: 'Chamar para o sparring', resumo: '+10 pts de ranking e +8 de fama, com 25% de risco de lesão', efeito: { pontos: 10, fama: 8, riscoLesao: 0.25 } },
+        { rotulo: 'Mandar o segurança', resumo: '+5 de energia', efeito: { energia: 5 } },
       ],
     },
     {
@@ -1002,6 +1066,7 @@
   const SEMANAS_CIRCUITO = 4;
   const BOLSA_CAMPEAO = 1.15; // lutas sem titulo do campeao pagam mais
   const BOLSA_EX_CAMPEAO = 1.5;
+  const BOLSA_TRILOGIA = 1.3;
   const BOLSA_SUPERLUTA = 2.4;
   const SEMANAS_ENTRE_SUPERLUTAS = 16;
   const MIN_PREPARO = 2; // semanas minimas entre aceitar e lutar
@@ -1041,10 +1106,15 @@
     const idade = clamp(Math.round(opcoes.idade || IDADE_PADRAO), 18, 40);
     const modalidade = MODALIDADES[opcoes.modalidade] ? opcoes.modalidade : null;
     const estilo = modalidade ? MODALIDADES[modalidade].estilo : opcoes.estilo;
-    const atributos = criarAtributos(estilo, distribuicao, modalidade ? MODALIDADES[modalidade].bonus : null);
-    const potencial = 78 + Math.floor(rng() * 14); // 78 a 91
+    const arquetipo = ARQUETIPOS[opcoes.arquetipo] ? opcoes.arquetipo : null;
+    const bonusBase = Object.assign({}, modalidade ? MODALIDADES[modalidade].bonus : {});
+    if (arquetipo) Object.keys(ARQUETIPOS[arquetipo].bonus).forEach((k) => { bonusBase[k] = (bonusBase[k] || 0) + ARQUETIPOS[arquetipo].bonus[k]; });
+    const atributos = criarAtributos(estilo, distribuicao, bonusBase);
+    const potencial = clamp(78 + Math.floor(rng() * 14) + (arquetipo ? ARQUETIPOS[arquetipo].potencial : 0), 60, 97); // 78 a 91 (+ arquetipo)
     const c = {
       versao: 2,
+      arquetipo: arquetipo,
+      dificuldade: DIFICULDADES[opcoes.dificuldade] ? opcoes.dificuldade : 'normal',
       exCampeoes: {}, forma: {}, registroIA: {}, novatos: {}, aposentadosIA: {}, imprensa: [], seguidores: 800, imprevisto: null, ultimoImprevisto: null,
       contrato: contratoInicial(), negociacao: null, patrocinios: [], ofertasPatrocinio: [], sequenciaDerrotas: 0,
       nome: opcoes.nome || 'Sem nome',
@@ -1325,6 +1395,7 @@
     if (o.titulo && c.campeao) { papel = 'defesa'; rotulo = 'Defesa de título'; texto = 'O cinturão está em jogo contra o desafiante número 1. 5 rounds.'; }
     else if (o.titulo) { papel = 'titulo'; rotulo = 'Disputa de cinturão'; texto = 'Sua chance contra o campeão. Vencer faz de você o novo campeão. 5 rounds.'; }
     else if (o.superluta) { papel = 'superluta'; rotulo = 'Superluta'; texto = 'Campeão contra campeão de outra categoria. Sem título em jogo, 5 rounds, bolsa e fama muito maiores.'; }
+    else if (o.trilogia) { papel = 'trilogia'; rotulo = 'Trilogia'; texto = 'Terceira luta de uma rivalidade: vocês estão 1 a 1. Bolsa e fama maiores, e o desempate fica para a história.'; }
     else if (o.exCampeao) { papel = 'ex_campeao'; rotulo = 'Revanche com ex-campeão'; texto = 'Um ex-campeão da categoria quer a volta por cima. Bolsa e fama maiores que o normal. 3 rounds, sem título.'; }
     else if (o.torneio) { papel = 'torneio'; rotulo = 'Torneio de uma noite'; texto = 'Quartas, semifinal e final na mesma noite, contra três adversários cada vez mais fortes. Dano e cansaço passam de uma luta para a outra. Vencer as três paga o prêmio do torneio.'; }
     else if (o.bonus) { papel = 'relampago'; rotulo = 'Luta-relâmpago'; texto = 'Luta em 2 semanas, com bolsa 60% maior, mas sem tempo para um camp completo.'; }
@@ -1383,11 +1454,15 @@
     return null;
   }
 
-  function curarLesao(c) {
+  function curarLesao(c, rng) {
     if (!c.lesao) return;
     const n = 1 + (nivelAcademia(c, 'fisio') >= 2 ? 1 : 0) + ((c.tracos || []).indexOf('resiliente') >= 0 ? 1 : 0);
     c.lesao.semanas -= Math.min(3, n);
-    if (c.lesao.semanas <= 0) c.lesao = null;
+    if (c.lesao.semanas <= 0) {
+      const curada = c.lesao;
+      c.lesao = null;
+      if (curada.grave) { c.decisaoLesao = null; desfecharLesao(c, curada, rng || Math.random); } // cirurgia: volta melhor; sem cirurgia: pode ter sequela
+    }
   }
 
   function aviso(c, texto) {
@@ -1407,8 +1482,9 @@
     c.dicasVistas[id] = true;
   }
 
-  function sortearEvento(r) {
-    const e = EVENTOS[Math.floor(r() * EVENTOS.length)];
+  function sortearEvento(r, soVida) {
+    const pool = soVida ? EVENTOS.filter((x) => x.vida) : EVENTOS;
+    const e = pool[Math.floor(r() * pool.length)];
     return {
       id: e.id,
       titulo: e.titulo,
@@ -1417,7 +1493,19 @@
     };
   }
 
+  // Lesoes graves (raras): pedem uma decisao entre cirurgia e tratamento sem operar.
+  const LESOES_GRAVES = [
+    { nome: 'Ruptura de ligamento do joelho', semanas: 10, historia: 'Seu joelho cedeu em um treino de queda e o médico viu a ruptura no exame.' },
+    { nome: 'Fratura na mão', semanas: 8, historia: 'Um soco mal encaixado no saco de pancada quebrou o osso da mão.' },
+    { nome: 'Lesão no ombro', semanas: 7, historia: 'O ombro luxou em uma finalização e o tendão ficou comprometido.' },
+    { nome: 'Fratura orbital', semanas: 7, historia: 'Um golpe forte quebrou a órbita do olho. A visão precisa de cuidado.' },
+  ];
+
   function sortearLesao(r) {
+    if (r() < 0.1) {
+      const g = LESOES_GRAVES[Math.floor(r() * LESOES_GRAVES.length)];
+      return { nome: g.nome, semanas: g.semanas, grave: true, historia: g.historia };
+    }
     const l = LESOES[Math.floor(r() * LESOES.length)];
     return { nome: l.nome, semanas: l.semanas };
   }
@@ -1427,7 +1515,66 @@
   function aplicarLesao(c, lesao) {
     c.lesao = lesao;
     c.ofertas = [];
+    if (lesao.grave && !lesao.decidida) {
+      c.decisaoLesao = {
+        nome: lesao.nome, historia: lesao.historia, semanas: lesao.semanas,
+        opcoes: [
+          { id: 'operar', rotulo: 'Operar', resumo: 'Recuperação mais longa (+3 semanas), mas cura de vez e pode voltar mais forte.' },
+          { id: 'tratar', rotulo: 'Tratar sem cirurgia', resumo: 'Volta no prazo normal, com 40% de chance de a lesão voltar e deixar uma sequela.' },
+        ],
+      };
+    }
     if (c.agendada && !c.camp && c.semana >= c.agendada.semanaLuta) cancelarLuta(c, 'lesão');
+  }
+
+  // Cirurgia ou tratamento: o jogador decide o que fazer com a lesao grave.
+  function mudarDificuldade(c, id) {
+    if (!DIFICULDADES[id]) return { ok: false, motivo: 'Dificuldade inválida.' };
+    if (c.lutaAtiva) return { ok: false, motivo: 'Termine a luta em andamento antes de mudar a dificuldade.' };
+    c.dificuldade = id;
+    return { ok: true };
+  }
+
+  function resolverLesao(c, id, rng) {
+    const r = rng || Math.random;
+    const d = c.decisaoLesao;
+    if (!d || !c.lesao) { c.decisaoLesao = null; return { ok: false, motivo: 'Nenhuma decisão pendente.' }; }
+    const op = d.opcoes.find((o) => o.id === id);
+    if (!op) return { ok: false, motivo: 'Opção inválida.' };
+    c.lesao.decidida = true;
+    c.decisaoLesao = null;
+    if (id === 'operar') {
+      c.lesao.semanas += 3;
+      c.lesao.cirurgia = true;
+      const texto = 'Cirurgia feita em ' + d.nome.toLowerCase() + '. A recuperação vai levar ' + c.lesao.semanas + ' semanas, mas você volta inteiro.';
+      aviso(c, texto);
+      postar(c, 'noticia', c.nome + ' passa por cirurgia (' + d.nome.toLowerCase() + ') e fica ' + c.lesao.semanas + ' semanas fora.', {});
+      return { ok: true, texto: texto };
+    }
+    c.lesao.recaida = r() < 0.4;
+    const texto = 'Você preferiu tratar sem operar (' + d.nome.toLowerCase() + '). ' + (c.lesao.recaida ? 'Fique atento: o corpo pode reclamar mais tarde.' : 'Por enquanto, tudo certo.');
+    aviso(c, 'Tratamento sem cirurgia: ' + d.nome.toLowerCase() + '.');
+    return { ok: true, texto: texto };
+  }
+
+  // Ao curar uma lesao grave: a cirurgia pode devolver um atleta melhor; o tratamento pode ter sequela.
+  function desfecharLesao(c, lesao, r) {
+    if (lesao.cirurgia) {
+      const livres = ATRIBUTOS.filter((k) => c.atributos[k] < c.tetos[k]);
+      if (livres.length && r() < 0.6) {
+        const k = livres[Math.floor(r() * livres.length)];
+        c.atributos[k] += 1;
+        aviso(c, 'Você voltou da cirurgia mais forte: +1 em ' + ROTULOS[k] + '.');
+        postar(c, 'noticia', c.nome + ' volta da cirurgia e promete um lutador melhor.', {});
+        return;
+      }
+      aviso(c, 'Você voltou da cirurgia sem sequelas.');
+    } else if (lesao.recaida) {
+      const k = ['velocidade', 'resistencia', 'forca'][Math.floor(r() * 3)];
+      c.atributos[k] = Math.max(1, c.atributos[k] - 1);
+      aviso(c, 'A lesão deixou uma sequela: −1 em ' + ROTULOS[k] + '.');
+      postar(c, 'noticia', c.nome + ' sente a lesão voltar e perde um pouco de ' + ROTULOS[k].toLowerCase() + '.', {});
+    }
   }
 
   function cancelarLuta(c, motivo) {
@@ -1441,7 +1588,12 @@
     const r = rng || Math.random;
     c.semana += 1;
     c.energia = Math.min(100, c.energia + ENERGIA_SEMANA + 3 * nivelAcademia(c, 'nutri'));
-    curarLesao(c);
+    curarLesao(c, r);
+    // eventos de vida fora do camp
+    if (!c.evento && !c.camp && !c.lutaAtiva && !c.aposentado && !c.semImprevistos && c.historico.length > 0 && c.semana - (c.ultimoEventoVida || -99) > 12 && r() < 0.04) {
+      c.evento = sortearEvento(r, true);
+      c.ultimoEventoVida = c.semana;
+    }
 
     // Inatividade: sem lutar, o ranking cai.
     const semLutar = c.semana - c.ultimaLutaSemana;
@@ -1513,14 +1665,17 @@
     if (rivalRow && (rival.heat >= 2 || r() < 0.6)) escolhidos = [rivalRow].concat(escolhidos);
     escolhidos.forEach((op, i) => {
       const heat = c.rivais && c.rivais[op.nome] ? c.rivais[op.nome].heat : 0;
+      const duelos = (c.historico || []).filter((h) => h.oponente === op.nome);
+      const trilogia = duelos.length === 2 && duelos.some((h) => h.resultado === 'Vitória') && duelos.some((h) => h.resultado === 'Derrota');
       c.ofertas.push({
+        trilogia: trilogia,
         id: 'o' + c.semana + '-' + i,
         op: snapshotOponente(op),
         titulo: false,
         rival: heat,
         rank: lista.findIndex((x) => x.nome === op.nome) + 1,
         semanasAte: 4 + Math.floor(r() * 3),
-        bolsa: calcularBolsa(c, op, false, heat),
+        bolsa: Math.round((calcularBolsa(c, op, false, heat) * (trilogia ? BOLSA_TRILOGIA : 1)) / 10) * 10,
       });
     });
     if (bonusOp) {
@@ -1642,6 +1797,7 @@
     c.lutaBonus = null; // aceitar outra luta deixa a relampago passar
     c.ofertas = [];
     c.camp = novoCamp(semanas);
+    if (c.semFoco) c.camp.etapas = c.camp.etapas.filter((e) => e.tipo !== 'foco'); // so para testes que contam etapas
     entrarEtapa(c, rng || Math.random);
     return { ok: true, semanaLuta: semanaLuta, semanas: semanas };
   }
@@ -1735,6 +1891,13 @@
 
   // Cada atributo tem sua propria barra de XP. Ao encher, vira 1 ponto para distribuir.
   const XP_TREINO = 20;
+  // Dificuldade: quanto os adversarios ganham em todos os atributos. Calibrada com o bot que joga bem (carreiras de 3 anos):
+  // tranquilo ~90% de vitorias e titulo em ~57 semanas; normal ~78% e ~72 semanas (1,7 defesas por carreira); dificil ~70% e bem mais tarde.
+  const DIFICULDADES = {
+    tranquilo: { nome: 'Tranquilo', bonus: 0, descr: 'Adversários como nos dados. Para curtir a carreira.' },
+    normal: { nome: 'Normal', bonus: 6, descr: 'Adversários um degrau acima. Camp e estratégia fazem diferença.' },
+    dificil: { nome: 'Difícil', bonus: 9, descr: 'Os melhores são muito fortes: o cinturão custa caro e defender é duro.' },
+  };
   const CUSTO_TREINO = 20; // energia gasta em cada treino
   const RECUPERA_DESCANSO = 40; // energia recuperada ao descansar (alem dos 15 da semana)
   function limiteAtributo(valor) {
@@ -1767,7 +1930,7 @@
     if (carreira.agendada) return { ok: false, motivo: 'Há uma luta marcada: siga o camp de treino.' };
     carreira.energia = Math.min(100, carreira.energia + RECUPERA_DESCANSO);
     // Descanso e fisioterapia: cura uma semana extra de lesao.
-    curarLesao(carreira);
+    curarLesao(carreira, rng);
     virarSemana(carreira, rng);
     return { ok: true };
   }
@@ -1873,6 +2036,8 @@
     if (ef && ef.lesionado) penalidade += 15;
     penalidade = clamp(penalidade, 0, 40);
     const ele = Object.assign({}, atributosIA(oponente.lutador, carreira.periodo, carreira.semana));
+    const bonusDif = (DIFICULDADES[carreira.dificuldade] || DIFICULDADES.tranquilo).bonus;
+    if (bonusDif) Object.keys(ele).forEach((k) => { ele[k] = clamp(ele[k] + bonusDif, 1, 99); });
     if (ef && ef.provocacao >= 2) {
       ele.striking = clamp(ele.striking + 2, 1, 99);
       ele.forca = clamp(ele.forca + 2, 1, 99);
@@ -1886,7 +2051,7 @@
         rodadas: (carreira.agendada && carreira.agendada.rounds) || (titulo ? 5 : 3),
         regra: carreira.periodo === 'eras' ? 'lendas' : null,
         rng: rng,
-        tracosA: (carreira.tracos || []).concat(habFlags(carreira)),
+        tracosA: (carreira.tracos || []).concat(habFlags(carreira)).concat(carreira.arquetipo && ARQUETIPOS[carreira.arquetipo] && (carreira.tracos || []).indexOf(ARQUETIPOS[carreira.arquetipo].traco) < 0 ? [ARQUETIPOS[carreira.arquetipo].traco] : []),
         desbloqueiosA: desbloqueios(carreira),
         assinaturaA: assinaturaEquipada(carreira),
         scoutA: !!(ef && ef.scout),
@@ -1914,6 +2079,46 @@
   }
 
   // Entrada do hall da fama: resumo da carreira e as lutas mais marcantes.
+  // Hall da Fama: pontos por conquista. 100 pontos entram; 140 ou mais entram na primeira votacao.
+  const HALL_LIMIAR = 100;
+  const HALL_PRIMEIRA = 140;
+
+  function hallDaFama(c) {
+    const L = legado(c);
+    const duplo = L.categoriasCampeao.length >= 2;
+    const criterios = [
+      { nome: 'Cinturões conquistados', valor: L.titulos, pontos: L.titulos * 15 },
+      { nome: 'Defesas de título', valor: L.defesas, pontos: L.defesas * 8 },
+      { nome: 'Vitórias', valor: L.vitorias, pontos: Math.round(L.vitorias * 1.2) },
+      { nome: 'Vitórias antes do limite', valor: L.nocautes + L.finalizacoes, pontos: Math.round((L.nocautes + L.finalizacoes) * 0.6) },
+      { nome: 'Maior sequência de vitórias', valor: L.maiorSequencia, pontos: Math.max(0, L.maiorSequencia - 3) * 2 },
+      { nome: 'Campeão em duas categorias', valor: duplo ? 1 : 0, pontos: duplo ? 30 : 0 },
+      { nome: 'Torneios vencidos', valor: L.torneios, pontos: L.torneios * 25 },
+      { nome: 'Superlutas vencidas', valor: L.superlutas, pontos: L.superlutas * 8 },
+      { nome: 'Trilogias disputadas', valor: c.trilogias || 0, pontos: (c.trilogias || 0) * 6 },
+    ];
+    const total = criterios.reduce((s, x) => s + x.pontos, 0);
+    const veredito = total >= HALL_PRIMEIRA ? 'primeira' : total >= HALL_LIMIAR ? 'induzido' : total >= 70 ? 'espera' : 'fora';
+    const texto = { primeira: 'Entra na primeira votação do Hall da Fama.', induzido: 'É eleito para o Hall da Fama.', espera: 'Fica na lista de espera: faltaram conquistas para entrar.', fora: 'Não chega ao Hall da Fama, mas a carreira conta.' }[veredito];
+    return { pontos: total, limiar: HALL_LIMIAR, primeira: HALL_PRIMEIRA, criterios: criterios, veredito: veredito, induzido: total >= HALL_LIMIAR, texto: texto, falta: Math.max(0, HALL_LIMIAR - total) };
+  }
+
+  // O momento da despedida: texto de encerramento da carreira.
+  function despedida(c) {
+    const L = legado(c);
+    const H = hallDaFama(c);
+    const anos = Math.max(1, Math.round(c.semana / 52));
+    const cat = c.periodo === 'eras' ? 'peso aberto' : ((divisaoDados(c.periodo, c.divisaoId) || {}).nome || '').toLowerCase();
+    const linhas = [];
+    linhas.push(c.nome + ' pendura as luvas depois de ' + L.lutasTotal + ' lutas em ' + anos + (anos === 1 ? ' ano' : ' anos') + ', com cartel de ' + c.recorde.v + '-' + c.recorde.d + '-' + c.recorde.e + '.');
+    if (L.titulos) linhas.push('Foi campeão ' + (L.categoriasCampeao.length > 1 ? 'em ' + L.categoriasCampeao.length + ' categorias (' + L.categoriasCampeao.join(' e ') : 'dos ' + cat) + (L.categoriasCampeao.length > 1 ? ')' : '') + ', com ' + L.titulos + ' ' + (L.titulos === 1 ? 'conquista' : 'conquistas') + ' e ' + L.defesas + ' ' + (L.defesas === 1 ? 'defesa' : 'defesas') + ' de título.');
+    else linhas.push('Nunca chegou ao cinturão, mas dividiu o octógono com os melhores da categoria.');
+    if (L.torneios) linhas.push('Venceu ' + L.torneios + (L.torneios === 1 ? ' torneio' : ' torneios') + ' de uma noite.');
+    if (L.maiorSequencia >= 5) linhas.push('Sua maior sequência foi de ' + L.maiorSequencia + ' vitórias seguidas.');
+    linhas.push(H.texto + ' (' + H.pontos + ' pontos; o Hall pede ' + H.limiar + ').');
+    return { linhas: linhas, hall: H, legado: L };
+  }
+
   function entradaHall(carreira) {
     const marcantes = carreira.historico
       .filter((h) => h.titulo || h.metodo === 'Nocaute' || h.metodo === 'Finalização')
@@ -1933,6 +2138,7 @@
       metas: (carreira.metasCumpridas || []).map((id) => (METAS[id] ? METAS[id].nome : id)),
       habilidades: (carreira.habilidades || []).map((id) => (HABILIDADES[id] ? HABILIDADES[id].nome : id)),
       data: new Date().toISOString().slice(0, 10),
+      hall: (() => { const h = hallDaFama(carreira); return { pontos: h.pontos, veredito: h.veredito, induzido: h.induzido }; })(),
     };
   }
 
@@ -2003,6 +2209,7 @@
       if (agend && agend.superluta) { fama += 30; carreira.superlutas = (carreira.superlutas || 0) + 1; }
       else if (agend && agend.exCampeao) fama += 12;
       else if (eraCampeao && !titulo) fama += 6; // luta de manutencao do campeao
+      if (agend && agend.trilogia) { fama += 15; carreira.trilogias = (carreira.trilogias || 0) + 1; }
       if (finalizou) carreira.finalizacoes = (carreira.finalizacoes || 0) + 1;
     } else if (empatou) {
       carreira.recorde.e++;
@@ -2580,6 +2787,15 @@
     return Math.max(5, base - 3 * nivelAcademia(c, 'preparador'));
   }
 
+  // Foco do camp: uma area em que o camp inteiro aposta (evolui mais rapido e ganha +1 no bonus de luta).
+  const FOCOS_CAMP = {
+    striking: { nome: 'Trocação', descr: 'Camp de striking: boxe e muay thai rendem mais.', attrs: ['striking', 'velocidade', 'forca'] },
+    wrestling: { nome: 'Wrestling e defesa', descr: 'Camp de luta de queda: quedas e defesa de quedas evoluem mais.', attrs: ['wrestling', 'defesa'] },
+    chao: { nome: 'Jiu-jítsu e chão', descr: 'Camp de chão: finalizações e controle evoluem mais.', attrs: ['bjj', 'grappling'] },
+    cardio: { nome: 'Cardio e queixo', descr: 'Camp de resistência: fôlego e queixo evoluem mais.', attrs: ['resistencia', 'queixo'] },
+    equilibrado: { nome: 'Equilibrado', descr: 'Sem foco: nada muda, nada se perde.', attrs: [] },
+  };
+
   function gerarEtapas(n) {
     const E = (tipo, semanas) => ({ tipo: tipo, semanas: semanas });
     if (n <= 0) return [];
@@ -2590,7 +2806,7 @@
       lista.push(E('coletiva', 0));
       return lista;
     }
-    const lista = [E('plano', 2), E('scouting', 1)];
+    const lista = [E('foco', 0), E('plano', 2), E('scouting', 1)];
     let resto = n - 4;
     let eventos = 0;
     while (resto > 0) {
@@ -2673,7 +2889,8 @@
   // Um teste de evolucao de atributo (o mesmo do treino antigo, agora dentro do camp).
   function rolarTreino(c, attr, r) {
     const ch = chanceTreino(c, attr);
-    const chance = Math.min(1, ch.chance * (1 + 0.1 * nivelAcademia(c, 'ginasio')));
+    const foco = c.camp && c.camp.efeitos && c.camp.efeitos.foco ? FOCOS_CAMP[c.camp.efeitos.foco] : null;
+    const chance = Math.min(1, ch.chance * (1 + 0.1 * nivelAcademia(c, 'ginasio')) * (foco && foco.attrs.indexOf(attr) >= 0 ? 1.3 : 1));
     const ganhou = r() < chance;
     let pontos = 0;
     let salto = false;
@@ -2709,12 +2926,25 @@
     const tec = nivelAcademia(c, 'tecnico');
     const nutri = nivelAcademia(c, 'nutri');
     const chanceTxt = (attr) => Math.round(Math.min(1, chanceTreino(c, attr).chance * (1 + 0.1 * nivelAcademia(c, 'ginasio'))) * 100) + '%';
+    if (et.tipo === 'foco') {
+      const sug = (listaRecomendacao(c)[0] || {}).attr;
+      const recId = { striking: 'striking', velocidade: 'striking', forca: 'striking', wrestling: 'wrestling', defesa: 'wrestling', bjj: 'chao', grappling: 'chao', resistencia: 'cardio', queixo: 'cardio' }[sug] || 'equilibrado';
+      return Object.keys(FOCOS_CAMP).map((id) => ({ id: id, titulo: FOCOS_CAMP[id].nome, descr: FOCOS_CAMP[id].descr + (FOCOS_CAMP[id].attrs.length ? ' Atributos: ' + FOCOS_CAMP[id].attrs.map((k) => ROTULOS[k]).join(', ') + '.' : ''), ganhos: FOCOS_CAMP[id].attrs.length ? ['+30% de chance de evoluir esses atributos no camp inteiro', '+1 de bônus de luta nas atividades dessa área'] : [], custo: 0, risco: 'Sem risco', recomendado: id === recId && id !== 'equilibrado', motivo: id === recId ? 'É a área que mais pesa contra esse adversário.' : '', ok: true }));
+    }
     if (et.tipo === 'plano') {
       const rec0 = listaRecomendacao(c)[0];
       let recId = rec0 && rec0.necessario ? ATIVIDADE_DO_ATRIBUTO[rec0.attr] : null;
       if (energia < 45) recId = 'recuperacao';
       if (!recId && rec0) recId = ATIVIDADE_DO_ATRIBUTO[rec0.attr];
-      return Object.keys(ATIVIDADES).map((id) => {
+      const parceiros = parceirosDoCamp(c);
+      const sparrings = parceiros.map((p, i) => ({
+        id: 'spar:' + i, atv: 'sparring', parceiro: i, attr: p.forte, titulo: 'Sparring com ' + p.nome, icone: 'luta',
+        descr: p.nome + ' (' + (ESTILOS[p.estilo] || '') + ') é forte em ' + ROTULOS[p.forte].toLowerCase() + ' e vai te testar nisso. O sparring mais perigoso e mais útil.',
+        ganhos: ['2 chances de evoluir ' + ROTULOS[p.forte] + ' (' + chanceTxt(p.forte) + ')', '+2 ' + ROTULOS[p.forte] + ' e +1 QI de luta na luta'],
+        custo: custoEnergia(c, 32), risco: 'Risco de lesão alto', recomendado: false, motivo: '',
+        ok: energia >= Math.max(30, custoEnergia(c, 32) + 5), razao: 'Energia baixa para o sparring pesado.',
+      }));
+      const lista = Object.keys(ATIVIDADES).map((id) => {
         const a = ATIVIDADES[id];
         const custo = a.recupera ? -a.recupera : custoEnergia(c, a.custo);
         const ganhos = [];
@@ -2731,6 +2961,7 @@
           ok: a.recupera ? true : energia >= Math.max(30, custo + 5), razao: 'Energia baixa para treinar assim (precisa de ' + Math.max(30, custo + 5) + ').',
         };
       });
+      return lista.concat(sparrings);
     }
     if (et.tipo === 'scouting') {
       const cand = candidatosTreino(c);
@@ -2838,6 +3069,36 @@
     if (pes && pes.kg) linhas.push(pes.resultado === 'estourou' ? 'Na pesagem, ' + c.nome + ' estourou o peso em ' + String(pes.kg).replace('.', ',') + ' kg.' : 'Na pesagem, ' + c.nome + ' bateu o peso com ' + String(pes.kg).replace('.', ',') + ' kg.');
     if (c.camp && c.camp.efeitos && c.camp.efeitos.guerreiro) linhas.push(c.nome + ' entra no octógono lesionado, e a torcida sabe disso.');
     return { linhas: linhas, vermelho: vermelho.nome, azul: azul.nome, rounds: rounds };
+  }
+
+  // Parceiros de sparring do camp: dois lutadores reais fortes, sorteados uma vez por camp (fora o adversario).
+  function parceirosDoCamp(c) {
+    if (!c.camp) return [];
+    if (!c.camp.parceiros) {
+      const op = c.agendada ? c.agendada.op.nome : null;
+      const lista = ranking(c).filter((x) => !x.jogador && x.nome !== op && x.lutador && x.lutador.atributos);
+      const pos = ranking(c).findIndex((x) => x.jogador);
+      const proximos = lista.sort((a, b) => Math.abs(ranking(c).indexOf(a) - pos) - Math.abs(ranking(c).indexOf(b) - pos)).slice(0, 8);
+      const ord = proximos.sort((a, b) => b.rating - a.rating).slice(0, 4);
+      const escolhidos = [ord[0], ord[ord.length - 1]].filter(Boolean);
+      c.camp.parceiros = escolhidos.filter((x, i, a) => a.indexOf(x) === i).map((x) => {
+        const abaixo = ATRIBUTOS.filter((k) => c.atributos[k] < (c.tetos[k] || 99)).sort((p, q) => (x.lutador.atributos[q] - c.atributos[q]) - (x.lutador.atributos[p] - c.atributos[p]));
+        return { nome: x.nome, estilo: x.estilo, forte: abaixo[0] || 'qi' };
+      });
+    }
+    return c.camp.parceiros;
+  }
+
+  // O ponto fraco do adversario: onde o estudo rende um bonus especifico para a luta.
+  function pontoFraco(op) {
+    const a = op.lutador.atributos;
+    const pares = [
+      ['defesa', 'wrestling', 'defende mal as quedas'], ['queixo', 'forca', 'tem o queixo frágil'], ['resistencia', 'resistencia', 'cansa rápido'],
+      ['bjj', 'grappling', 'é fraco no jiu-jítsu'], ['striking', 'defesa', 'bate pouco em pé, então vale se expor menos'], ['wrestling', 'striking', 'defende pouco quando busca a queda'],
+    ];
+    pares.sort((p, q) => a[p[0]] - a[q[0]]);
+    const [fraco, bonus, frase] = pares[0];
+    return { fraco: fraco, bonus: bonus, texto: op.nome.split(' ').slice(-1)[0] + ' ' + frase + '.' };
   }
 
   function bloqueioCamp(c) {
@@ -3020,18 +3281,32 @@
       return t;
     };
 
-    if (et.tipo === 'plano') {
+    if (et.tipo === 'foco') {
+      ef.foco = op.id;
+      linhas.push('Foco do camp: ' + FOCOS_CAMP[op.id].nome + '. ' + (FOCOS_CAMP[op.id].attrs.length ? 'Evolução mais rápida em ' + FOCOS_CAMP[op.id].attrs.map((k) => ROTULOS[k].toLowerCase()).join(', ') + '.' : 'Sem aposta em uma área.'));
+    } else if (et.tipo === 'plano' && op.parceiro !== undefined) {
+      const p = parceirosDoCamp(c)[op.parceiro];
+      c.energia = clamp(c.energia - op.custo, 0, 100);
+      linhas.push('Sparring com ' + p.nome + ': ele te testou em ' + ROTULOS[p.forte].toLowerCase() + '.');
+      rolar(p.forte);
+      rolar(p.forte);
+      somaAttr(p.forte, 2);
+      somaAttr('qi', 1);
+      linhas.push('Bônus na luta: +2 ' + ROTULOS[p.forte] + ', +1 QI de luta.');
+      tentarLesao(0.12);
+    } else if (et.tipo === 'plano') {
       const a = ATIVIDADES[op.atv];
       if (a.recupera) {
         c.energia = Math.min(100, c.energia + a.recupera);
-        curarLesao(c);
+        curarLesao(c, r);
         linhas.push('Semana de recuperação. Energia em ' + Math.round(c.energia) + '.');
       } else {
         c.energia = clamp(c.energia - op.custo, 0, 100);
         a.rolls.forEach(([attr, n]) => { for (let k = 0; k < n; k++) rolar(attr); });
         const bonus = [];
         Object.keys(a.luta || {}).forEach((k, i) => {
-          const v = a.luta[k] + (i === 0 ? tec : 0);
+          const focoAtual = ef.foco ? FOCOS_CAMP[ef.foco] : null;
+          const v = a.luta[k] + (i === 0 ? tec : 0) + (focoAtual && focoAtual.attrs.indexOf(k) >= 0 ? 1 : 0);
           somaAttr(k, v);
           bonus.push('+' + v + ' ' + ROTULOS[k]);
         });
@@ -3044,7 +3319,11 @@
         ef.scout = true;
         somaAttr('qi', 3 + tec);
         somaAttr('defesa', 2 + tec);
+        const pf = pontoFraco(c.agendada.op);
+        somaAttr(pf.bonus, 2);
         linhas.push('Você estudou as lutas dele. Plano do rival: ' + c.agendada.plano.texto);
+        linhas.push('Ponto fraco: ' + pf.texto + ' Bônus de +2 em ' + ROTULOS[pf.bonus] + ' na luta.');
+        ef.pontoFraco = pf.fraco;
       } else if (op.id === 'extra') {
         c.energia = clamp(c.energia - op.custo, 0, 100);
         rolar(op.attr);
@@ -3608,6 +3887,7 @@
     if (c.periodo !== 'eras' && c.campeoes && c.campeoes[chave] === nome) out.push('Campeão da categoria.');
     else if (c.exCampeoes && (c.exCampeoes[chave] || []).indexOf(nome) >= 0) out.push('Ex-campeão da categoria.');
     const ja = (c.historico || []).filter((h) => h.oponente === nome);
+    if (ja.length === 2 && ja.some((h) => h.resultado === 'Vitória') && ja.some((h) => h.resultado === 'Derrota')) out.push('Vocês estão 1 a 1: a trilogia pode vir.');
     if (ja.length) {
       const u = ja[ja.length - 1];
       out.push('Você já o enfrentou: ' + (u.resultado === 'Vitória' ? 'vitória' : u.resultado === 'Derrota' ? 'derrota' : 'empate') + ' por ' + String(u.metodo).toLowerCase() + '.');
@@ -4054,6 +4334,9 @@
       if (!Number.isFinite(c.tetos[k]) || c.tetos[k] < c.atributos[k]) c.tetos[k] = clamp(Math.max(c.potencial, c.atributos[k] + 6), 1, 99);
     });
     if (!c.campeoes) c.campeoes = {};
+    if (c.arquetipo === undefined) c.arquetipo = null;
+    if (!DIFICULDADES[c.dificuldade]) c.dificuldade = 'tranquilo'; // saves antigos seguem como eram
+    if (c.decisaoLesao === undefined) c.decisaoLesao = null;
     if (!c.exCampeoes) c.exCampeoes = {};
     if (!c.forma) c.forma = {};
     if (!c.registroIA) c.registroIA = {};
@@ -4215,7 +4498,15 @@
     buscarLutador: buscarLutador,
     idadeDoLutador: idadeDoLutador,
     postarImprensa: postar,
+    hallDaFama: hallDaFama,
+    despedida: despedida,
+    resolverLesao: resolverLesao,
+    FOCOS_CAMP: FOCOS_CAMP,
+    parceirosDoCamp: parceirosDoCamp,
     resolverImprevisto: resolverImprevisto,
+    ARQUETIPOS: ARQUETIPOS,
+    DIFICULDADES: DIFICULDADES,
+    mudarDificuldade: mudarDificuldade,
     ETAPAS_TORNEIO: ETAPAS_TORNEIO,
     regrasDaEra: regrasDaEra,
     apresentacaoLuta: apresentacaoLuta,

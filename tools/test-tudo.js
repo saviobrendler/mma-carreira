@@ -2,7 +2,7 @@
 const { spawnSync } = require('child_process');
 const path = require('path');
 
-const suites = ['test-engine', 'test-luta', 'test-combate', 'test-progressao', 'test-eventos', 'test-mundo', 'test-integridade', 'test-regras', 'test-semana-luta', 'test-mundo-vivo', 'test-negocios', 'test-eras', 'test-interface'];
+const suites = ['test-engine', 'test-luta', 'test-combate', 'test-progressao', 'test-eventos', 'test-mundo', 'test-integridade', 'test-regras', 'test-semana-luta', 'test-mundo-vivo', 'test-negocios', 'test-eras', 'test-variedade', 'test-interface'];
 let ruins = 0;
 suites.forEach((s) => {
   const t0 = Date.now();

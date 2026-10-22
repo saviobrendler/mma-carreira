@@ -20,6 +20,7 @@ function teste(nome, fn) {
 const nova = (extra) => {
   const c = MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
   c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  c.semFoco = true; // o camp dos testes comeca direto no plano de treino
   c.contrato.lutasRestantes = 9999; // contrato nao vence no meio dos testes
   return c;
 };

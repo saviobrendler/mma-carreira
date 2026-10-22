@@ -879,3 +879,25 @@ body[data-era="eras"] .topbar { border-bottom-style: double; border-bottom-width
 .res-torneio .btn { margin-top: 6px; max-width: 460px; }
 .rd-juizes.sem span { padding: 6px 16px; }
 @media (max-width: 1100px) { .desafio.torneio { grid-template-columns: 1fr; } .chave-torneio ol { grid-template-columns: 1fr; } }
+
+/* ---- Arquetipos, despedida, Hall da Fama ---- */
+.arq-bonus { font-style: normal; font-size: 12px; color: var(--mut); }
+.hl-arq { padding: 1px 8px; border: 1px solid var(--line); border-radius: 3px; color: #d6d9de; }
+.despedida { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: var(--s5); align-items: stretch; padding: 0; margin-bottom: var(--s5); background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.despedida.hall { border-color: rgba(232, 184, 74, 0.55); }
+.dp-foto { position: relative; min-height: 300px; }
+.dp-foto .foto-l { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; border: 0; border-radius: 0; }
+.dp-corpo { display: grid; gap: 10px; align-content: center; padding: 22px 24px 22px 0; min-width: 0; }
+.dp-corpo h1 { font-size: clamp(34px, 4vw, 56px); }
+.dp-texto { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 6px; }
+.dp-texto li { font-size: 16px; line-height: 1.5; color: #d6d9de; padding-left: 12px; border-left: 2px solid var(--line); }
+.hall-veredito { padding: 10px 14px; border-left: 3px solid var(--mut); background: rgba(255, 255, 255, 0.04); font-size: 16px; margin-bottom: 10px; }
+.hall-veredito.ok { border-left-color: var(--gold); }
+.hall-barra { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+.hall-barra i { display: block; height: 100%; background: var(--gold); }
+.hall-criterios { list-style: none; margin: 0; padding: 0; display: grid; }
+.hall-criterios li { display: grid; grid-template-columns: minmax(0, 1fr) 60px 60px; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--linha-suave); align-items: baseline; }
+.hall-criterios li:last-child { border-bottom: 0; }
+.hall-criterios small { text-align: right; }
+.hall-criterios b { text-align: right; font-family: var(--font-display); font-weight: 800; font-size: 18px; }
+@media (max-width: 820px) { .despedida { grid-template-columns: 1fr; } .dp-foto { min-height: 0; aspect-ratio: 16 / 11; } .dp-corpo { padding: 0 16px 18px; } }

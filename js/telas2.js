@@ -55,7 +55,7 @@
     const semanas = Math.max(M.MIN_PREPARO, o.semanasAte);
     void pos;
     const papel = M.papelOferta(c, o);
-    const classePapel = { defesa: 'selo-ouro', titulo: 'selo-ouro', superluta: 'selo-azul', ex_campeao: 'selo-azul', relampago: 'selo-azul', revanche: 'selo-fogo', candidato: 'selo-verde', subir: 'selo-verde', ritmo: '', manter: '' }[papel.papel] || '';
+    const classePapel = { defesa: 'selo-ouro', titulo: 'selo-ouro', superluta: 'selo-azul', ex_campeao: 'selo-azul', relampago: 'selo-azul', trilogia: 'selo-fogo', revanche: 'selo-fogo', candidato: 'selo-verde', subir: 'selo-verde', ritmo: '', manter: '' }[papel.papel] || '';
     const tags = [
       `<span class="${classePapel || 'selo-neutro'}">${UI.esc(papel.rotulo)}</span>`,
       `<span class="selo-neutro">${papel.rounds} rounds${o.titulo ? ' · cinturão em jogo' : ''}</span>`,
@@ -163,14 +163,22 @@
   // TREINAMENTO
   // ---------------------------------------------------------------------------
 
-  const ICONE_ETAPA = { plano: 'peso', scouting: 'lupa', evento: 'calendario', corte: 'balanca', pesagem: 'balanca', coletiva: 'pessoas' };
+  const ICONE_ETAPA = { foco: 'alvo', plano: 'peso', scouting: 'lupa', evento: 'calendario', corte: 'balanca', pesagem: 'balanca', coletiva: 'pessoas' };
 
   // Aviso do que aconteceu na semana da luta (troca de adversario, cancelamento, adiamento): some quando o jogador le.
+  // Lesao grave: operar ou tratar sem cirurgia.
+  T.decisaoLesao = function (UI) {
+    const d = UI.carreira.decisaoLesao;
+    if (!d) return '';
+    const botoes = d.opcoes.map((o) => `<button class="card-opcao evento-op" data-acao="lesao" data-id="${UI.esc(o.id)}"><b>${UI.esc(o.rotulo)}</b><small>${UI.esc(o.resumo)}</small></button>`).join('');
+    return `<section class="imprevisto" role="alert"><span class="kicker">Lesão grave · ${d.semanas} semanas</span><h2>${UI.esc(d.nome)}</h2><p>${UI.esc(d.historia)} O que você faz?</p><div class="grade-opcoes">${botoes}</div></section>`;
+  };
+
   T.avisoImprevisto = function (UI) {
     const c = UI.carreira;
     const i = c.ultimoImprevisto;
-    if (!i) return '';
-    return `<aside class="aviso-imp ${i.tipo}" role="status"><div><b>${UI.esc(i.titulo)}</b><p>${UI.esc(i.texto)}</p></div>${UI.btn({ texto: 'Entendi', acao: 'ok-imprevisto' })}</aside>`;
+    if (!i) return T.decisaoLesao(UI);
+    return T.decisaoLesao(UI) + `<aside class="aviso-imp ${i.tipo}" role="status"><div><b>${UI.esc(i.titulo)}</b><p>${UI.esc(i.texto)}</p></div>${UI.btn({ texto: 'Entendi', acao: 'ok-imprevisto' })}</aside>`;
   };
 
   // Imprevisto que pede decisao (lesao de ultima hora): trava o dia da luta ate o jogador escolher.
@@ -266,7 +274,7 @@
       corpo = UI.blocoEvento();
     } else {
       const ops = M.opcoesEtapa(c);
-      const sub = { pesagem: 'Dia da balança: veja o resultado do seu corte e escolha como encarar o rival.', plano: 'Escolha a atividade da semana. Cada uma melhora algo diferente, gasta energia e tem seu risco.', scouting: 'Estudar o adversário ou treinar mais?', corte: 'A pesagem está chegando.', coletiva: 'Como você trata o rival diante das câmeras?' }[et.tipo];
+      const sub = { foco: 'Escolha a área em que o camp inteiro aposta: ela evolui mais rápido e rende bônus na luta.', pesagem: 'Dia da balança: veja o resultado do seu corte e escolha como encarar o rival.', plano: 'Escolha a atividade da semana. Cada uma melhora algo diferente, gasta energia e tem seu risco.', scouting: 'Estudar o adversário ou treinar mais?', corte: 'A pesagem está chegando.', coletiva: 'Como você trata o rival diante das câmeras?' }[et.tipo];
       corpo = `${et.tipo === 'pesagem' ? cartaoBalanca(UI) : ''}<section class="decisao"><header><span class="kicker">Etapa ${c.camp.i + 1} de ${c.camp.etapas.length} · ${et.semanas ? et.semanas + ' ' + UI.plural(et.semanas, 'semana', 'semanas') : 'pré-luta'}</span><h2>${UI.esc(UI.etapaTitulo(et.tipo))}</h2><p>${UI.esc(sub)}</p></header><div class="atividades n${ops.length}">${ops.map((o) => cartaoAtividade(UI, o, et.tipo)).join('')}</div></section>`;
     }
     const ult = c.camp.historico.slice().reverse().slice(0, 4);

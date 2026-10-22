@@ -225,6 +225,13 @@
           <section class="bloco-j"><header><h3>Rivalidades</h3><span>quanto mais quente, mais fama</span></header><ul class="lista-rivais">${rivais}</ul></section>
         </div>
       </div>
+      ${(() => {
+        const H = M.hallDaFama(c);
+        const lista = H.criterios.filter((x) => x.pontos > 0 || x.valor > 0).map((x) => `<li><span>${e(x.nome)}</span><small>${x.valor}</small><b>+${x.pontos}</b></li>`).join('') || '<li class="vazio"><span>Lute e vença para pontuar.</span></li>';
+        return `<section class="bloco-j ${H.induzido ? 'ouro' : ''}"><header><h3>Rumo ao Hall da Fama</h3><span>${H.pontos} de ${H.limiar} pontos</span></header>
+          <div class="hall-barra"><i style="width:${Math.min(100, Math.round((H.pontos / H.limiar) * 100))}%"></i></div>
+          <p class="hall-veredito ${H.induzido ? 'ok' : ''}">${H.induzido ? 'Você já tem pontos para o Hall da Fama.' : 'Faltam ' + H.falta + ' pontos para o Hall da Fama.'}</p><ul class="hall-criterios">${lista}</ul></section>`;
+      })()}
       <section class="bloco-j largo"><header><h3>Histórico completo</h3><span>${h.length} ${UI.plural(h.length, 'luta', 'lutas')}</span></header>
         ${h.length ? `<ul class="historico-j">${h.map((x) => linhaHistorico(UI, x)).join('')}</ul>` : '<p class="vazio">Sua primeira luta ainda não aconteceu.</p>'}
       </section>`;

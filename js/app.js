@@ -688,6 +688,10 @@
       <button class="card-opcao" aria-pressed="${rascunho.modalidade === id}" data-acao="modalidade" data-valor="${id}">
         <b>${m.nome}</b><small>${m.descr}</small>
       </button>`).join('');
+    const arqs = Object.entries(MMA.ARQUETIPOS).map(([id, a]) => `
+      <button class="card-opcao" aria-pressed="${rascunho.arquetipo === id}" data-acao="arquetipo" data-valor="${id}">
+        <b>${a.nome}</b><small>${a.descr}</small><em class="arq-bonus">${Object.entries(a.bonus).map(([k, v]) => (v > 0 ? '+' : '−') + Math.abs(v) + ' ' + MMA.ROTULOS[k]).join(' · ')}${a.potencial ? ' · +' + a.potencial + ' de potencial' : ''}</em>
+      </button>`).join('');
     const opcoesPais = PAISES.map((p) => `<option value="${esc(p)}"${p === rascunho.pais ? ' selected' : ''}>${esc(p)}</option>`).join('');
     const previa = rascunho.foto
       ? `<img src="${rascunho.foto}" alt="Sua foto">`
@@ -718,7 +722,10 @@
           </details>` })}
         ${painel({ titulo: '02 · Como ele luta', icone: 'luva', i: 1, corpo: `
           <div class="campo"><span class="rotulo">Modalidade favorita</span><div class="grade-opcoes">${modalidades}</div></div>
-          <p class="bonus-mod">Bônus inicial de ${mod.nome}: <b>${bonusTxt}</b> · estilo: <b>${MMA.ESTILOS[mod.estilo]}</b></p>` })}
+          <p class="bonus-mod">Bônus inicial de ${mod.nome}: <b>${bonusTxt}</b> · estilo: <b>${MMA.ESTILOS[mod.estilo]}</b></p>
+          <div class="campo"><span class="rotulo">Dificuldade</span><div class="grade-opcoes">${Object.entries(MMA.DIFICULDADES).map(([id, dd]) => `<button class="card-opcao" aria-pressed="${(rascunho.dificuldade || 'normal') === id}" data-acao="dificuldade" data-valor="${id}"><b>${dd.nome}</b><small>${dd.descr}</small></button>`).join('')}</div></div>
+          <div class="campo"><span class="rotulo">Arquétipo (opcional)</span><div class="grade-opcoes">${arqs}</div></div>
+          <p class="bonus-mod">${rascunho.arquetipo ? `Arquétipo <b>${MMA.ARQUETIPOS[rascunho.arquetipo].nome}</b>: ganha o traço <b>${MMA.TRACOS[MMA.ARQUETIPOS[rascunho.arquetipo].traco].nome}</b> de graça (${MMA.TRACOS[MMA.ARQUETIPOS[rascunho.arquetipo].traco].descr})` : 'Sem arquétipo: o lutador segue só a modalidade. Toque de novo em um arquétipo para tirar.'}</p>` })}
       </div>
       ${painel({ titulo: '03 · Categoria de peso', icone: 'balanca', i: 2, cls: 'mt', corpo: `<p class="sub">Escolha onde ele começa. Dá para subir ou descer de categoria depois. Entre parênteses, os melhores da divisão.</p><div class="grade-cat">${cardsCategoria(rascunho.periodo, rascunho.divisaoId)}</div>` })}
       <div class="grade-2">
@@ -795,6 +802,7 @@
     scouting: { nome: 'Scouting', icone: 'lupa', titulo: 'O adversário', sub: 'Estudar ou treinar mais?' },
     evento: { nome: 'Evento', icone: 'calendario', titulo: 'Aconteceu algo', sub: '' },
     corte: { nome: 'Peso', icone: 'balanca', titulo: 'Corte de peso', sub: 'A pesagem está chegando.' },
+    foco: { nome: 'Foco', icone: 'alvo', titulo: 'Foco do camp', sub: 'Escolha a área em que o camp inteiro aposta.' },
     pesagem: { nome: 'Pesagem', icone: 'balanca', titulo: 'Pesagem oficial e encarada', sub: 'A balança decide o corte; o resto é jogo mental.' },
     coletiva: { nome: 'Coletiva', icone: 'pessoas', titulo: 'Coletiva de imprensa', sub: 'Como você trata o rival diante das câmeras?' },
   };
@@ -1194,6 +1202,7 @@
     return `${faixaLutador(c)}
       <div class="hub-corpo">${perfilCard(c, ESTILO_DESC[c.estilo], 2)}${colunaEstatisticas(c)}</div>
       <div class="grade-3">${grupos}</div>
+      ${painel({ cls: 'entra', i: 3, titulo: 'Dificuldade', icone: 'alvo', meta: 'vale para as próximas lutas', corpo: `<div class="grade-opcoes">${Object.entries(MMA.DIFICULDADES).map(([id, dd]) => `<button class="card-opcao" aria-pressed="${c.dificuldade === id}" data-acao="dificuldade" data-valor="${id}"><b>${dd.nome}</b><small>${dd.descr}</small></button>`).join('')}</div>` })}
       ${painel({ cls: 'entra', i: 4, titulo: 'Histórico de lutas', icone: 'historico', meta: `${c.historico.length} luta(s)`, corpo: tabelaHistorico(c, 10) })}
       <div class="acoes-linha">${btn({ texto: 'Voltar à carreira', acao: 'ir', data: { tela: 'hub' }, icone: 'setaEsq' })}</div>`;
   }
@@ -1250,16 +1259,31 @@
   function cartaoHall(e) {
     const marcantes = (e.marcantes || []).map((m) => `<li>${esc(m.resultado)} contra ${esc(m.oponente)} · ${esc(m.metodo)}${m.titulo ? ' · Título' : ''}</li>`).join('') || '<li class="vazio">Nenhuma luta marcante ainda.</li>';
     return painel({ cls: 'entra', corpo: `<div class="kicker">${esc(e.data)} · ${e.modalidade && MMA.MODALIDADES[e.modalidade] ? MMA.MODALIDADES[e.modalidade].nome : MMA.ESTILOS[e.estilo] || ''}${e.origem ? ' · ' + esc(e.origem) : ''}</div><h3 class="hall-nome">${esc(e.nome)}</h3>
-      <div class="chips">${badge(`${e.recorde.v}-${e.recorde.d}-${e.recorde.e}`)}${badge(`${e.titulos} título(s)`, 'gold')}${badge(`${e.idade} anos`)}</div>
+      <div class="chips">${badge(`${e.recorde.v}-${e.recorde.d}-${e.recorde.e}`)}${badge(`${e.titulos} título(s)`, 'gold')}${badge(`${e.idade} anos`)}${e.hall ? badge(e.hall.induzido ? 'Hall da Fama · ' + e.hall.pontos + ' pts' : 'Fora do Hall · ' + e.hall.pontos + ' pts', e.hall.induzido ? 'gold-borda' : 'gray') : ''}</div>
       <h4 class="hall-sub">Lutas marcantes</h4><ul class="lista-simples">${marcantes}</ul>` });
   }
 
+  // Momento da despedida: a foto, a historia da carreira e o veredito do Hall da Fama.
   function telaAposentadoria() {
     const c = carreira;
     const entrada = MMA.entradaHall(c);
-    return `${cabecalhoTela('Fim de carreira', 'Pendurar as luvas', `Depois de ${entrada.idade} anos e ${entrada.recorde.v + entrada.recorde.d + entrada.recorde.e} luta(s), ${esc(c.nome)} se aposenta. A carreira fica encerrada, e a história vai para o hall da fama.`)}
-      ${cartaoHall(entrada)}
-      <div class="acoes-linha">${btn({ texto: 'Ver hall da fama', acao: 'ir', data: { tela: 'hall' }, tipo: 'primary', icone: 'trofeu' })}${btn({ texto: 'Voltar', acao: 'ir', data: { tela: 'hub' }, icone: 'setaEsq' })}</div>`;
+    const d = MMA.despedida(c);
+    const H = d.hall;
+    const foto = window.TELAS_UTIL.foto(UI, c.nome, 'hero');
+    const L = d.legado;
+    const num = (n, rot, cls) => `<div class="mem-num ${cls || ''}"><b>${n}</b><small>${rot}</small></div>`;
+    const marcantes = (entrada.marcantes || []).map((m) => `<li>${esc(m.resultado)} contra ${esc(m.oponente)} · ${esc(m.metodo)}${m.titulo ? ' · Título' : ''}</li>`).join('');
+    return `<section class="despedida entra ${H.induzido ? 'hall' : ''}">
+        <div class="dp-foto">${foto}</div>
+        <div class="dp-corpo"><span class="kicker ${H.induzido ? 'gold' : ''}">Fim de carreira</span><h1>${esc(c.nome)}</h1>${c.apelido ? `<p class="hl-apelido">“${esc(c.apelido)}”</p>` : ''}
+          <div class="mem-nums">${num(c.recorde.v + '-' + c.recorde.d + '-' + c.recorde.e, 'Cartel')}${num(L.titulos, 'Cinturões', L.titulos ? 'ouro' : '')}${num(L.defesas, 'Defesas', L.defesas ? 'ouro' : '')}${num(L.nocautes + L.finalizacoes, 'Antes do limite')}</div>
+          <ul class="dp-texto">${d.linhas.map((l) => `<li>${esc(l)}</li>`).join('')}</ul></div>
+      </section>
+      <section class="bloco-j ${H.induzido ? 'ouro' : ''}"><header><h3>Hall da Fama</h3><span>${H.pontos} de ${H.limiar} pontos</span></header>
+        <p class="hall-veredito ${H.induzido ? 'ok' : ''}">${esc(H.texto)}</p>
+        <ul class="hall-criterios">${H.criterios.filter((x) => x.pontos > 0 || x.valor > 0).map((x) => `<li><span>${esc(x.nome)}</span><small>${x.valor}</small><b>+${x.pontos}</b></li>`).join('')}</ul></section>
+      ${marcantes ? `<section class="bloco-j"><header><h3>Lutas marcantes</h3></header><ul class="lista-simples">${marcantes}</ul></section>` : ''}
+      <div class="acoes-linha">${btn({ texto: 'Ver hall da fama', acao: 'ir', data: { tela: 'hall' }, tipo: 'primary', icone: 'trofeu' })}${btn({ texto: 'Ver legado', acao: 'ir', data: { tela: 'legado' }, icone: 'cinturao' })}${btn({ texto: 'Voltar', acao: 'ir', data: { tela: 'hub' }, icone: 'setaEsq' })}</div>`;
   }
 
   function telaHall() {
@@ -1304,6 +1328,27 @@
         rascunho = { periodo: d.periodo, nome: '', sobrenome: '', pais: 'Brasil', cidade: '', foto: null, idade: 25, modalidade: 'mma', divisaoId: d.periodo === 'eras' ? 'peso_aberto' : 'peso_leve', dist: {}, meta: 'campeao', traco: MMA.SUGESTOES_MODALIDADE.mma.tracos[0], assinatura: MMA.SUGESTOES_MODALIDADE.mma.assinaturas[0] };
         return ir('criar');
 
+      case 'dificuldade': {
+        if (rascunho && !carreira) { rascunho.dificuldade = d.valor; return render(); }
+        const r = MMA.mudarDificuldade(carreira, d.valor);
+        if (!r.ok) return toast(r.motivo);
+        salvar();
+        toast('Dificuldade: ' + MMA.DIFICULDADES[d.valor].nome + '.');
+        return render();
+      }
+
+      case 'arquetipo':
+        rascunho.arquetipo = rascunho.arquetipo === d.valor ? null : d.valor;
+        return render();
+
+      case 'lesao': {
+        const r = MMA.resolverLesao(carreira, d.id);
+        if (!r.ok) return toast(r.motivo);
+        salvar();
+        toast(r.texto);
+        return render();
+      }
+
       case 'modalidade': {
         rascunho.modalidade = d.valor;
         const sug = MMA.SUGESTOES_MODALIDADE[d.valor] || MMA.SUGESTOES_MODALIDADE.mma;
@@ -1322,7 +1367,7 @@
         if (NOMES_REAIS.has(completo.toLowerCase())) return toast('Esse nome pertence a um lutador do jogo. Escolha outro.');
         carreira = MMA.novaCarreira({
           nome: completo, primeiroNome: nome, sobrenome: sobrenome, apelido: (rascunho.apelido || '').trim() || null, pais: rascunho.pais, cidade: cidade, foto: rascunho.foto,
-          idade: rascunho.idade, modalidade: rascunho.modalidade, periodo: rascunho.periodo, divisaoId: rascunho.divisaoId, adiarPontos: true, traco: rascunho.traco, assinatura: rascunho.assinatura, meta: rascunho.meta,
+          idade: rascunho.idade, modalidade: rascunho.modalidade, arquetipo: rascunho.arquetipo || null, dificuldade: rascunho.dificuldade || 'normal', periodo: rascunho.periodo, divisaoId: rascunho.divisaoId, adiarPontos: true, traco: rascunho.traco, assinatura: rascunho.assinatura, meta: rascunho.meta,
         });
         salvar();
         toast(rascunho.foto && !localStorage.getItem(CHAVE) ? 'Carreira criada, mas a foto não coube no armazenamento do navegador.' : 'Bem-vindo ao circuito. Escolha sua primeira luta.');
