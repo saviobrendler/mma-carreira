@@ -347,12 +347,12 @@
     const T = window.TELAS;
     const telas = {
       inicio: telaInicio, era: telaEra, criar: telaCriar, academia: telaAcademia, tracos: telaTracos,
-      hub: () => T.hub(UI), proxima: () => T.proxima(UI), treino: () => T.treino(UI), ranking: () => T.ranking(UI), lutador: () => T.lutador(UI), legado: () => T.legado(UI),
+      hub: () => T.hub(UI), negocios: () => T.negocios(UI), proxima: () => T.proxima(UI), treino: () => T.treino(UI), ranking: () => T.ranking(UI), lutador: () => T.lutador(UI), legado: () => T.legado(UI),
       luta: telaLuta, resultado: telaResultado,
       perfil: telaPerfil, habilidades: telaHabilidades, categoria: telaCategoria, distribuir: telaDistribuir, aposentadoria: telaAposentadoria, hall: telaHall,
     };
     // Sem carreira so existem as telas de entrada; com carreira, as da central.
-    if (!carreira && ['hub', 'proxima', 'treino', 'ranking', 'lutador', 'legado', 'luta', 'resultado', 'perfil', 'habilidades', 'categoria', 'distribuir', 'academia', 'tracos', 'aposentadoria'].includes(tela)) tela = 'inicio';
+    if (!carreira && ['hub', 'negocios', 'proxima', 'treino', 'ranking', 'lutador', 'legado', 'luta', 'resultado', 'perfil', 'habilidades', 'categoria', 'distribuir', 'academia', 'tracos', 'aposentadoria'].includes(tela)) tela = 'inicio';
     const fn = telas[tela] || telaInicio;
     const mesmaTela = ultimaTelaRenderizada === tela;
     ultimaTelaRenderizada = tela;
@@ -395,7 +395,7 @@
     }
     const itens = [['hub', 'Carreira', 'perfil'], ['proxima', 'Próxima luta', 'luta'], ['treino', 'Treinamento', 'peso'], ['ranking', 'Ranking', 'trofeu'], ['legado', 'Legado', 'cinturao']];
     // Telas secundarias ficam sob a aba de onde se chega a elas.
-    const pai = { lutador: 'ranking', resultado: 'hub', perfil: 'hub', habilidades: 'hub', distribuir: 'hub', academia: 'treino', tracos: 'hub', categoria: 'hub', aposentadoria: 'legado' };
+    const pai = { negocios: 'hub', lutador: 'ranking', resultado: 'hub', perfil: 'hub', habilidades: 'hub', distribuir: 'hub', academia: 'treino', tracos: 'hub', categoria: 'hub', aposentadoria: 'legado' };
     const atual = pai[tela] || tela;
     const c = carreira;
     const pend = (c.pontosDisponiveis || 0) + (c.pontosHab || 0) + MMA.tracosPendentes(c) + MMA.assinaturasPendentes(c);
@@ -418,6 +418,7 @@
         ${item('habilidades', 'arvore', 'Habilidades', (c.pontosHab || 0) > 0 ? `<em class="menu-n">${c.pontosHab}</em>` : '')}
         ${item('tracos', 'cima', 'Traços e golpes', MMA.tracosPendentes(c) + MMA.assinaturasPendentes(c) > 0 ? `<em class="menu-n">${MMA.tracosPendentes(c) + MMA.assinaturasPendentes(c)}</em>` : '')}
         ${item('distribuir', 'mais', 'Distribuir pontos', (c.pontosDisponiveis || 0) > 0 ? `<em class="menu-n">${c.pontosDisponiveis}</em>` : '')}
+        ${item('negocios', 'dinheiro', 'Contrato e patrocínios', c.negociacao || (c.ofertasPatrocinio || []).length ? '<em class="menu-n">!</em>' : '')}
         ${item('academia', 'dinheiro', 'Academia')}
         ${podeCat ? item('categoria', 'balanca', 'Mudar categoria') : ''}
         ${item('hall', 'trofeu', 'Hall da fama')}
@@ -948,7 +949,8 @@
     const c = carreira;
     const k = oponente.lutador && oponente.lutador.cartel;
     const ev = c.agendada && c.agendada.evento;
-    const meuCard = ev ? ev.card.find((l) => l.jogador) : null;
+    const tn = c.agendada && c.agendada.torneio;
+    const meuCard = ev ? (tn ? ev.card[tn.etapa] : ev.card.find((l) => l.jogador)) : null;
     const cmp = MMA.comparacao(c, oponente);
     const dadosB = POR_NOME[oponente.nome];
     LutaUI.montar(document.getElementById('arena-mount'), {
@@ -967,6 +969,7 @@
       eventoNome: ev ? ev.nome + (ev.subtitulo ? ' · ' + ev.subtitulo : '') : 'Noite de luta',
       apresentacao: MMA.apresentacaoLuta(c, oponente, titulo),
       bloco: meuCard ? meuCard.bloco : '',
+      regra: c.periodo === 'eras' ? 'lendas' : null,
       sugestao: cmp.sugestao.id,
       sugestaoMotivo: cmp.sugestao.motivo,
       campeaoAntes: !!c.campeao,
@@ -1071,6 +1074,10 @@
         <button class="card-opcao" data-acao="pos-luta" data-tipo="quente"><b>${pos.venceu ? 'Provocar o rival' : 'Exigir a revanche'}</b><small>Fama ${pos.venceu ? '+14' : '+5'} e a rivalidade esquenta.</small></button></div>` }) : '';
     const campeaoNovo = u.titulo && u.venceu;
     const f = MMA.nivelFama(c);
+    const tn = u.torneio;
+    const blocoTorneio = tn
+      ? `<section class="res-torneio ${tn.campeao ? 'campeao' : tn.eliminado ? 'fora' : ''} entra"><span class="kicker">${tn.nome} · luta ${tn.etapa + 1} de ${tn.total}</span>${tn.campeao ? `<h2>Campeão do torneio</h2><p>Três lutas, uma noite. Prêmio de <b>$${tn.premio.toLocaleString('pt-BR')}</b> e mais fama.</p>` : tn.eliminado ? '<h2>Eliminado do torneio</h2><p>Quem perde está fora. A noite termina aqui.</p>' : `<h2>Você avança</h2><p>Próxima luta: <b>${esc(tn.proximaEtapa)}</b> contra <b>${esc(tn.proxima)}</b>. O dano e o cansaço desta luta passam para a próxima.</p>${btn({ texto: 'Seguir no torneio: ' + esc(tn.proximaEtapa), acao: 'torneio-seguir', tipo: 'primary', trailing: 'seta', cls: 'grande' })}`}</section>`
+      : '';
 
     // Vitoria de titulo: a tela do campeao com a foto real do cinturao e a historia da conquista.
     const L = campeaoNovo ? MMA.legado(c) : null;
@@ -1082,7 +1089,7 @@
       ? `<section class="res-campeao entra">${Celebra.fotoCinturao(duplo ? 2 : 1, `<div class="kicker">${u.defendeu ? 'Cinturão defendido' : 'Cinturão conquistado'}</div><h2 class="resultado-grande">${duplo ? 'Campeão em duas categorias' : u.defendeu ? 'Título defendido' : 'Novo campeão'}</h2>`)}<div class="rc-quem">${fotoDuo(u.nomeA)}<div><b>${esc(u.nomeA)}</b>${c.apelido ? `<small>“${esc(c.apelido)}”</small>` : ''}<span>${duplo ? esc(L.categoriasCampeao.join(' e ')) : esc(categoriaAtual(c))} · ${c.recorde.v}-${c.recorde.d}-${c.recorde.e}${c.defesas ? ` · ${c.defesas} ${plural(c.defesas, 'defesa', 'defesas')}` : ''}</span></div></div><p class="res-historia">${historia}</p></section>`
       : '';
 
-    return `${heroCampeao}<section class="res-oficial ${cls}${campeaoNovo ? ' campeao' : ''} entra">
+    return `${blocoTorneio}${heroCampeao}<section class="res-oficial ${cls}${campeaoNovo ? ' campeao' : ''} entra">
         <div class="ro-topo"><span class="kicker">${u.titulo ? 'Luta pelo cinturão' : 'Resultado oficial'}</span>${u.evento ? `<span>${esc(u.evento.nome)} · ${esc(MMA.dataTexto(u.evento.data, true))}</span>` : ''}</div>
         <div class="ro-duelo">
           <figure class="ro-lado${u.venceu ? ' vencedor' : ''}">${fotoDuo(u.nomeA, 'a')}<figcaption><b>${esc(sobrenome(u.nomeA))}</b><small>${esc(u.cartelA)}</small>${u.venceu ? '<span class="ro-selo">Vencedor</span>' : ''}</figcaption></figure>
@@ -1098,6 +1105,10 @@
           ${stat('Ranking', MMA.rotuloRank(c.periodo, a.pos), MMA.rotuloRank(c.periodo, d.pos), a.pos && d.pos && d.pos !== a.pos ? (d.pos < a.pos ? 'sobe' : 'desce') : '')}
           ${stat('Pontos no ranking', a.pontos, d.pontos, d.pontos > a.pontos ? 'sobe' : d.pontos < a.pontos ? 'desce' : '')}
           ${stat('Bolsa', '$0', '+$' + (u.bolsa || 0).toLocaleString('pt-BR'), '')}
+          ${u.ppv ? stat('Bônus de pay-per-view', '$0', '+$' + u.ppv.toLocaleString('pt-BR'), 'sobe') : ''}
+          ${u.bonusSocial ? stat('Bônus das redes sociais', '$0', '+$' + u.bonusSocial.toLocaleString('pt-BR'), 'sobe') : ''}
+          ${u.bonusContrato ? stat('Bônus do contrato', '$0', '+$' + u.bonusContrato.toLocaleString('pt-BR'), 'sobe') : ''}
+          ${u.patrocinio && u.patrocinio.total ? stat('Patrocínios', '$0', '+$' + u.patrocinio.total.toLocaleString('pt-BR'), 'sobe') : ''}
           ${stat('Fama', f.nome, u.fama ? sinal(u.fama) + ' pts' : 'sem mudança', u.fama > 0 ? 'sobe' : u.fama < 0 ? 'desce' : '')}
           ${stat('Experiência', a.xp, d.xp, d.xp > a.xp ? 'sobe' : '')}
           ${stat('Nível', a.nivel, d.nivel, d.nivel > a.nivel ? 'sobe' : '')}
@@ -1108,6 +1119,7 @@
           ${u.nivelFamaSubiu ? `<div class="res-destaque ouro">Sua fama subiu: agora você é <b>${f.nome}</b>.</div>` : ''}
           ${u.pontosHabGanhos > 0 ? `<div class="res-destaque azul">+${u.pontosHabGanhos} ${plural(u.pontosHabGanhos, 'ponto', 'pontos')} de habilidade <button class="fp-link" data-acao="ir" data-tela="habilidades">Gastar agora</button></div>` : ''}
           ${d.pontosDist > a.pontosDist ? `<div class="res-destaque azul">+${d.pontosDist - a.pontosDist} ponto para distribuir <button class="fp-link" data-acao="ir" data-tela="distribuir">Distribuir</button></div>` : ''}
+          ${u.contratoAcabou ? `<div class="res-destaque alerta">Seu contrato acabou. <button class="fp-link" data-acao="ir" data-tela="negocios">Renovar agora</button></div>` : ''}
           ${u.rivalidade ? `<div class="res-destaque fogo">${esc(u.rivalidade)}</div>` : ''}
           ${u.titulo && !u.venceu ? `<div class="res-destaque alerta">Cinturão: ${u.empatou ? 'mantido pelo campeão' : 'não conquistado'}</div>` : ''}
         </div>` })}
@@ -1473,12 +1485,46 @@
         return render();
       }
 
+      case 'negociar-mais': {
+        const r = MMA.negociarMais(carreira);
+        if (!r.ok) return toast(r.motivo);
+        salvar();
+        toast(r.texto);
+        return render();
+      }
+
+      case 'assinar': {
+        const r = MMA.assinarContrato(carreira, d.id);
+        if (!r.ok) return toast(r.motivo);
+        salvar();
+        toast('Contrato assinado: ' + r.contrato.nome + '.');
+        return render();
+      }
+
+      case 'patro-aceitar': {
+        const r = MMA.aceitarPatrocinio(carreira, d.id);
+        if (!r.ok) return toast(r.motivo);
+        salvar();
+        toast('Patrocínio fechado.');
+        return render();
+      }
+
+      case 'patro-recusar':
+        MMA.recusarPatrocinio(carreira, d.id);
+        salvar();
+        return render();
+
       case 'imprevisto': {
         const r = MMA.resolverImprevisto(carreira, d.id);
         if (!r.ok) return toast(r.motivo);
         salvar();
         toast(r.texto);
         return ir(r.resultado === 'lutar' || r.resultado === 'adiada' ? 'proxima' : 'proxima');
+      }
+
+      case 'torneio-seguir': {
+        if (!carreira.agendada || !carreira.agendada.torneio || carreira.lutaAtiva) return ir('proxima');
+        return iniciarLuta(carreira.agendada.op, false);
       }
 
       case 'ok-imprevisto':
@@ -1515,6 +1561,8 @@
         ultimaLuta = {
           nomeA: carreira.nome, nomeB: oponente.nome, estiloA: carreira.estilo, estiloB: oponente.estilo,
           ratingA, ratingB: oponente.rating, subA, subB, cartelA, cartelB,
+          torneio: r.torneio || null, ppv: r.ppv || 0, bonusSocial: r.bonusSocial || 0, regra: carreira.periodo === 'eras' ? 'lendas' : null,
+          bonusContrato: r.bonusContrato || 0, patrocinio: r.patrocinio || { total: 0, itens: [] }, contratoAcabou: !!r.negociacao,
           tempo: luta.resultado.tempo || r.tempo || null, evento: r.evento || null, dano: 100 - MMA.vidaPct(luta.f[0]),
           venceu: r.venceu, empatou: r.empatou, metodo: luta.resultado.metodo, round: luta.resultado.round,
           rodadasTotais: luta.rodadasTotais, totais: luta.totais.slice(), rodadas: luta.rodadas, f: luta.f, est: luta.estatisticas,

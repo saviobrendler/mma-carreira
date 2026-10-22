@@ -75,7 +75,7 @@ teste('forma e cartel dos outros lutadores andam com o circuito; historias falam
     assert.ok(c3.forma[n].length <= 6);
     c3.forma[n].forEach((x) => assert.ok(['V', 'D'].includes(x.r) && x.op && x.semana >= 1));
   });
-  const n = comForma[0];
+  const n = comForma.find((x) => MMA.buscarLutador(c3, x));
   const l = MMA.buscarLutador(c3, n);
   const reg = c3.registroIA[n];
   const base = (l.cartel && l.cartel.vitorias) || 0;

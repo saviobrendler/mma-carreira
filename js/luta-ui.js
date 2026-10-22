@@ -187,7 +187,7 @@
       return `<div class="rd-placar${acabou ? ' fim' : ''}">
         <div class="rd-num"><small>Round</small><b>${rodada.num}</b><small class="rd-tempo">${acabou && luta.resultado && luta.resultado.round === rodada.num ? 'Fim aos ' + esc(luta.resultado.tempo || '') : 'Tempo 5:00'}</small></div>
         <div class="rd-cartao"><b>${rodada.placar[0]}</b><i>–</i><b>${rodada.placar[1]}</b><small>${acabou ? 'Luta encerrada' : quem}</small></div>
-        <div class="rd-juizes">${juizes.map((k, i) => `<span><small>Juiz ${i + 1}</small><b>${k[0]}–${k[1]}</b></span>`).join('')}</div>
+        ${ctx.regra === 'lendas' ? '<div class="rd-juizes sem"><span><small>Sem juízes</small><b>Árbitro</b></span></div>' : `<div class="rd-juizes">${juizes.map((k, i) => `<span><small>Juiz ${i + 1}</small><b>${k[0]}–${k[1]}</b></span>`).join('')}</div>`}
       </div>`;
     }
 

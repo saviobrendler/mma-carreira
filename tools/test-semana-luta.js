@@ -201,6 +201,7 @@ teste('jogo todo: carreira que atravessa imprevistos continua jogavel e coerente
     let lutas = 0;
     for (let g = 0; g < 400 && lutas < 6; g++) {
       if (c.imprevisto) { MMA.resolverImprevisto(c, rng() < 0.5 ? 'lutar' : 'adiar', rng); continue; }
+      if (c.negociacao) { MMA.assinarContrato(c, c.negociacao.propostas[0].id); continue; }
       if (c.evento) { MMA.resolverEvento(c, 0, rng); continue; }
       if (c.agendada && MMA.etapaAtual(c)) { MMA.decidirCamp(c, MMA.opcoesEtapa(c).filter((o) => o.ok !== false)[0].id, rng); continue; }
       if (c.agendada && MMA.diaDeLuta(c)) {

@@ -168,7 +168,7 @@
     const e = UI.esc;
     const cls = h.resultado === 'Vitória' ? 'v' : h.resultado === 'Derrota' ? 'd' : 'e';
     const quando = h.data ? UI.MMA.dataTexto(h.data, true) : 'Sem. ' + h.semana;
-    return `<li class="h-linha ${cls}"><span class="h-res">${h.resultado[0]}</span><div class="h-meio"><b>${e(h.oponente)}</b><small>${e(h.evento || quando)}${h.titulo ? ' · Cinturão' : ''}</small></div><span class="h-met">${e(h.metodo.replace('Decisão ', 'Dec. '))}${h.round && !/^Decisão/.test(h.metodo) ? ' · R' + h.round + (h.tempo ? ' ' + h.tempo : '') : ''}</span><span class="h-data">${e(quando)}</span></li>`;
+    return `<li class="h-linha ${cls}"><span class="h-res">${h.resultado[0]}</span><div class="h-meio"><b>${e(h.oponente)}</b><small>${e(h.evento || quando)}${h.titulo ? ' · Cinturão' : ''}</small></div><span class="h-met">${h.torneio ? e(h.torneio) + ' · ' : ''}${e(h.metodo.replace('Decisão ', 'Dec. '))}${h.round && !/^Decisão/.test(h.metodo) ? ' · R' + h.round + (h.tempo ? ' ' + h.tempo : '') : ''}</span><span class="h-data">${e(quando)}</span></li>`;
   }
 
   T.legado = function (UI) {
@@ -213,6 +213,8 @@
               <li><span>Vitórias antes do limite</span><b>${taxa}%</b></li>
               <li><span>Vitória mais rápida</span><b>${L.maisRapida ? e(L.maisRapida.tempo ? 'R' + L.maisRapida.round + ' ' + L.maisRapida.tempo : 'R' + L.maisRapida.round) + ' · ' + e(L.maisRapida.oponente) : '—'}</b></li>
               <li><span>Lutas na carreira</span><b>${L.lutasTotal}</b></li>
+              ${L.torneios ? `<li><span>Torneios vencidos</span><b>${L.torneios}</b></li>` : ''}
+              ${L.superlutas ? `<li><span>Superlutas vencidas</span><b>${L.superlutas}</b></li>` : ''}
               ${metas.length ? `<li><span>Metas cumpridas</span><b>${e(metas.join(', '))}</b></li>` : ''}
             </ul>
           </section>

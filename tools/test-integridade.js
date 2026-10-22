@@ -51,6 +51,7 @@ function lutarAgora(c, rng, estrategia) {
 function proximaLuta(c, rng) {
   let g = 0;
   while (g++ < 120) {
+    if (c.negociacao) { MMA.assinarContrato(c, c.negociacao.propostas[0].id); continue; }
     if (c.imprevisto) { MMA.resolverImprevisto(c, rng() < 0.5 ? 'lutar' : 'adiar', rng); continue; }
     if (c.agendada) {
       fazerCamp(c, rng);
@@ -96,11 +97,14 @@ function conferir(c, ctx) {
   assert.strictEqual(c.campeao, !!(c.campeoes && c.campeoes[MMA.chaveDivisao ? MMA.chaveDivisao(c.periodo, c.divisaoId) : chaveAtual] === c.nome), 'flag de campeao inconsistente ' + ctx);
   void donos;
   // eventos passados: um por luta, sem repetir o mesmo lutador no card
-  assert.strictEqual((c.eventosPassados || []).length, h.length, 'eventos passados diferentes das lutas ' + ctx);
+  // um evento por noite: as vitorias do meio de um torneio nao fecham o evento
+  const noites = h.filter((x) => !(x.torneio && x.resultado === 'Vitória' && x.torneio !== 'Final')).length;
+  assert.strictEqual((c.eventosPassados || []).length, noites, 'eventos passados diferentes das noites ' + ctx);
   (c.eventosPassados || []).forEach((ev) => {
     const nomes = [];
     (ev.card || []).forEach((l) => nomes.push(l.a.nome, l.b.nome));
-    assert.strictEqual(new Set(nomes).size, nomes.length, 'lutador repetido no card ' + ctx);
+    const sem = ev.torneio ? nomes.filter((n) => n !== c.nome) : nomes; // no torneio o jogador luta tres vezes
+    assert.strictEqual(new Set(sem).size, sem.length, 'lutador repetido no card ' + ctx + ' | ' + ev.nome + ' | repetidos: ' + sem.filter((n, i) => sem.indexOf(n) !== i).join(', ') + ' | linhas: ' + (ev.card || []).map((l) => l.a.nome + ' x ' + l.b.nome + (l.superluta ? ' (super)' : '')).join('; '));
     (ev.card || []).forEach((l) => {
       if (l.resultado && l.resultado.vencedor) assert.ok([l.a.nome, l.b.nome].includes(l.resultado.vencedor), 'vencedor fora da luta ' + ctx);
     });

@@ -61,6 +61,12 @@
       `<span class="selo-neutro">${papel.rounds} rounds${o.titulo ? ' · cinturão em jogo' : ''}</span>`,
       op.lenda ? '<span class="selo-lenda">Lenda</span>' : '',
     ].join('');
+    if (o.torneio) {
+      const trio = o.chaves.map((x, i) => `<div class="tn-item">${U().foto(UI, x.nome, 'alta')}<b>${UI.esc(x.nome.split(' ').slice(-1)[0])}</b><small>${UI.esc(UI.MMA.ETAPAS_TORNEIO[i])}</small></div>`).join('');
+      return `<article class="desafio torneio" style="--i:${i}"><div class="tn-trio">${trio}</div><div class="d-corpo"><div class="d-tags">${tags}</div><h3><span>Era das Lendas</span><b>Torneio de uma noite</b></h3><p class="d-papel">${UI.esc(papel.texto)}</p>
+        <div class="d-rodape"><div class="d-dado"><small>Luta em</small><b>${Math.max(M.MIN_PREPARO, o.semanasAte)} sem.</b></div><div class="d-dado"><small>Bolsa por luta</small><b>$${o.bolsa.toLocaleString('pt-BR')}</b></div><div class="d-dado"><small>Prêmio do torneio</small><b>$${o.premio.toLocaleString('pt-BR')}</b></div>
+        <div class="d-botoes">${UI.btn({ texto: 'Aceitar torneio', acao: 'aceitar-oferta', data: { id: o.id }, tipo: 'primary', trailing: 'seta' })}</div></div></div></article>`;
+    }
     const partes = op.nome.split(' ');
     return `<article class="desafio ${o.titulo ? 'titulo' : ''}${o.bonus ? ' bonus' : ''}${o.rival ? ' rival' : ''}" style="--i:${i}">
       <div class="d-foto">${U().foto(UI, op.nome, 'alta')}<span class="d-rank">${UI.esc(M.rotuloRank(c.periodo, o.rank))}</span></div>
@@ -98,6 +104,19 @@
     </section>`;
   };
 
+  // Chave do torneio de uma noite: as tres lutas, quem ja passou e quem vem.
+  T.chaveTorneio = function (UI) {
+    const c = UI.carreira;
+    const tn = c.agendada && c.agendada.torneio;
+    if (!tn) return '';
+    const e = UI.esc;
+    const itens = tn.chaves.map((o, i) => {
+      const cls = i < tn.etapa ? 'feita' : i === tn.etapa ? 'atual' : '';
+      return `<li class="${cls}"><span class="ch-n">${i + 1}</span>${U().foto(UI, o.nome, 'mini')}<div><b>${e(o.nome)}</b><small>${e(UI.MMA.ETAPAS_TORNEIO[i])}${i < tn.etapa ? ' · vencida' : i === tn.etapa ? ' · agora' : ''}</small></div></li>`;
+    }).join('');
+    return `<section class="chave-torneio"><header><span class="kicker">Torneio de uma noite</span><h3>Prêmio de $${tn.premio.toLocaleString('pt-BR')} para quem vencer as três lutas</h3></header><ol>${itens}</ol><p>Dano e cansaço passam de uma luta para a outra. Quem perde está fora.</p></section>`;
+  };
+
   function listaDesafios(UI) {
     const c = UI.carreira;
     const ofs = c.ofertas || [];
@@ -116,7 +135,8 @@
     if (c.lutaAtiva) {
       return `<section class="vazio-j quente"><span class="kicker">Luta em andamento</span><h2>Contra ${UI.esc(c.lutaAtiva.op.nome)}</h2><p>Você parou no meio do combate.</p>${UI.btn({ texto: 'Retomar luta', acao: 'retomar', tipo: 'primary', trailing: 'seta', cls: 'grande' })}</section>`;
     }
-    if (!c.agendada) return T.avisoImprevisto(UI) + listaDesafios(UI);
+    if (!c.agendada && c.negociacao) return `${T.avisoImprevisto(UI)}<section class="vazio-j quente"><span class="kicker">Contrato vencido</span><h2>Renove para marcar a próxima luta</h2><p>A organização só marca outra luta depois que você assinar um novo contrato. As ofertas esperam por você.</p>${UI.btn({ texto: 'Ver propostas de renovação', acao: 'ir', data: { tela: 'negocios' }, tipo: 'primary', trailing: 'seta', cls: 'grande' })}</section>`;
+    if (!c.agendada) return T.avisoImprevisto(UI) + window.TELAS.avisoNegocios(UI) + listaDesafios(UI);
     const a = c.agendada;
     const ev = a.evento;
     const dia = M.diaDeLuta(c);
@@ -126,7 +146,7 @@
       ? UI.btn({ texto: 'Subir no octógono', acao: 'lutar-agora', tipo: 'primary', icone: 'luta', trailing: 'seta', cls: 'grande' })
       : UI.btn({ texto: 'Continuar o camp', acao: 'ir', data: { tela: 'treino' }, tipo: 'primary', icone: 'peso', trailing: 'seta', cls: 'grande' });
     const papelMarcado = M.papelOferta(c, a);
-    return `${T.avisoImprevisto(UI)}${U().cartazLuta(UI, true)}${T.imprevisto(UI)}
+    return `${T.avisoImprevisto(UI)}${U().cartazLuta(UI, true)}${T.chaveTorneio(UI)}${T.imprevisto(UI)}
       <p class="papel-marcada"><b>${UI.esc(papelMarcado.rotulo)}</b> · ${UI.esc(papelMarcado.texto)}</p>
       <div class="acao-principal">${cta}<small>${c.imprevisto ? 'Decida o imprevisto acima para seguir.' : dia ? 'O camp acabou. Defina sua estratégia na entrada do octógono.' : 'Faça as escolhas de cada semana de treino antes da luta.'}</small></div>
       <div class="duas-col">

@@ -20,6 +20,7 @@ function teste(nome, fn) {
 const nova = (extra) => {
   const c = MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
   c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  c.contrato.lutasRestantes = 9999; // contrato nao vence no meio dos testes
   return c;
 };
 function lutarForcado(c, resultado, rng) {
@@ -75,7 +76,7 @@ teste('evento: o card tem a luta do jogador, ninguem repete e a luta principal e
       assert.strictEqual(ev.card[0].bloco, 'Luta principal');
       if (c.agendada.titulo) assert.strictEqual(ev.card[0].jogador, true, 'luta de titulo deve ser a principal');
       assert.ok(ev.local && ev.nome && ev.subtitulo && ev.data.ts);
-      assert.ok(ev.card.every((l) => l.rounds === (l.titulo ? 5 : 3)));
+      assert.ok(ev.card.every((l) => l.rounds === (l.titulo || l.superluta || (p === 'auge' && l.id === 'principal') ? 5 : 3)), 'rounds do card em ' + p); // Era de Ouro: a luta principal tem 5 rounds
     });
   }
 });

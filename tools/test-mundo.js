@@ -20,6 +20,7 @@ function teste(nome, fn) {
 const nova = (extra) => {
   const c = MMA.novaCarreira(Object.assign({ nome: 'T', estilo: 'misto', periodo: 'atual', divisaoId: 'peso_leve', rng: MMA.criarRng(1) }, extra || {}));
   c.semImprevistos = true; // testes deterministas: a semana da luta sem imprevistos
+  c.contrato.lutasRestantes = 9999; // contrato nao vence no meio dos testes
   return c;
 };
 let semente = 700; // as ofertas aceitas usam semente fixa: o teste nao depende de sorte
@@ -552,6 +553,13 @@ function lutarAgora(c, rng, esperto) {
 }
 
 function resolverEventoBot(c, rng) {
+  if (c.negociacao) {
+    // contrato acabou: o bot tenta negociar (as vezes) e assina uma proposta qualquer
+    if (rng() < 0.5) MMA.negociarMais(c, rng);
+    const ps = c.negociacao.propostas;
+    assert.ok(MMA.assinarContrato(c, ps[Math.floor(rng() * ps.length)].id).ok, 'contrato nao assinou');
+  }
+  (c.ofertasPatrocinio || []).slice().forEach((o) => { if (rng() < 0.7) MMA.aceitarPatrocinio(c, o.id); else MMA.recusarPatrocinio(c, o.id); });
   if (c.imprevisto) {
     // imprevisto da semana da luta: o bot escolhe ao acaso entre lutar machucado e pedir adiamento
     const r0 = MMA.resolverImprevisto(c, rng() < 0.5 ? 'lutar' : 'adiar', rng);

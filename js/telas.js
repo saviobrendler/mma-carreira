@@ -96,7 +96,7 @@
         <div class="cl-vs">
           ${a.titulo ? '<span class="selo-ouro">Cinturão</span>' : `<span class="cl-bloco">${e((ev.card.find((l) => l.jogador) || {}).bloco || '')}</span>`}
           <b>VS</b>
-          <small>${a.rounds || (a.titulo ? 5 : 3)} rounds · ${e(cat)}</small>
+          <small>${a.torneio ? UI.MMA.ETAPAS_TORNEIO[a.torneio.etapa] + ' · ' : ''}${a.rounds || (a.titulo ? 5 : 3)} rounds · ${e(cat)}</small>
         </div>
         ${lado(UI, a.op.nome, a.rank, 'ele')}
       </div>
@@ -177,7 +177,7 @@
     return `<section class="tiles">
       ${tile('treino', 'peso', 'Treinamento', camp ? (c.imprevisto ? 'Imprevisto!' : et ? 'Etapa ' + (c.camp.i + 1) + ' de ' + c.camp.etapas.length : 'Camp concluído') : 'Energia ' + energia, camp ? (et ? UI.etapaNome(et.tipo) : 'Hora da luta') : c.lesao ? 'Recupere-se' : 'Sem camp ativo', camp && et ? 'foco' : '')}
       ${tile('habilidades', 'arvore', 'Evolução', pend ? pend + ' ' + UI.plural(pend, 'escolha', 'escolhas') : 'Em dia', pend ? 'Pontos e vagas esperando' : 'Nada pendente', pend ? 'foco' : '')}
-      ${tile('academia', 'dinheiro', 'Dinheiro', '$' + c.dinheiro.toLocaleString('pt-BR'), 'Academia e estrutura')}
+      ${tile('negocios', 'dinheiro', 'Dinheiro', '$' + c.dinheiro.toLocaleString('pt-BR'), c.negociacao ? 'Contrato vencido: renove' : (c.ofertasPatrocinio || []).length ? 'Proposta de patrocínio' : 'Contrato, patrocínios e equipe', c.negociacao ? 'foco' : '')}
       <button class="tile historico" data-acao="ir" data-tela="legado"><span class="tile-ico">${UI.icone('historico', 22)}</span><span class="tile-rot">Últimas lutas</span>
         <span class="pontos-res">${ult.length ? ult.map((x) => `<i class="${x.resultado === 'Vitória' ? 'v' : x.resultado === 'Derrota' ? 'd' : 'e'}" title="${UI.esc(x.resultado + ' · ' + x.oponente)}">${x.resultado[0]}</i>`).join('') : '<em>Sem lutas</em>'}</span>
         <small>${ult.length ? UI.esc(ult[ult.length - 1].resultado + ' contra ' + ult[ult.length - 1].oponente) : 'Sua história começa aqui'}</small></button>
@@ -196,10 +196,16 @@
     return `<section class="imprensa"><header><h3>Imprensa e redes</h3>${seg}</header><ul>${lista || '<li class="vazio">Nada ainda. As manchetes começam quando você luta.</li>'}</ul></section>`;
   };
 
+  // Como funciona a era em que a carreira acontece (regras, eventos, mercado).
+  T.regrasEra = function (UI) {
+    const r = UI.MMA.regrasDaEra(UI.carreira.periodo);
+    return `<details class="regras-era"><summary><span>Como funciona a ${UI.esc(r.nome)}</span><small>${UI.esc(r.resumo)}</small></summary><ul>${r.linhas.map((l) => `<li>${UI.esc(l)}</li>`).join('')}</ul></details>`;
+  };
+
   T.hub = function (UI) {
     const c = UI.carreira;
     const g = UI.MMA.ganchos(c).filter((x) => x.tipo !== 'meta' && x.tipo !== 'habilidade' && x.tipo !== 'pontos' && x.tipo !== 'traco')[0];
-    return `${window.TELAS.avisoImprevisto(UI)}<div class="central">
+    return `${window.TELAS.avisoNegocios(UI)}${window.TELAS.avisoImprevisto(UI)}<div class="central">
         ${painelHero(UI)}
         ${painelProximo(UI)}
       </div>
@@ -207,6 +213,7 @@
       ${g && !c.aposentado ? `<p class="passo"><span>${UI.icone('seta', 16)}</span>${UI.esc(g.texto)}</p>` : ''}
       ${tiles(UI)}
       ${T.imprensa(UI)}
+      ${T.regrasEra(UI)}
       ${UI.blocoEvento ? UI.blocoEvento() : ''}`;
   };
 
