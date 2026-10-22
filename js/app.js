@@ -1258,7 +1258,8 @@
 
   function cartaoHall(e) {
     const marcantes = (e.marcantes || []).map((m) => `<li>${esc(m.resultado)} contra ${esc(m.oponente)} · ${esc(m.metodo)}${m.titulo ? ' · Título' : ''}</li>`).join('') || '<li class="vazio">Nenhuma luta marcante ainda.</li>';
-    return painel({ cls: 'entra', corpo: `<div class="kicker">${esc(e.data)} · ${e.modalidade && MMA.MODALIDADES[e.modalidade] ? MMA.MODALIDADES[e.modalidade].nome : MMA.ESTILOS[e.estilo] || ''}${e.origem ? ' · ' + esc(e.origem) : ''}</div><h3 class="hall-nome">${esc(e.nome)}</h3>
+    const dataBr = /^\d{4}-\d{2}-\d{2}$/.test(e.data || '') ? e.data.split('-').reverse().join('/') : (e.data || '');
+    return painel({ cls: 'entra', corpo: `<div class="kicker">${esc(dataBr)} · ${e.modalidade && MMA.MODALIDADES[e.modalidade] ? MMA.MODALIDADES[e.modalidade].nome : MMA.ESTILOS[e.estilo] || ''}${e.origem ? ' · ' + esc(e.origem) : ''}</div><h3 class="hall-nome">${esc(e.nome)}</h3>
       <div class="chips">${badge(`${e.recorde.v}-${e.recorde.d}-${e.recorde.e}`)}${badge(`${e.titulos} título(s)`, 'gold')}${badge(`${e.idade} anos`)}${e.hall ? badge(e.hall.induzido ? 'Hall da Fama · ' + e.hall.pontos + ' pts' : 'Fora do Hall · ' + e.hall.pontos + ' pts', e.hall.induzido ? 'gold-borda' : 'gray') : ''}</div>
       <h4 class="hall-sub">Lutas marcantes</h4><ul class="lista-simples">${marcantes}</ul>` });
   }
